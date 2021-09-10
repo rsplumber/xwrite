@@ -2,20 +2,25 @@
 
 <div id="materials">
 
-<div id="frameTexts">
+</div>
+
+<div id="content">
+  <div id="frameTexts">
+    
+  </div>
+
   <div class="column">
     <span>
       Current
     </span>
-    <p id="firstText">text</p>
+    <p id="firstText"></p>
   </div>
     <div class="column">
     <span>
       New
     </span>
-    <input id="fixedText" value="hello">
+    <input id="fixedText" placeholder="New text">
   </div>
-</div>
 </div>
 
 <div id="buttons">
@@ -47,11 +52,23 @@ function applyChanges(){
 }
 
 function detectTextsOnUI(texts_data){
+  var parent = document.getElementById('materials');
+  parent.innerHTML = "";
   for (let i = 0; i < texts_data.length; i++){
-        var clone = document.getElementById('frameTexts').cloneNode(true); // "deep" clone
-        clone.id = "frameTets"; // there can only be one element with an ID
-        document.getElementById('frameTexts').parentNode.appendChild(clone);
-        document.getElementById('firstText').innerText = texts_data[i].text ;
+        var frameClone = document.getElementById('frameTexts').cloneNode(true);
+        frameClone.id = "frameTexts#" + i;
+        document.getElementById('materials').appendChild(frameClone);
+
+        var firstClone = document.getElementById('firstText').cloneNode(true);
+        firstClone.id = "firstText#" + i;
+        document.getElementById('frameTexts#' + i).appendChild(firstClone);
+        document.getElementById('firstText#' + i).innerText = texts_data[i].text;
+
+        var finalClone = document.getElementById('fixedText').cloneNode(true);
+        finalClone.id = "fixedText#" + i;
+        document.getElementById('frameTexts#' + i).appendChild(finalClone);
+
+        
     }
   }
 
@@ -78,8 +95,12 @@ function changeDirectionOnUI(direction){
 
   #materials {
     display: flex;
+    flex-direction: column;
   }
 
+  #content{
+    display: none;
+  }
   #frameTexts {
     display: flex;
     flex-direction: row;
