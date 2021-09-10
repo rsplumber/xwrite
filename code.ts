@@ -34,18 +34,21 @@ function changeDirection(){
   }
 }
 
- function detectTexts(frame:FrameNode){
+ function detectTextsOfFrame(frame:FrameNode){
       
   const textNodes:TextNode[] = frame.children.filter(node =>node.type ==="TEXT") as TextNode[]
 
-  textNodes.forEach(text_node => {
-        // await figma.loadFontAsync(<FontName> text_node.fontName);
-        
+  textNodes.forEach(text_node => {        
         if(selected_text_nodes.find(element=>element.node.id ===text_node.id) == null){ 
           selected_text_nodes.push(new TextNodeData(text_node));
         }
-
   });
+}
+
+function detectText(text_node:TextNode){
+      
+  selected_text_nodes.push(new TextNodeData(text_node));
+
 }
 
 
@@ -57,9 +60,16 @@ var selected_text_nodes:Array<TextNodeData> = [];
 
 figma.on("selectionchange", () => {
   selected_text_nodes = [];
-  const frame:FrameNode = figma.currentPage.selection.find(node => node.type ==="FRAME") as FrameNode;
-  detectTexts(frame);
 
+  for(const node of figma.currentPage.selection){
+    if(node.type ==="FRAME"){
+      const frame = node;
+      detectTextsOfFrame(frame);      
+    }else if(node.type === "TEXT"){
+      const text = node;
+      detectText(text);
+    }
+  }
   figma.ui.postMessage({
     'type' : "detect_texts",
     'data' : selected_text_nodes
@@ -98,8 +108,6 @@ figma.ui.onmessage = async msg => {
       })
     break;
   }
-  figma.closePlugin();
-
 };
 
 
