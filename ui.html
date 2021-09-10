@@ -33,7 +33,8 @@ onmessage = (event) => {
   const type =  pluginMessage['type'];
   switch(type){
     case 'detect_texts' :
-      detectTextsOnUI();
+      const texts_data = pluginMessage['data'];
+      detectTextsOnUI(texts_data);
       break;
     case 'change_direction':
       const direction = pluginMessage['data'];
@@ -50,7 +51,7 @@ function detectTexts(){
   parent.postMessage({ pluginMessage: { type: 'detect_texts'} }, '*')
 }
 
-function detectTextsOnUI(){
+function detectTextsOnUI(texts_data){
 
 }
 
