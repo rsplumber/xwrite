@@ -1,14 +1,21 @@
 
 
+figma.showUI(__html__);
+figma.ui.resize(500,500)
+
+
+
 var selected_text_nodes = [];
 
-var direction = 'fa';
+const LTR  = 'LTR';
+const RTL = 'RTL'
+var direction = LTR;
 
 function changeDirection(){
-  if(direction === 'fa'){
-    direction = 'en'
+  if(direction === RTL){
+    direction = LTR
   }else{
-    direction = 'fa'
+    direction = RTL
   }
 }
 
@@ -33,7 +40,6 @@ function detectTexts(frame:FrameNode){
   });
 }
 
-figma.showUI(__html__);
 
 
 figma.ui.onmessage = async msg => {
@@ -46,7 +52,7 @@ figma.ui.onmessage = async msg => {
       detectTexts(frame);
 
       figma.ui.postMessage({
-        'type' : 'detected_texts',
+        'type' : command_type,
         'data' : selected_text_nodes
       })
       
@@ -56,13 +62,13 @@ figma.ui.onmessage = async msg => {
       changeDirection();
 
       figma.ui.postMessage( {
-        'type' : 'direction',
+        'type' : command_type,
         'data' : direction
       })
       
     return;
     case "apply_changes":
-      
+
     break;
   }
   figma.closePlugin();

@@ -19,12 +19,49 @@
 </div>
 
 <div id="buttons">
-  <button id="applyChanges" class="primary">Apply</button>
-  <button id="textDirection" class="secondary" onclick="duplicate()">Get Texts</button>
-  <button id="textDirection" class="secondary">Change Direction</button>
+  <button id="applyChanges" class="primary" onclick="applyChanges">Apply</button>
+  <button id="detectTexts" class="secondary" onclick="detectTexts">Get Texts</button>
+  <button id="textDirection" class="secondary" onclick="changeDirection">Change Direction</button>
 </div>
 
 <script>
+
+
+
+onmessage = (event) => {
+  var pluginMessage = event.data.pluginMessage;
+  const type =  pluginMessage['type'];
+  switch(type){
+    case 'detect_texts' :
+      detectTextsOnUI();
+      break;
+    case 'change_direction':
+      const direction = pluginMessage['data'];
+      changeDirectionOnUI(direction);
+      break;
+  }
+}
+
+function applyChanges(){
+  parent.postMessage({ pluginMessage: { type: 'apply_changes'} }, '*')
+}
+
+function detectTexts(){
+  parent.postMessage({ pluginMessage: { type: 'detect_texts'} }, '*')
+}
+
+function detectTextsOnUI(){
+
+}
+
+function changeDirection(){
+  parent.postMessage({ pluginMessage: { type: 'change_direction'} }, '*')
+}
+
+function changeDirectionOnUI(direction){
+  const  directionButton = document.getElementById('textDirection');
+  directionButton.innerHTML = "Direction: " + direction;
+}
 
 var i = 0;
 var counter4 = 3;
