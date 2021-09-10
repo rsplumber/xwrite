@@ -7,7 +7,7 @@
     <span>
       Current
     </span>
-    <p id="firstText">a long txt comes here</p>
+    <p id="firstText">text</p>
   </div>
     <div class="column">
     <span>
@@ -20,8 +20,7 @@
 
 <div id="buttons">
   <button id="applyChanges" class="primary" onclick="applyChanges()">Apply</button>
-  <button id="detectTexts" class="secondary" onclick="detectTexts()">Get Texts</button>
-  <button id="textDirection" class="secondary" onclick="changeDirection()">Change Direction</button>
+  <button id="textDirection" class="secondary" onclick="changeDirection()">Direction</button>
 </div>
 
 <script>
@@ -47,13 +46,14 @@ function applyChanges(){
   parent.postMessage({ pluginMessage: { type: 'apply_changes'} }, '*')
 }
 
-function detectTexts(){
-  parent.postMessage({ pluginMessage: { type: 'detect_texts'} }, '*')
-}
-
 function detectTextsOnUI(texts_data){
-
-}
+  for (let i = 0; i < texts_data.length; i++){
+        var clone = document.getElementById('frameTexts').cloneNode(true); // "deep" clone
+        clone.id = "frameTets"; // there can only be one element with an ID
+        document.getElementById('frameTexts').parentNode.appendChild(clone);
+        document.getElementById('firstText').innerText = texts_data[i].text ;
+    }
+  }
 
 function changeDirection(){
   parent.postMessage({ pluginMessage: { type: 'change_direction'} }, '*')
@@ -64,23 +64,12 @@ function changeDirectionOnUI(direction){
   directionButton.innerHTML = "Direction: " + direction;
 }
 
-var i = 0;
-var counter4 = 3;
-var original = document.getElementById('frameTexts');
 
-function duplicate() {
-    while (i < counter4){
-        var clone = original.cloneNode(true); // "deep" clone
-        console.log(clone)
-        clone.id = "frameTets"; // there can only be one element with an ID
-        original.parentNode.appendChild(clone);
-        i++;
-    }	    	
-}
 </script>
 
 <style>
   body {
+    background-color: #f9f9f9;
     height: 100vh;
     box-sizing: border-box;
     padding: 16px;
@@ -121,7 +110,6 @@ function duplicate() {
   }
 
   input {
-    width: 100px;
     height: 48px;
     padding: 4px 8px;
     color: #2f2f2f;
@@ -153,7 +141,7 @@ function duplicate() {
     background: rgb(235,105,64);
     color: #fff;
     border: none;
-    margin-bottom: 8px;
+    margin-right: 8px;
   }
 
   .primary:hover {
@@ -161,8 +149,17 @@ function duplicate() {
   }
 
   #buttons {
-    padding-bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    position: fixed;
+    display: flex;
+    padding: 16px 16px;
     bottom: 0;
+    background-color: #fff;
+    border-radius: 16px;
+    margin-bottom: 8px;
+    box-shadow: 0px 4px 8px 0px rgb(0,0,0, 0.1)
+
   }
 
   button {
@@ -178,6 +175,7 @@ function duplicate() {
     color: rgb(235,105,64);
     border: none;
     border: 2px solid rgb(235,105,64) ;
+    margin-right: 8px;
   }
 
   .secondary:hover {
