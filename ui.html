@@ -62,7 +62,7 @@ function detectTextsOnUI(texts_data){
     var li = document.createElement('li');    
 
         li.setAttribute('style', 'display: flex;');
-        li.appendChild(createDeleteButton())
+        li.appendChild(createDeleteButton(text_id))
         li.appendChild(createParagraph(text_id, texts_data[i].text));
         li.appendChild(createCopyButton());
         li.appendChild(createInput(text_id));
@@ -90,10 +90,17 @@ function detectTextsOnUI(texts_data){
     return copyText;
   }
 
-  function createDeleteButton(){
+  function createDeleteButton(id){
     const deleteButton = document.createElement('img')
+    deleteButton.setAttribute('id' , id)
+    deleteButton.setAttribute('onclick' , "deleteButtonOnClick(this)")
+
     deleteButton.setAttribute('src', './Assets.i-import-text.png')
     return deleteButton;
+  }
+
+  function deleteButtonOnClick(clickedButton){
+    parent.postMessage({ pluginMessage: { type: 'delete_text' , text_node_id :clickedButton.id } }, '*')
   }
 
   function createInput(id){

@@ -89,7 +89,7 @@ figma.ui.onmessage = async msg => {
     case "change_direction" :
    
       changeDirection();
-
+    
       figma.ui.postMessage( {
         'type' : command_type,
         'data' : direction
@@ -99,8 +99,11 @@ figma.ui.onmessage = async msg => {
     case "apply_changes":
       const final_data:Array<TextNodeData> = msg['text_data'] as Array<TextNodeData>;
       selected_text_nodes.forEach(async node_data =>{
-        var text_node = node_data.node;
-        var selected_text = final_data.find(d => d.id == text_node.id);
+        var text_node = node_data.node as TextNode;
+        var selected_text = final_data.find(d => d.id == text_node.id);        
+        
+        await figma.loadFontAsync(text_node.fontName as FontName);
+        
         if(selected_text.final_text.length !== 0){
           if(direction === LTR){
             text_node.characters = selected_text.final_text;
@@ -119,7 +122,7 @@ figma.ui.onmessage = async msg => {
       selected_text_nodes = selected_text_nodes.filter(node => node.id !== text_node_id) as Array<TextNodeData> ;
 
       showNotification("text removed");
-      
+
       figma.ui.postMessage({
         'type' : "detect_texts",
         'data' : selected_text_nodes
