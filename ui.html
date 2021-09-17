@@ -22,14 +22,14 @@
 
 <script>
 
-
+var texts_data = [];
 
 onmessage = (event) => {
   var pluginMessage = event.data.pluginMessage;
   const type =  pluginMessage['type'];
   switch(type){
     case 'detect_texts' :
-      const texts_data = pluginMessage['data'];
+      texts_data = pluginMessage['data'];
       detectTextsOnUI(texts_data);
       break;
     case 'change_direction':
@@ -40,7 +40,14 @@ onmessage = (event) => {
 }
 
 function applyChanges(){
-  parent.postMessage({ pluginMessage: { type: 'apply_changes'} }, '*')
+  let inputs = document.getElementById('theList').getElementsByTagName('input');
+   
+   for (let i = 0; i < inputs.length; i++) {
+     const element = inputs[i];
+     texts_data[i].final_text = element.value;     
+   }
+
+  parent.postMessage({ pluginMessage: { type: 'apply_changes' , text_data :texts_data } }, '*')
 }
 
 function detectTextsOnUI(texts_data){  
