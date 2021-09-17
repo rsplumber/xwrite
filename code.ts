@@ -79,7 +79,6 @@ figma.on("selectionchange", () => {
     'data' : selected_text_nodes
   })
 
-  console.warn(selected_text_nodes)
 })
 
 figma.ui.onmessage = async msg => {
@@ -114,7 +113,17 @@ figma.ui.onmessage = async msg => {
     break;
 
     case "delete_text":
+      const text_node_id = msg['text_node_id'] as string;
+      const text_node = selected_text_nodes.find(node => node.id === text_node_id) as TextNodeData;
+      text_node.node.remove();
+      selected_text_nodes = selected_text_nodes.filter(node => node.id !== text_node_id) as Array<TextNodeData> ;
 
+      showNotification("text removed");
+      
+      figma.ui.postMessage({
+        'type' : "detect_texts",
+        'data' : selected_text_nodes
+      })
       break;
   }
 
