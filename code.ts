@@ -128,6 +128,25 @@ figma.ui.onmessage = async msg => {
         'data' : selected_text_nodes
       })
       break;
+
+      case "copy_text":
+        const copy_text_node_id = msg['text_node_id'] as string;
+
+        for (let i = 0; i < selected_text_nodes.length; i++) {
+          if(selected_text_nodes[i].id === copy_text_node_id){
+            selected_text_nodes[i].final_text = selected_text_nodes[i].text;
+            break;
+          }
+          
+        }    
+
+        showNotification("text coppied");
+  
+        figma.ui.postMessage({
+          'type' : "detect_texts",
+          'data' : selected_text_nodes
+        })
+        break;
   }
 
 

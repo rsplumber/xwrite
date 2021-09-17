@@ -64,8 +64,8 @@ function detectTextsOnUI(texts_data){
         li.setAttribute('style', 'display: flex;');
         li.appendChild(createDeleteButton(text_id))
         li.appendChild(createParagraph(text_id, texts_data[i].text));
-        li.appendChild(createCopyButton());
-        li.appendChild(createInput(text_id));
+        li.appendChild(createCopyButton(text_id));
+        li.appendChild(createInput(text_id,texts_data[i].final_text));
 
         ul.appendChild(li);     // append li to ul.
     }
@@ -84,10 +84,16 @@ function detectTextsOnUI(texts_data){
     return p;
   }
 
-  function createCopyButton(){
+  function createCopyButton(id){
     const copyText = document.createElement('img')
+    copyText.setAttribute('id' , id)
+    copyText.setAttribute('onclick' , "copyButtonOnClick(this)")
     copyText.setAttribute('src', './Assets.i-import-text.png')
     return copyText;
+  }
+
+  function copyButtonOnClick(clickedButton){
+    parent.postMessage({ pluginMessage: { type: 'copy_text' , text_node_id :clickedButton.id } }, '*')
   }
 
   function createDeleteButton(id){
@@ -103,12 +109,13 @@ function detectTextsOnUI(texts_data){
     parent.postMessage({ pluginMessage: { type: 'delete_text' , text_node_id :clickedButton.id } }, '*')
   }
 
-  function createInput(id){
+  function createInput(id , text){
     const input =  document.createElement('input'); 
     input.setAttribute('id', id);
+    input.setAttribute('value' , text);
     input.setAttribute('type' , 'input');
     input.setAttribute('placeholder' , 'enter your text');
-    input.setAttribute('class' , 'input')
+    input.setAttribute('class' , 'input');
 
     return input;
   }
