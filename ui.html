@@ -4,7 +4,16 @@
     <h3>
       Select a frame
     </h3>
+    
+
+
   </div>
+
+  
+
+  </div>
+
+  
   
 <div id="buttons">
   <button id="applyChanges" class="primary" onclick="applyChanges()">Apply</button>
@@ -46,7 +55,9 @@ function detectTextsOnUI(texts_data){
     var li = document.createElement('li');    
 
         li.setAttribute('style', 'display: flex;');
+        li.appendChild(createDeleteButton())
         li.appendChild(createParagraph(text_id, texts_data[i].text));
+        li.appendChild(createCopyButton());
         li.appendChild(createInput(text_id));
 
         ul.appendChild(li);     // append li to ul.
@@ -66,9 +77,16 @@ function detectTextsOnUI(texts_data){
     return p;
   }
 
-  function createCopyButton(id , text){
-    
-    return null;
+  function createCopyButton(){
+    const copyText = document.createElement('img')
+    copyText.setAttribute('src', './Assets.i-import-text.png')
+    return copyText;
+  }
+
+  function createDeleteButton(){
+    const deleteButton = document.createElement('img')
+    deleteButton.setAttribute('src', './Assets.i-import-text.png')
+    return deleteButton;
   }
 
   function createInput(id){
@@ -123,6 +141,11 @@ function changeDirectionOnUI(direction){
   ul {
     
     padding: 0;
+    margin-bottom: 100px;
+  }
+
+  li {
+    align-items: center;
   }
 
 
@@ -213,6 +236,22 @@ function changeDirectionOnUI(direction){
 
   .secondary:hover {
     background-color: rgb(235,105,64, 0.1) ;
+  }
+
+
+  .copyText {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  }
+
+  img {
+    height: 24px;
+    width: 24px;
+  }
+
+  img:hover {
+    cursor: pointer;
   }
 
 </style>
