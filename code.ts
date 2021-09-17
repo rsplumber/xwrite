@@ -56,6 +56,10 @@ function reverseString(str:string) {
   return str.split("").reverse().join("");
 }
 
+function showNotification(message : string){
+  figma.notify(message);
+}
+
 var selected_text_nodes:Array<TextNodeData> = [];
 
 figma.on("selectionchange", () => {
@@ -105,9 +109,15 @@ figma.ui.onmessage = async msg => {
             text_node.characters = reverseString(selected_text.final_text);
           }
         } 
-      })
+      });
+      showNotification("changes applied");
     break;
+
+    case "delete_text":
+
+      break;
   }
+
 
 };
 
