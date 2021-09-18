@@ -99,9 +99,8 @@ function detectTextsOnUI(texts_data){
   function createDeleteButton(id){
     const deleteButton = document.createElement('img')
     deleteButton.setAttribute('id' , id)
+    deleteButton.setAttribute('src' , "/trash.png")
     deleteButton.setAttribute('onclick' , "deleteButtonOnClick(this)")
-
-    deleteButton.setAttribute('src', './Assets.i-import-text.png')
     return deleteButton;
   }
 
