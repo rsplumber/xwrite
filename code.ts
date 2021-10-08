@@ -1,11 +1,13 @@
-
-
 figma.showUI(__html__);
 figma.ui.resize(660,560)
 
+class Statistics{
+  framesCount:number = 0;
+  groupsCount:number = 0;
+  textsCount:number = 0;
+}
 
-
-
+var stats:Statistics;
 
 class TextNodeData{
   id: string;
@@ -22,41 +24,49 @@ class TextNodeData{
 } 
 
 const LTR  = 'LTR';
-const RTL = 'RTL'
+const RTL = 'RTL';
 
 
  function detectTextsOfFrame(frame:FrameNode){
+  
+  stats.framesCount++;
       
-  const textNodes:TextNode[] = frame.children.filter(node =>node.type ==="TEXT") as TextNode[]
-  const  groups:GroupNode[] = frame.children.filter(node =>node.type ==="GROUP") as GroupNode[]
+  const textNodes:TextNode[] = frame.children.filter(node =>node.type ==="TEXT") as TextNode[];
+  const  groups:GroupNode[] = frame.children.filter(node =>node.type ==="GROUP") as GroupNode[];
   
   groups.forEach(group =>{
-    textNodes.concat(group.children.filter(node =>node.type ==="TEXT") as TextNode[]);
+    detectTextOfGroup(group);
   });
 
   textNodes.forEach(text_node => {        
-        if(selected_text_nodes.find(element=>element.node.id ===text_node.id) == null){ 
-          fillSelectedTextNodes(text_node);
-        }
+    sanitizeTexts(text_node);
   });
+
 }
 
 function detectTextOfGroup(group : GroupNode){
+  stats.groupsCount++;
   const textNodes:TextNode[] = group.children.filter(node =>node.type ==="TEXT") as TextNode[]
   textNodes.forEach(text_node => {        
-    if(selected_text_nodes.find(element=>element.node.id ===text_node.id) == null){ 
-      fillSelectedTextNodes(text_node);
-    }
+    sanitizeTexts(text_node);
 });
 }
 
 function detectText(text_node:TextNode){
-      
+
   fillSelectedTextNodes(text_node);
 
 }
 
+function sanitizeTexts(text_node:TextNode){
+  if(selected_text_nodes.find(element=>element.node.id ===text_node.id) == null){
+    fillSelectedTextNodes(text_node);
+  }
+}
+
 function fillSelectedTextNodes(text_node:TextNode){
+  stats.textsCount++;
+
   var text = text_node.characters;
   var direction = detectDirection(text);
   if(direction === RTL){
@@ -99,11 +109,11 @@ function showMessage(message : string){
 }
 
 
-
 var selected_text_nodes:Array<TextNodeData> = [];
 
 figma.on("selectionchange", () => {
   selected_text_nodes = [];
+  stats = new Statistics();
 
   for(const node of figma.currentPage.selection){
     switch(node.type){
@@ -127,7 +137,21 @@ figma.on("selectionchange", () => {
     'data' : selected_text_nodes
   })
 
+    showStatsMessage();
+
 })
+
+function showStatsMessage(){
+  var statsMessage = "";
+  if(stats.framesCount > 0){
+    statsMessage += stats.framesCount + " frames and "
+  }
+  if(stats.groupsCount > 0){
+    statsMessage += stats.groupsCount + " groups and "
+  }
+  statsMessage += stats.textsCount + " texts selected"
+  showMessage(statsMessage);
+}
 
 figma.ui.onmessage = async msg => {
 
@@ -191,14 +215,10 @@ figma.ui.onmessage = async msg => {
         case "replace":
           const replaceFrom = msg['replace_from'] as string;
           const replaceTo = msg['replace_to'] as string;
-          console.log(replaceFrom);
-          console.log(replaceTo);
           for (let i = 0; i < selected_text_nodes.length; i++) {
             if(replaceFrom === "*.*"){
               selected_text_nodes[i].final_text = replaceTo;
-              console.log("starrr");
             }else if(selected_text_nodes[i].text.includes(replaceFrom)){
-              console.log("here");
               var need_to_replace = selected_text_nodes[i].text;
               selected_text_nodes[i].final_text = need_to_replace.replace(replaceFrom , replaceTo);
             }
@@ -213,15 +233,15 @@ figma.ui.onmessage = async msg => {
 
             selected_text_nodes.forEach(async node_data =>{
               var text_node = node_data.node as TextNode;
-              var selected_text = final_data.find(d => d.id == text_node.id);        
+                
               
               await figma.loadFontAsync(text_node.fontName as FontName);
                  
-                var selected_text_direction = detectDirection(selected_text.text);
+                var selected_text_direction = detectDirection(node_data.text);
                 if(selected_text_direction === LTR){
-                  text_node.characters = selected_text.text;
+                  text_node.characters = node_data.text;
                 }else{
-                  text_node.characters = reverseString(selected_text.text);
+                  text_node.characters = reverseString(node_data.text);
                 }
             });
             showNotification("changes applied");
