@@ -142,10 +142,10 @@ figma.on("selectionchange", () => {
 function showStatsMessage(){
   var statsMessage = "";
   if(stats.framesCount > 0){
-    statsMessage += stats.framesCount + " frames and"
+    statsMessage += stats.framesCount + " frames and "
   }
   if(stats.groupsCount > 0){
-    statsMessage += stats.groupsCount + " groups and"
+    statsMessage += stats.groupsCount + " groups and "
   }
   statsMessage += stats.textsCount + " texts selected"
   showMessage(statsMessage);
