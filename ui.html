@@ -10,7 +10,7 @@
 <div id="bottomBar">
     <div class="buttons">
       <button id="applyChanges" class="primary" onclick="applyChanges()">Apply</button>
-      <button id="applyChanges" class="secondary" onclick="applyChanges()">Smart Direction</button>
+      <button id="applyChanges" class="ghost" onclick="applyChanges()">Auto Direction</button>
     </div>
     <div class="replacements">
       <div>
@@ -19,7 +19,7 @@
         </div>
         <input id="replace_from",type="input" placeholder="Find Text" class="input"> 
       </div>
-      <div>
+      <div class="label">
           To
       </div>
       <div>
@@ -111,7 +111,7 @@ function detectTextsOnUI(texts_data){
     const copyText = document.createElement('img')
     copyText.setAttribute('id' , id)
     copyText.setAttribute('onclick' , "copyButtonOnClick(this)")
-    copyText.setAttribute('src', './Assets.i-import-text.png')
+    copyText.setAttribute('src', 'https://img.icons8.com/material-sharp/24/979797/right--v1.png')
     return copyText;
   }
 
@@ -122,7 +122,7 @@ function detectTextsOnUI(texts_data){
   function createDeleteButton(id){
     const deleteButton = document.createElement('img')
     deleteButton.setAttribute('id' , id)
-    deleteButton.setAttribute('src' , "/trash.png")
+    deleteButton.setAttribute('src' , "https://img.icons8.com/fluency-systems-regular/24/979797/trash--v1.png")
     deleteButton.setAttribute('onclick' , "deleteButtonOnClick(this)")
     return deleteButton;
   }
@@ -164,8 +164,7 @@ function detectTextsOnUI(texts_data){
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background-color: #f9f9f9;
-  border-radius: 10px;
+  background: transparent;
 }
 
 /* Handle */
@@ -175,7 +174,7 @@ function detectTextsOnUI(texts_data){
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(33, 150, 83); 
+  background: #cbcbcb; 
 }
 
   h2 {
@@ -199,6 +198,7 @@ function detectTextsOnUI(texts_data){
     margin-bottom: 70px;
     margin-left: 24px;
     justify-content: flex-start;
+    overflow: auto;
   }
 
   ul {
@@ -218,37 +218,41 @@ function detectTextsOnUI(texts_data){
   }
 
   p {
-    background-color: #f2f2f2;
-    color: #7c7c7c;
+    background-color: #f9f9f9;
+    color: #979797;
     width: 200px;
     padding: 16px 16px;
     margin-right: 16px;
     margin-left: 8px;
-    border-radius: 8px;
+    border-radius: 4px;
   }
 
   input {
-    height: 48px;
+    min-height: 48px;
+    height: 100%;
     padding: 4px 8px;
-    
     border: #e5e5e5 1px solid;
-    background-color: #f9f9f9;
-    border-radius: 8px ;
+    background-color: #fff;
+    border-radius: 4px ;
     outline: none;
     margin-bottom: 0;
     resize: vertical;
     overflow: auto;
-    margin-left: 8px;
+    color: #5e5e5e;
   }
 
   input:hover {
-    border: 3px #cbcbcb solid;
+    border: 1px #cbcbcb solid;
+  }
+
+  input::placeholder {
+    color: #cbcbcb;
   }
 
   input:focus {
     background-color: #fff;
-    border: 2px solid rgb(0, 156, 244);
-    box-shadow: 0px 0px 0px 3px rgba(0, 156, 244, 0.3) ;
+    border: 1px solid rgb(0, 156, 244);
+    box-shadow: 0px 0px 0px 3px rgba(0, 156, 244, 0.1) ;
   }
 
   .primary {
@@ -275,20 +279,20 @@ function detectTextsOnUI(texts_data){
 
   .buttons {
     border-top: 1px solid #e6e6e6;
-    width: 100%;
     display: flex;
     justify-content: space-between;
+    flex-direction: row-reverse;
     padding: 16px 16px;
     background-color: #fff;
   }
 
   .replacements {
     border-top: 1px solid #e6e6e6;
-    width: 100%;
     display: flex;
     justify-content: space-between;
+    align-items: flex-end;
     padding: 16px 16px;
-    background-color: #f2f2f2;
+    background-color: #f9f9f9;
   }
 
   #bottomBar {
@@ -312,9 +316,8 @@ function detectTextsOnUI(texts_data){
     width: 160px;
     border-radius: 4px;
     color: rgb(33, 150, 83);
-    border: none;
     border: 1px solid rgb(33, 150, 83) ;
-    margin-right: 8px;
+    background: none;
   }
 
   .secondary:hover {
@@ -331,10 +334,13 @@ function detectTextsOnUI(texts_data){
   img {
     height: 24px;
     width: 24px;
+    padding: 8px;
+    border-radius: 4px;
   }
 
   img:hover {
     cursor: pointer;
+    background-color: #f9f9f9;
   }
 
   .topBar {
@@ -349,6 +355,27 @@ function detectTextsOnUI(texts_data){
     color: #979797;
     width: 100%;
     padding-top: 2px;
+  }
+
+  .label {
+    color: #979797;
+    font-weight: 600;
+  }
+
+  .ghost {
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    height: 48px;
+    width: 160px;
+    border-radius: 4px;
+    color: rgb(33, 150, 83);
+    border: none;
+    background: none;
+  }
+
+  .ghost:hover {
+    background-color: rgba(33, 150, 83, 0.1)
   }
 
 </style>
