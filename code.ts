@@ -2,9 +2,9 @@ figma.showUI(__html__);
 figma.ui.resize(660,560)
 
 class Statistics{
-  framesCount:number;
-  groupsCount:number;
-  textsCount:number;
+  framesCount:number = 0;
+  groupsCount:number = 0;
+  textsCount:number = 0;
 }
 
 var stats:Statistics;
@@ -53,7 +53,7 @@ function detectTextOfGroup(group : GroupNode){
 }
 
 function detectText(text_node:TextNode){
-  stats.textsCount++;
+
   fillSelectedTextNodes(text_node);
 
 }
@@ -65,6 +65,8 @@ function sanitizeTexts(text_node:TextNode){
 }
 
 function fillSelectedTextNodes(text_node:TextNode){
+  stats.textsCount++;
+  
   var text = text_node.characters;
   var direction = detectDirection(text);
   if(direction === RTL){
