@@ -1,7 +1,7 @@
 <link rel="stylesheet"
 href="https://fonts.googleapis.com/css?family=Poppins">
 
-<div class="topInfo">
+<div id="topInfo"  class="topInfo" style="display: none;">
   <div class="label">
     Selected Text
   </div>
@@ -70,7 +70,7 @@ onmessage = (event) => {
       break;
       case 'is_text_selected':
       const is_selected = pluginMessage['data'];
-      console.log("test")
+      document.getElementById('topInfo').setAttribute('style', is_selected ? "display: flex;" : "display: none;");
       break;
   }
 }
