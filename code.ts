@@ -1,5 +1,3 @@
-
-
 figma.showUI(__html__);
 figma.ui.resize(660,560)
 
@@ -107,7 +105,6 @@ function showMessage(message : string){
     'data' : message
   })
 }
-
 
 
 var selected_text_nodes:Array<TextNodeData> = [];
