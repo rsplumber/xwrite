@@ -68,11 +68,11 @@ function showMessage(message){
 }
 
 function applyChanges(){
-  let inputs = document.getElementById('theList').getElementsByTagName('input');
+  let inputs = document.getElementById('theList').getElementsByTagName('textarea');
    
    for (let i = 0; i < inputs.length; i++) {
      const element = inputs[i];
-     texts_data[i].final_text = element.value;     
+     texts_data[i].final_text = element.innerHTML;     
    }
 
   parent.postMessage({ pluginMessage: { type: 'apply_changes' , text_data :texts_data } }, '*')
@@ -84,6 +84,7 @@ function detectTextsOnUI(texts_data){
   ul.setAttribute('id', 'theList');
 
   cont.innerHTML = "";
+
 
   for (let i = 0; i < texts_data.length; i++){
     const text_id = texts_data[i].id;
@@ -143,12 +144,12 @@ function detectTextsOnUI(texts_data){
   }
 
   function createInput(id , text){
-    const input =  document.createElement('input'); 
+    const input =  document.createElement('textarea'); 
     input.setAttribute('id', id);
-    input.setAttribute('value' , text);
-    input.setAttribute('type' , 'input');
+    input.setAttribute('type' , 'textarea');
     input.setAttribute('placeholder' , 'enter your text');
-    input.setAttribute('class' , 'input');
+    input.setAttribute('class' , 'textarea');
+    input.innerHTML = text;
 
     return input;
   }
@@ -214,13 +215,15 @@ function detectTextsOnUI(texts_data){
   }
 
   ul {
-    
     padding: 0;
     margin-bottom: 100px;
+    width: 100%;
   }
 
   li {
-    align-items: center;
+    align-items: stretch;
+    width: 100%;
+    margin: 24px 0px;
   }
 
 
@@ -232,7 +235,7 @@ function detectTextsOnUI(texts_data){
   p {
     background-color: #f9f9f9;
     color: #979797;
-    width: 200px;
+    width: 100%;
     padding: 16px 16px;
     margin-right: 16px;
     margin-left: 8px;
@@ -242,6 +245,7 @@ function detectTextsOnUI(texts_data){
     font-weight: 500;
     font-size: 14px;
     line-height: 18px;
+    margin: 0 !important;
   }
 
   input {
@@ -275,6 +279,31 @@ function detectTextsOnUI(texts_data){
     background-color: #fff;
     border: 1px solid rgb(0, 156, 244);
     box-shadow: 0px 0px 0px 3px rgba(0, 156, 244, 0.1) ;
+  }
+
+  .textarea {
+    width: 100%;
+    margin-right: 16px;
+    resize: none;
+    min-height: 48px;
+    padding: 16px;
+    border: #e5e5e5 1px solid;
+    background-color: #fff;
+    border-radius: 4px ;
+    outline: none;
+    margin-bottom: 0;
+    resize: vertical;
+    overflow: auto;
+    color: #5e5e5e;
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  textarea::placeholder {
+    color: #cbcbcb;
   }
 
   .primary {
@@ -370,6 +399,8 @@ function detectTextsOnUI(texts_data){
     width: 24px;
     padding: 8px;
     border-radius: 4px;
+    align-self: center;
+    margin: 0 4px;
   }
 
   img:hover {
