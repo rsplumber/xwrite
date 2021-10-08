@@ -3,9 +3,13 @@
 figma.showUI(__html__);
 figma.ui.resize(660,560)
 
+class Statistics{
+  framesCount:number;
+  groupsCount:number;
+  textsCount:number;
+}
 
-
-
+var stats:Statistics;
 
 class TextNodeData{
   id: string;
@@ -22,10 +26,12 @@ class TextNodeData{
 } 
 
 const LTR  = 'LTR';
-const RTL = 'RTL'
+const RTL = 'RTL';
 
 
  function detectTextsOfFrame(frame:FrameNode){
+  
+  stats.framesCount++;
       
   const textNodes:TextNode[] = frame.children.filter(node =>node.type ==="TEXT") as TextNode[];
   const  groups:GroupNode[] = frame.children.filter(node =>node.type ==="GROUP") as GroupNode[];
@@ -37,9 +43,11 @@ const RTL = 'RTL'
   textNodes.forEach(text_node => {        
     sanitizeTexts(text_node);
   });
+
 }
 
 function detectTextOfGroup(group : GroupNode){
+  stats.groupsCount++;
   const textNodes:TextNode[] = group.children.filter(node =>node.type ==="TEXT") as TextNode[]
   textNodes.forEach(text_node => {        
     sanitizeTexts(text_node);
@@ -47,7 +55,7 @@ function detectTextOfGroup(group : GroupNode){
 }
 
 function detectText(text_node:TextNode){
-      
+  stats.textsCount++;
   fillSelectedTextNodes(text_node);
 
 }
@@ -106,6 +114,7 @@ var selected_text_nodes:Array<TextNodeData> = [];
 
 figma.on("selectionchange", () => {
   selected_text_nodes = [];
+  stats = new Statistics();
 
   for(const node of figma.currentPage.selection){
     switch(node.type){
@@ -129,7 +138,21 @@ figma.on("selectionchange", () => {
     'data' : selected_text_nodes
   })
 
+    showStatsMessage();
+
 })
+
+function showStatsMessage(){
+  var statsMessage = "";
+  if(stats.framesCount > 0){
+    statsMessage += stats.framesCount + " frames and"
+  }
+  if(stats.groupsCount > 0){
+    statsMessage += stats.groupsCount + " groups and"
+  }
+  statsMessage += stats.textsCount + " texts selected"
+  showMessage(statsMessage);
+}
 
 figma.ui.onmessage = async msg => {
 
