@@ -1,10 +1,10 @@
+<link rel="stylesheet"
+href="https://fonts.googleapis.com/css?family=Poppins">
+
   <div id='container'>
-    <h3>
-      Select a frame
-    </h3>
   </div>
   <div id="message_center" class="topBar">
-      10 layers will be updated
+      Select some texts
   </div>
 
 <div id="bottomBar">
@@ -12,23 +12,34 @@
       <button id="applyChanges" class="primary" onclick="applyChanges()">Apply</button>
       <button id="applyChanges" class="ghost" onclick="applyChanges()">Auto Direction</button>
     </div>
-    <div class="replacements">
-      <div>
-        <div class="label">
-          Text
+
+    <div class="replacements-container">
+      <div class="replacements">
+        <div>
+          <div class="label">
+            Text
+          </div>
+          <input id="replace_from",type="input" placeholder="Find Text" class="input"> 
         </div>
-        <input id="replace_from",type="input" placeholder="Find Text" class="input"> 
-      </div>
-      <div class="label">
-          To
-      </div>
-      <div>
-        <div class="label">
-        Replacement
+        <div class="label" style="margin-top: 20px;">
+            To
         </div>
-        <input id="replace_to" type="input" placeholder="Find Text" class="input"> 
+        <div>
+          <div class="label">
+          Replacement
+          </div>
+          <input id="replace_to" type="input" placeholder="Find Text" class="input"> 
+        </div>
+        <div>
+          <div class="label" style="color: transparent;">
+          F*** U Found Me!
+          </div>
+        <button class="secondary" onclick="replaceText()">Replace</button>
+        </div>
       </div>
-      <button class="secondary" onclick="replaceText()">Replace</button>
+      <div class="label" style="margin-left: 16px; margin-bottom: 16px;">
+        Type *.* to select all texts
+      </div>
     </div>
 </div>
 
@@ -153,11 +164,12 @@ function detectTextsOnUI(texts_data){
     margin: 0;
     background-color: #fff;
     box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: 'Poppins', serif;
     transition: all 200ms;
     background-color: #fff;
   }
 
+  
   ::-webkit-scrollbar {
   width: 8px;
 }
@@ -195,7 +207,7 @@ function detectTextsOnUI(texts_data){
     display: flex;
     flex-direction: row;
     margin-top: 16px ;
-    margin-bottom: 70px;
+    margin-bottom: 140px;
     margin-left: 24px;
     justify-content: flex-start;
     overflow: auto;
@@ -225,6 +237,11 @@ function detectTextsOnUI(texts_data){
     margin-right: 16px;
     margin-left: 8px;
     border-radius: 4px;
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 18px;
   }
 
   input {
@@ -239,6 +256,11 @@ function detectTextsOnUI(texts_data){
     resize: vertical;
     overflow: auto;
     color: #5e5e5e;
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 18px;
   }
 
   input:hover {
@@ -271,10 +293,17 @@ function detectTextsOnUI(texts_data){
     color: #fff;
     border: none;
     cursor: pointer;
+
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 18px;
   }
 
   .primary:hover {
-    box-shadow: 0px 4px 8px 0px rgb(33, 150, 83, 0.5)
+    box-shadow: 0px 4px 8px 0px rgb(33, 150, 83, 0.2);
+    background-color: hsl(146, 64%, 40%);
   }
 
   .buttons {
@@ -290,7 +319,7 @@ function detectTextsOnUI(texts_data){
     border-top: 1px solid #e6e6e6;
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
     padding: 16px 16px;
     background-color: #f9f9f9;
   }
@@ -308,8 +337,6 @@ function detectTextsOnUI(texts_data){
   }
 
   .secondary {
-    font-weight: 500;
-    font-size: 14px;
     cursor: pointer;
     border-radius: 8px;
     height: 48px;
@@ -318,6 +345,13 @@ function detectTextsOnUI(texts_data){
     color: rgb(33, 150, 83);
     border: 1px solid rgb(33, 150, 83) ;
     background: none;
+
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 18px;
+
   }
 
   .secondary:hover {
@@ -359,7 +393,11 @@ function detectTextsOnUI(texts_data){
 
   .label {
     color: #979797;
-    font-weight: 600;
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 21px;
   }
 
   .ghost {
@@ -372,10 +410,20 @@ function detectTextsOnUI(texts_data){
     color: rgb(33, 150, 83);
     border: none;
     background: none;
+
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
   }
 
   .ghost:hover {
     background-color: rgba(33, 150, 83, 0.1)
+  }
+
+  .replacements-container {
+    background-color: #f9f9f9;
   }
 
 </style>
