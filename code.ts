@@ -116,6 +116,20 @@ function showMessage(message : string){
 var selected_text_nodes:Array<TextNodeData> = [];
 
 figma.on("selectionchange", () => {
+ 
+    prepareData();
+    
+   
+})
+
+figma.on("currentpagechange", () => {
+ 
+    prepareData();
+    
+   
+})
+
+function prepareData(){
   selected_text_nodes = [];
   stats = new Statistics();
 
@@ -134,14 +148,13 @@ figma.on("selectionchange", () => {
           detectText(text);
           break;
     }
-    
   }
   
+  showStatsMessage();
 
-    showStatsMessage();
+  postDetectMessage();
 
-    postDetectMessage();
-})
+}
 
 function postDetectMessage(){
   figma.ui.postMessage({
@@ -169,6 +182,17 @@ function showStatsMessage(){
   }
   statsMessage += stats.textsCount + " Text Selected"
   showMessage(statsMessage);
+}
+
+function resetAfterApply(){
+  for (let i = 0; i < selected_text_nodes.length; i++) {
+    const text = selected_text_nodes[i].final_text.length > 0 ? selected_text_nodes[i].final_text : selected_text_nodes[i].text;
+  selected_text_nodes[i].text = text;
+  selected_text_nodes[i].final_text =  "";
+  }
+
+  postDetectMessage();
+
 }
 
 figma.ui.onmessage = async msg => {
