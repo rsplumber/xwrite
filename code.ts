@@ -178,7 +178,6 @@ figma.ui.onmessage = async msg => {
       const final_data:Array<TextNodeData> = msg['text_data'] as Array<TextNodeData>;
       selected_text_nodes.forEach(async node_data =>{
         var text_node = node_data.node as TextNode;
-        
         var selected_text = final_data.find(d => d.id == text_node.id);        
         await figma.loadFontAsync(text_node.fontName as FontName);
         
@@ -230,7 +229,7 @@ figma.ui.onmessage = async msg => {
               selected_text_nodes[i].final_text = replaceTo;
             }else if(selected_text_nodes[i].text.includes(replaceFrom)){
               var need_to_replace = selected_text_nodes[i].text;
-              selected_text_nodes[i].final_text = need_to_replace.replace(replaceFrom , replaceTo);
+              selected_text_nodes[i].final_text = need_to_replace.replace( new RegExp(replaceFrom, 'g') , replaceTo);
             }
           }    
           postDetectMessage();

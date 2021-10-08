@@ -85,7 +85,7 @@ function applyChanges(){
    
    for (let i = 0; i < inputs.length; i++) {
      const element = inputs[i];
-     texts_data[i].final_text = element.innerHTML;     
+     texts_data[i].final_text = element.value;     
    }
 
   parent.postMessage({ pluginMessage: { type: 'apply_changes' , text_data :texts_data } }, '*')
