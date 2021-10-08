@@ -75,6 +75,7 @@ function showNotification(message : string){
   figma.notify(message);
 }
 
+
 var selected_text_nodes:Array<TextNodeData> = [];
 
 figma.on("selectionchange", () => {
@@ -154,6 +155,41 @@ figma.ui.onmessage = async msg => {
           'data' : selected_text_nodes
         })
         break;
+
+        case "replace":
+          const replaceFrom = msg['replace_from'] as string;
+          const replaceTo = msg['replace_to'] as string;
+          for (let i = 0; i < selected_text_nodes.length; i++) {
+            if(replaceFrom === "*.*"){
+              selected_text_nodes[i].final_text = replaceTo;
+            }else if(selected_text_nodes[i].text.includes(replaceFrom)){
+              var need_to_replace = selected_text_nodes[i].text;
+              selected_text_nodes[i].final_text = need_to_replace.replace(replaceFrom , replaceTo);
+            }
+          }    
+          figma.ui.postMessage({
+            'type' : "detect_texts",
+            'data' : selected_text_nodes
+          })
+          break;
+
+          case "auto_direction":
+
+            selected_text_nodes.forEach(async node_data =>{
+              var text_node = node_data.node as TextNode;
+              var selected_text = final_data.find(d => d.id == text_node.id);        
+              
+              await figma.loadFontAsync(text_node.fontName as FontName);
+                 
+                var selected_text_direction = detectDirection(selected_text.text);
+                if(selected_text_direction === LTR){
+                  text_node.characters = selected_text.text;
+                }else{
+                  text_node.characters = reverseString(selected_text.text);
+                }
+            });
+            showNotification("changes applied");
+            break;
   }
 
 
