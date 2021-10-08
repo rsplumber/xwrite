@@ -1,6 +1,15 @@
 <link rel="stylesheet"
 href="https://fonts.googleapis.com/css?family=Poppins">
 
+<div class="topInfo">
+  <div class="label">
+    Selected Text
+  </div>
+  <div class="label" style="margin-left: 230px;">
+    Your Text
+  </div>
+</div>
+
   <div id='container'>
   </div>
   <div id="message_center" class="topBar">
@@ -19,7 +28,7 @@ href="https://fonts.googleapis.com/css?family=Poppins">
           <div class="label">
             Text
           </div>
-          <input id="replace_from",type="input" placeholder="Find Text" class="input"> 
+          <input id="replace_from",type="input" placeholder="Find Text"> 
         </div>
         <div class="label" style="margin-top: 20px;">
             To
@@ -28,7 +37,7 @@ href="https://fonts.googleapis.com/css?family=Poppins">
           <div class="label">
           Replacement
           </div>
-          <input id="replace_to" type="input" placeholder="Find Text" class="input"> 
+          <input id="replace_to" type="input" placeholder="Find Text"> 
         </div>
         <div>
           <div class="label" style="color: transparent;">
@@ -207,9 +216,7 @@ function detectTextsOnUI(texts_data){
   #container {
     display: flex;
     flex-direction: row;
-    margin-top: 16px ;
     margin-bottom: 140px;
-    margin-left: 24px;
     justify-content: flex-start;
     overflow: auto;
   }
@@ -456,5 +463,17 @@ function detectTextsOnUI(texts_data){
   .replacements-container {
     background-color: #f9f9f9;
   }
+
+  .topInfo {
+    display: flex;
+    width: 100%;
+    padding: 8px;
+    background-color: white;
+    position: sticky;
+    top: 25px;
+    margin-top: 50px;
+    padding-left: 48px;
+  }
+
 
 </style>
