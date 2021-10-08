@@ -132,14 +132,24 @@ figma.on("selectionchange", () => {
     }
     
   }
+  
+
+    showStatsMessage();
+
+    postDetectMessage();
+})
+
+function postDetectMessage(){
   figma.ui.postMessage({
     'type' : "detect_texts",
     'data' : selected_text_nodes
   })
 
-    showStatsMessage();
-
-})
+  figma.ui.postMessage({
+    'type' : "is_text_selected",
+    'data' : (selected_text_nodes.length > 0)
+  })
+}
 
 function showStatsMessage(){
   var statsMessage = "";
@@ -164,11 +174,12 @@ figma.ui.onmessage = async msg => {
   switch(command_type){
     
     case "apply_changes":
+    
       const final_data:Array<TextNodeData> = msg['text_data'] as Array<TextNodeData>;
       selected_text_nodes.forEach(async node_data =>{
         var text_node = node_data.node as TextNode;
-        var selected_text = final_data.find(d => d.id == text_node.id);        
         
+        var selected_text = final_data.find(d => d.id == text_node.id);        
         await figma.loadFontAsync(text_node.fontName as FontName);
         
         if(selected_text.final_text.length !== 0){
@@ -191,10 +202,7 @@ figma.ui.onmessage = async msg => {
 
       showNotification("text removed");
 
-      figma.ui.postMessage({
-        'type' : "detect_texts",
-        'data' : selected_text_nodes
-      })
+     postDetectMessage();
       break;
 
       case "copy_text":
@@ -210,10 +218,8 @@ figma.ui.onmessage = async msg => {
 
         showNotification("text coppied");
   
-        figma.ui.postMessage({
-          'type' : "detect_texts",
-          'data' : selected_text_nodes
-        })
+        postDetectMessage();
+
         break;
 
         case "replace":
@@ -227,10 +233,8 @@ figma.ui.onmessage = async msg => {
               selected_text_nodes[i].final_text = need_to_replace.replace(replaceFrom , replaceTo);
             }
           }    
-          figma.ui.postMessage({
-            'type' : "detect_texts",
-            'data' : selected_text_nodes
-          })
+          postDetectMessage();
+
           break;
 
           case "auto_direction":
