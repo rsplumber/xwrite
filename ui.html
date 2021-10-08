@@ -46,7 +46,7 @@ href="https://fonts.googleapis.com/css?family=Poppins">
         <button class="secondary" onclick="replaceText()">Replace</button>
         </div>
       </div>
-      <div class="label" style="margin-left: 16px; margin-bottom: 16px;">
+      <div class="label" style="margin-left: 16px; margin-bottom: 16px; font-size: 12px; color: #cbcbcb;">
         Type *.* to select all texts
       </div>
     </div>
@@ -280,6 +280,7 @@ function detectTextsOnUI(texts_data){
     font-weight: 500;
     font-size: 14px;
     line-height: 18px;
+    width: 200px;
   }
 
   input:hover {
@@ -441,7 +442,7 @@ function detectTextsOnUI(texts_data){
     color: #979797;
     font-family: Poppins;
     font-style: normal;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 14px;
     line-height: 21px;
   }
@@ -474,13 +475,14 @@ function detectTextsOnUI(texts_data){
 
   .topInfo {
     display: flex;
-    width: 100%;
-    padding: 8px;
+    width: auto;
+    padding: 16px 8px;
     background-color: white;
     position: sticky;
     top: 25px;
-    margin-top: 50px;
+    margin-top: 25px;
     padding-left: 48px;
+    border-bottom: 1px solid #e5e5e5;
   }
 
 
