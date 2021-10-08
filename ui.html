@@ -19,7 +19,7 @@ href="https://fonts.googleapis.com/css?family=Poppins">
 <div id="bottomBar">
     <div class="buttons">
       <button id="applyChanges" class="primary" onclick="applyChanges()">Apply</button>
-      <button id="applyChanges" class="ghost" onclick="applyChanges()">Auto Direction</button>
+      <button id="autoDirection" class="ghost" onclick="autoDirection()">Auto Direction</button>
     </div>
 
     <div class="replacements-container">
@@ -68,6 +68,10 @@ onmessage = (event) => {
       const message = pluginMessage['data'];
       showMessage(message);
       break;
+      case 'is_text_selected':
+      const is_selected = pluginMessage['data'];
+      console.log("test")
+      break;
   }
 }
 
@@ -85,6 +89,10 @@ function applyChanges(){
    }
 
   parent.postMessage({ pluginMessage: { type: 'apply_changes' , text_data :texts_data } }, '*')
+}
+
+function autoDirection(){
+  parent.postMessage({ pluginMessage: { type: 'auto_direction' , text_data :texts_data } }, '*')
 }
 
 function detectTextsOnUI(texts_data){  
