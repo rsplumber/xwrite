@@ -3,7 +3,7 @@
       Select a frame
     </h3>
   </div>
-  <div class="topBar">
+  <div id="message_center" class="topBar">
       10 layers will be updated
   </div>
 
@@ -17,7 +17,7 @@
         <div class="label">
           Text to Find
         </div>
-        <input type="input" placeholder="Find Text" class="input"> 
+        <input id="replace_from",type="input" placeholder="Find Text" class="input"> 
       </div>
       <div>
           To
@@ -26,9 +26,9 @@
         <div class="label">
         Text to Find
         </div>
-        <input type="input" placeholder="Find Text" class="input"> 
+        <input id="replace_to" type="input" placeholder="Find Text" class="input"> 
       </div>
-      <button class="secondary" onclick="">Replace</button>
+      <button class="secondary" onclick="replaceText()">Replace</button>
     </div>
 </div>
 
@@ -44,11 +44,16 @@ onmessage = (event) => {
       texts_data = pluginMessage['data'];
       detectTextsOnUI(texts_data);
       break;
-    case 'change_direction':
-      const direction = pluginMessage['data'];
-      changeDirectionOnUI(direction);
+      case 'message_center':
+      const message = pluginMessage['data'];
+      showMessage(message);
       break;
   }
+}
+
+function showMessage(message){
+  var message_center_element = document.getElementById('message_center');
+  message_center_element.innerHTML = message;
 }
 
 function applyChanges(){
@@ -96,6 +101,11 @@ function detectTextsOnUI(texts_data){
     return p;
   }
 
+  function replaceText(){
+    const  replaceFrom = document.getElementById('replace_from').value;
+    const replaceTo =  document.getElementById('replace_to').value;
+    parent.postMessage({ pluginMessage: { type: 'replace' , replace_from :replaceFrom ,replace_to:replaceTo} }, '*')
+  }
 
   function createCopyButton(id){
     const copyText = document.createElement('img')
@@ -131,15 +141,6 @@ function detectTextsOnUI(texts_data){
 
     return input;
   }
-
-function changeDirection(){
-  parent.postMessage({ pluginMessage: { type: 'change_direction'} }, '*')
-}
-
-function changeDirectionOnUI(direction){
-  const  directionButton = document.getElementById('textDirection');
-  directionButton.innerHTML = "Direction: " + direction;
-}
 
 
 </script>

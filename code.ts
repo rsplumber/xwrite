@@ -28,12 +28,26 @@ const RTL = 'RTL'
  function detectTextsOfFrame(frame:FrameNode){
       
   const textNodes:TextNode[] = frame.children.filter(node =>node.type ==="TEXT") as TextNode[]
+  const  groups:GroupNode[] = frame.children.filter(node =>node.type ==="GROUP") as GroupNode[]
+  
+  groups.forEach(group =>{
+    textNodes.concat(group.children.filter(node =>node.type ==="TEXT") as TextNode[]);
+  });
 
   textNodes.forEach(text_node => {        
         if(selected_text_nodes.find(element=>element.node.id ===text_node.id) == null){ 
           fillSelectedTextNodes(text_node);
         }
   });
+}
+
+function detectTextOfGroup(group : GroupNode){
+  const textNodes:TextNode[] = group.children.filter(node =>node.type ==="TEXT") as TextNode[]
+  textNodes.forEach(text_node => {        
+    if(selected_text_nodes.find(element=>element.node.id ===text_node.id) == null){ 
+      fillSelectedTextNodes(text_node);
+    }
+});
 }
 
 function detectText(text_node:TextNode){
@@ -53,9 +67,11 @@ function fillSelectedTextNodes(text_node:TextNode){
 
 const LTR_ALPHAET = [
   "A", "a", "B" , "b" , "C", "c" ,  "D" ,  "d" ,  "E" ,  "e" ,  "F" ,  "f" ,  "G" ,  "g" ,  "H" ,  "h" ,  "I" ,  "i" ,  "J" ,  "j", "K", "k", "L", "l", "M", "m", "N", "n", "O", "o", "P", "p", "Q", "q", "R", "r", "S", "s", "T", "t", "U", "u", "V", "v", "W", "w", "X", "x", "Y", "y", "Z", "z",
+  "1" , "2", "3", "4", "5", "6", "7", "8", "9", "0"
 ];
 const RTL_ALPHAET= [
-   "ی", "ه" , "و" ,"ن" , "م" ,"ل","گ","ک","ق","ف","غ","ع","ظ","ط","ض","ص","ش","س","ژ","ز","ر","ذ","د","خ","ح","چ","ج","ث","ت","پ","ب","ا","آ","ء" 
+   "ی", "ه" , "و" ,"ن" , "م" ,"ل","گ","ک","ق","ف","غ","ع","ظ","ط","ض","ص","ش","س","ژ","ز","ر","ذ","د","خ","ح","چ","ج","ث","ت","پ","ب","ا","آ","ء" ,
+   "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹", "۰"
 ];
 
 function detectDirection(text :string){
@@ -75,6 +91,14 @@ function showNotification(message : string){
   figma.notify(message);
 }
 
+function showMessage(message : string){
+  figma.ui.postMessage({
+    'type' : "message_center",
+    'data' : message
+  })
+}
+
+
 
 var selected_text_nodes:Array<TextNodeData> = [];
 
@@ -82,13 +106,21 @@ figma.on("selectionchange", () => {
   selected_text_nodes = [];
 
   for(const node of figma.currentPage.selection){
-    if(node.type ==="FRAME"){
-      const frame = node;
-      detectTextsOfFrame(frame);      
-    }else if(node.type === "TEXT"){
-      const text = node;
-      detectText(text);
+    switch(node.type){
+      case "FRAME":
+        const frame = node;
+        detectTextsOfFrame(frame);      
+        break;
+        case "GROUP":
+          const group = node;
+          detectTextOfGroup(group);
+          break;
+        case "TEXT":
+          const text = node;
+          detectText(text);
+          break;
     }
+    
   }
   figma.ui.postMessage({
     'type' : "detect_texts",
