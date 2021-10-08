@@ -85,11 +85,15 @@ const RTL_ALPHAET= [
 ];
 
 function detectDirection(text :string){
-  var firstChar = text[0];
-  if(LTR_ALPHAET.indexOf(firstChar) !== -1){
-    return LTR;
+  if(text.length <= 1){
+    return LTR;  
   }
-  return RTL;
+  var firstChar = text[0];
+  var secondChar = text[1];
+  if(RTL_ALPHAET.indexOf(firstChar) !== -1 && RTL_ALPHAET.indexOf(secondChar) !== -1){
+    return RTL;
+  }
+  return LTR;
 }
 
 
