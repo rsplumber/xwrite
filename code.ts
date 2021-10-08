@@ -27,26 +27,22 @@ const RTL = 'RTL'
 
  function detectTextsOfFrame(frame:FrameNode){
       
-  const textNodes:TextNode[] = frame.children.filter(node =>node.type ==="TEXT") as TextNode[]
-  const  groups:GroupNode[] = frame.children.filter(node =>node.type ==="GROUP") as GroupNode[]
+  const textNodes:TextNode[] = frame.children.filter(node =>node.type ==="TEXT") as TextNode[];
+  const  groups:GroupNode[] = frame.children.filter(node =>node.type ==="GROUP") as GroupNode[];
   
   groups.forEach(group =>{
-    textNodes.concat(group.children.filter(node =>node.type ==="TEXT") as TextNode[]);
+    detectTextOfGroup(group);
   });
 
   textNodes.forEach(text_node => {        
-        if(selected_text_nodes.find(element=>element.node.id ===text_node.id) == null){ 
-          fillSelectedTextNodes(text_node);
-        }
+    sanitizeTexts(text_node);
   });
 }
 
 function detectTextOfGroup(group : GroupNode){
   const textNodes:TextNode[] = group.children.filter(node =>node.type ==="TEXT") as TextNode[]
   textNodes.forEach(text_node => {        
-    if(selected_text_nodes.find(element=>element.node.id ===text_node.id) == null){ 
-      fillSelectedTextNodes(text_node);
-    }
+    sanitizeTexts(text_node);
 });
 }
 
@@ -54,6 +50,12 @@ function detectText(text_node:TextNode){
       
   fillSelectedTextNodes(text_node);
 
+}
+
+function sanitizeTexts(text_node:TextNode){
+  if(selected_text_nodes.find(element=>element.node.id ===text_node.id) == null){
+    fillSelectedTextNodes(text_node);
+  }
 }
 
 function fillSelectedTextNodes(text_node:TextNode){
@@ -191,14 +193,10 @@ figma.ui.onmessage = async msg => {
         case "replace":
           const replaceFrom = msg['replace_from'] as string;
           const replaceTo = msg['replace_to'] as string;
-          console.log(replaceFrom);
-          console.log(replaceTo);
           for (let i = 0; i < selected_text_nodes.length; i++) {
             if(replaceFrom === "*.*"){
               selected_text_nodes[i].final_text = replaceTo;
-              console.log("starrr");
             }else if(selected_text_nodes[i].text.includes(replaceFrom)){
-              console.log("here");
               var need_to_replace = selected_text_nodes[i].text;
               selected_text_nodes[i].final_text = need_to_replace.replace(replaceFrom , replaceTo);
             }
