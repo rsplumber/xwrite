@@ -1,7 +1,7 @@
 
 
 figma.showUI(__html__);
-figma.ui.resize(960,640)
+figma.ui.resize(660,560)
 
 
 
@@ -159,10 +159,14 @@ figma.ui.onmessage = async msg => {
         case "replace":
           const replaceFrom = msg['replace_from'] as string;
           const replaceTo = msg['replace_to'] as string;
+          console.log(replaceFrom);
+          console.log(replaceTo);
           for (let i = 0; i < selected_text_nodes.length; i++) {
             if(replaceFrom === "*.*"){
               selected_text_nodes[i].final_text = replaceTo;
+              console.log("starrr");
             }else if(selected_text_nodes[i].text.includes(replaceFrom)){
+              console.log("here");
               var need_to_replace = selected_text_nodes[i].text;
               selected_text_nodes[i].final_text = need_to_replace.replace(replaceFrom , replaceTo);
             }
