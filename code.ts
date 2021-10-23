@@ -195,6 +195,7 @@ function resetAfterApply(){
 
 }
 
+
 figma.ui.onmessage = async msg => {
 
   var command_type = msg['type']; 
@@ -280,6 +281,22 @@ figma.ui.onmessage = async msg => {
                 }
             });
             showNotification("changes applied");
+            break;
+
+            case "resize" : 
+              const resizeParam = msg['sizeParam'] as string;
+              switch (resizeParam){
+        
+                case 'small':
+                  figma.ui.resize(100,100)
+                break;
+                case 'medium':
+                  figma.ui.resize(660,560)
+                break;
+                case 'large':
+                  figma.ui.resize(1920,1080)
+                break;
+                }
             break;
   }
 
