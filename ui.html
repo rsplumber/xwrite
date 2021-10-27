@@ -3,9 +3,9 @@ href="https://fonts.googleapis.com/css?family=Poppins">
 
 
 <div class="tab">
-    <button class="tablinks" onclick="tabSelected(event, 'batchWriter')" id="defaultOpen">Batch Writer</button>
-    <button class="tablinks" onclick="tabSelected(event, 'freeWriter')">Free Writer</button>
-    <button class="tablinks" onclick="tabSelected(event, 'replacer')">Find & Replace</button>
+    <button class="tablinks" onclick="tabSelected(event, 'batchWriter')" id="batchWriterButton">Batch Writer</button>
+    <button class="tablinks" onclick="tabSelected(event, 'freeWriter')"  id="freeWriterButton">Free Writer</button>
+    <button class="tablinks" onclick="tabSelected(event, 'replacer')" id="replacerButton">Find & Replace</button>
 </div>
 
 <div id="batchWriter" class="tabContent">
@@ -19,7 +19,7 @@ href="https://fonts.googleapis.com/css?family=Poppins">
 </div>
 
 <div id="freeWriter" class="tabContent">
-  <textarea></textarea>
+  <textarea id="freeWriterText"></textarea>
 </div>
 
 <div id="replacer" class="tabContent">
@@ -70,7 +70,13 @@ onmessage = (event) => {
   switch(type){
     case 'detect_texts' :
       texts_data = pluginMessage['data'];
-      detectTextsOnUI(texts_data);
+      if(texts_data.length ==1){
+        document.getElementById("freeWriterButton").click();
+        detectTextsOnFreeWriterUI(texts_data);
+      }else{
+        document.getElementById("batchWriterButton").click();
+        detectTextsOnBatchUI(texts_data);
+      }
       break;
       case 'message_center':
       const message = pluginMessage['data'];
@@ -103,7 +109,16 @@ function autoDirection(){
   parent.postMessage({ pluginMessage: { type: 'auto_direction' , text_data :texts_data } }, '*')
 }
 
-function detectTextsOnUI(texts_data){  
+
+  
+function detectTextsOnFreeWriterUI(texts_data){  
+  var freeWriterTextArea = document.getElementById('freeWriterText');
+  const text = texts_data[0]
+  freeWriterTextArea.innerHTML = text.text;
+  }
+
+  
+function detectTextsOnBatchUI(texts_data){  
   var cont = document.getElementById('container');
   var ul = document.createElement('ul');
   ul.setAttribute('id', 'theList');
@@ -179,7 +194,7 @@ function detectTextsOnUI(texts_data){
     return input;
   }
 
-  function tabSelected(evt, cityName) {
+  function tabSelected(evt, tabName) {
   // Declare all variables
   var i, tabcontent, tablinks;
 
@@ -196,11 +211,11 @@ function detectTextsOnUI(texts_data){
   }
 
   // Show the current tab, and add an "active" class to the button that opened the tab
-  document.getElementById(cityName).style.display = "block";
+  document.getElementById(tabName).style.display = "block";
   evt.currentTarget.className += " active";
 }
- // Get the element with id="defaultOpen" and click on it
- document.getElementById("defaultOpen").click();
+ 
+ document.getElementById("batchWriterButton").click();
 
 
 </script>

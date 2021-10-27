@@ -253,16 +253,30 @@ figma.ui.onmessage = async msg => {
         case "replace":
           const replaceFrom = msg['replace_from'] as string;
           const replaceTo = msg['replace_to'] as string;
-          for (let i = 0; i < selected_text_nodes.length; i++) {
-            if(replaceFrom === "*.*"){
-              selected_text_nodes[i].final_text = replaceTo;
-            }else if(selected_text_nodes[i].text.includes(replaceFrom)){
-              var need_to_replace = selected_text_nodes[i].text;
-              selected_text_nodes[i].final_text = need_to_replace.replace( new RegExp(replaceFrom, 'g') , replaceTo);
-            }
-          }    
-          postDetectMessage();
+          selected_text_nodes.forEach(async node_data =>{
+            var text_node = node_data.node as TextNode;
+              
+            
+            await figma.loadFontAsync(text_node.fontName as FontName);
+               
+              var selected_text_direction = detectDirection(node_data.text);
+              if(selected_text_direction === LTR){
+                text_node.characters = node_data.text;
+              }else{
+                text_node.characters = reverseString(node_data.text);
+              }
 
+                if(replaceFrom === "*.*"){
+                  text_node.characters = replaceTo;
+                }else if(node_data.text.includes(replaceFrom)){
+                  var need_to_replace = node_data.text;
+                  var replaceToDirectionFixedText = detectDirection(replaceTo) == LTR ? replaceTo : reverseString(replaceTo);
+                  text_node.characters = need_to_replace.replace( new RegExp(replaceFrom, 'g') , replaceToDirectionFixedText);
+                }
+                
+          });
+
+        
           break;
 
           case "auto_direction":
