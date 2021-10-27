@@ -110,7 +110,10 @@ function autoDirection(){
 }
 
 
-  
+  function clearFreeWriterUI(){
+    var freeWriterTextArea = document.getElementById('freeWriterText');
+    freeWriterTextArea.innerHTML = "";
+  }
 function detectTextsOnFreeWriterUI(texts_data){  
   var freeWriterTextArea = document.getElementById('freeWriterText');
   const text = texts_data[0]
@@ -118,12 +121,19 @@ function detectTextsOnFreeWriterUI(texts_data){
   }
 
 function freeWriterTextChanged(event){
-  texts_data[0].text = texts_data[0].text + event.data;
+  if(event.data == null){
+  texts_data[0].text = "";
   texts_data[0].final_text = texts_data[0].text;
+  }else{
+    texts_data[0].text = texts_data[0].text + event.data;
+  texts_data[0].final_text = texts_data[0].text;
+  }
+  
   parent.postMessage({ pluginMessage: { type: 'free_writer' , text_data :texts_data } }, '*')
 }
   
 function detectTextsOnBatchUI(texts_data){  
+  clearFreeWriterUI();
   var cont = document.getElementById('container');
   var ul = document.createElement('ul');
   ul.setAttribute('id', 'theList');

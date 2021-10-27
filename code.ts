@@ -322,8 +322,7 @@ figma.ui.onmessage = async msg => {
 
             selected_text_nodes.forEach(async node_data =>{
               var text_node = node_data.node as TextNode;
-                
-              
+
               await figma.loadFontAsync(text_node.fontName as FontName);
                  
                 var selected_text_direction = detectDirection(node_data.text);
@@ -338,16 +337,20 @@ figma.ui.onmessage = async msg => {
 
             case "free_writer":
 
-            console.log(selected_text_nodes[0]);
-              var typedFreeWriterText = selected_text_nodes[0].final_text;
-              var free_writer_text_node = selected_text_nodes[0].node as TextNode;
-              
+            var free_writer_final_data:Array<TextNodeData> = msg['text_data'] as Array<TextNodeData>;            
+
+              var typedFreeWriterText = free_writer_final_data[0].final_text;
               var typedFreeWriterDirectionFixedText = detectDirection(typedFreeWriterText) == LTR ? typedFreeWriterText : reverseString(typedFreeWriterText);
+              
+              selected_text_nodes.forEach(async node_data =>{
+                var text_node = node_data.node as TextNode;
 
-              await figma.loadFontAsync(free_writer_text_node.fontName as FontName);
-              free_writer_text_node.characters = typedFreeWriterDirectionFixedText;
+                await figma.loadFontAsync(text_node.fontName as FontName);
+                text_node.characters = typedFreeWriterDirectionFixedText;
 
-  
+              });
+                       
+
               break;
 
             case "resize" : 
