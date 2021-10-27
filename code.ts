@@ -31,8 +31,13 @@ const RTL = 'RTL';
   
   stats.framesCount++;
       
+  const frameNodes:FrameNode[] = frame.children.filter(node =>node.type ==="FRAME") as FrameNode[];
   const textNodes:TextNode[] = frame.children.filter(node =>node.type ==="TEXT") as TextNode[];
   const  groups:GroupNode[] = frame.children.filter(node =>node.type ==="GROUP") as GroupNode[];
+  
+  frameNodes.forEach(f =>{
+    detectTextsOfFrame(f);
+  });
   
   groups.forEach(group =>{
     detectTextOfGroup(group);
@@ -46,7 +51,19 @@ const RTL = 'RTL';
 
 function detectTextOfGroup(group : GroupNode){
   stats.groupsCount++;
+
+  const frameNodes:FrameNode[] = group.children.filter(node =>node.type ==="FRAME") as FrameNode[];
   const textNodes:TextNode[] = group.children.filter(node =>node.type ==="TEXT") as TextNode[]
+  const  groups:GroupNode[] = group.children.filter(node =>node.type ==="GROUP") as GroupNode[];
+
+  frameNodes.forEach(f =>{
+    detectTextsOfFrame(f);
+  });
+
+  groups.forEach(group =>{
+    detectTextOfGroup(group);
+  });
+
   textNodes.forEach(text_node => {        
     sanitizeTexts(text_node);
 });
@@ -225,7 +242,7 @@ figma.ui.onmessage = async msg => {
     case "delete_text":
       const text_node_id = msg['text_node_id'] as string;
       const text_node = selected_text_nodes.find(node => node.id === text_node_id) as TextNodeData;
-      text_node.node.remove();
+      
       selected_text_nodes = selected_text_nodes.filter(node => node.id !== text_node_id) as Array<TextNodeData> ;
 
       showNotification("text removed");
@@ -296,6 +313,20 @@ figma.ui.onmessage = async msg => {
             });
             showNotification("changes applied");
             break;
+
+            case "free_writer":
+
+            console.log(selected_text_nodes[0]);
+              var typedFreeWriterText = selected_text_nodes[0].final_text;
+              var free_writer_text_node = selected_text_nodes[0].node as TextNode;
+              
+              var typedFreeWriterDirectionFixedText = detectDirection(typedFreeWriterText) == LTR ? typedFreeWriterText : reverseString(typedFreeWriterText);
+
+              await figma.loadFontAsync(free_writer_text_node.fontName as FontName);
+              free_writer_text_node.characters = typedFreeWriterDirectionFixedText;
+
+  
+              break;
 
             case "resize" : 
               const resizeParam = msg['sizeParam'] as string;

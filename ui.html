@@ -19,7 +19,7 @@ href="https://fonts.googleapis.com/css?family=Poppins">
 </div>
 
 <div id="freeWriter" class="tabContent">
-  <textarea id="freeWriterText"></textarea>
+  <textarea id="freeWriterText" oninput="freeWriterTextChanged()"></textarea>
 </div>
 
 <div id="replacer" class="tabContent">
@@ -117,6 +117,11 @@ function detectTextsOnFreeWriterUI(texts_data){
   freeWriterTextArea.innerHTML = text.text;
   }
 
+function freeWriterTextChanged(){
+  var freeWriterTextArea = document.getElementById('freeWriterText');
+  texts_data[0].final_text = freeWriterTextArea.innerHTML;
+  parent.postMessage({ pluginMessage: { type: 'free_writer' , text_data :texts_data } }, '*')
+}
   
 function detectTextsOnBatchUI(texts_data){  
   var cont = document.getElementById('container');
