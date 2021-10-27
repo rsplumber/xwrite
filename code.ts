@@ -101,6 +101,9 @@ const RTL_ALPHAET= [
    "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹", "۰"
 ];
 
+const NUMBERS = [
+  "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹", "۰" ,  "1" , "2", "3", "4", "5", "6", "7", "8", "9", "0"
+]
 function detectDirection(text :string){
   if(text.length <= 1){
     return LTR;  
@@ -115,7 +118,16 @@ function detectDirection(text :string){
 
 
 function reverseString(str:string) {
-  return str.split("").reverse().join("");
+  var text_array = str.split("");
+  var final_text = [];
+  var number = text_array.length
+  for (var i = 0; i < text_array.length; i++) {
+    const char = text_array[number - 1];
+    if(RTL_ALPHAET.indexOf(char) !== -1) continue;
+    final_text.push(char)
+    number = number - 1
+}
+  return final_text.join("");
 }
 
 function showNotification(message : string){
@@ -243,8 +255,10 @@ figma.ui.onmessage = async msg => {
             text_node.characters = reverseString(selected_text.final_text);
           }
         } 
+        prepareData();
       });
       showNotification("changes applied");
+      
     break;
 
     case "delete_text":
