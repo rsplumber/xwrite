@@ -146,6 +146,14 @@ figma.on("currentpagechange", () => {
    
 })
 
+figma.on("run", () => {
+ 
+  prepareData();
+ 
+})
+
+
+
 function prepareData(){
   selected_text_nodes = [];
   stats = new Statistics();
