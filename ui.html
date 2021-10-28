@@ -82,10 +82,11 @@ onmessage = (event) => {
       texts_data = pluginMessage['data'];
       if(texts_data.length ==1){
         document.getElementById("freeWriterButton").click();
-        detectTextsOnFreeWriterUI(texts_data);
+        detectTextsOnUI(texts_data);
+
       }else{
         document.getElementById("batchWriterButton").click();
-        detectTextsOnBatchUI(texts_data);
+        detectTextsOnUI(texts_data);
       }
       break;
       case 'message_center':
@@ -101,6 +102,8 @@ onmessage = (event) => {
       break;
   }
 }
+
+
 
 function showMessage(message){
   var message_center_element = document.getElementById('message_center');
@@ -127,21 +130,32 @@ function autoDirection(){
     var freeWriterTextArea = document.getElementById('freeWriterText');
     freeWriterTextArea.innerHTML = "";
   }
+
+  function detectTextsOnUI(texts_data){
+  detectTextsOnBatchUI(texts_data);
+        detectTextsOnFreeWriterUI(texts_data);
+}
 function detectTextsOnFreeWriterUI(texts_data){  
   var freeWriterTextArea = document.getElementById('freeWriterText');
-  const text = texts_data[0]
-  freeWriterTextArea.innerHTML = text.text;
+  freeWriterTextArea.value = "";
+  if(texts_data.length > 1){
+    freeWriterTextArea.setAttribute("placeholder" ,"Type to replace all texts");
+  }else{
+    freeWriterTextArea.setAttribute("placeholder" ,"Type to replace text");
+    const textNodeData = texts_data[0];
+    if(texts_data != null && texts_data[0] != null){
+      freeWriterTextArea.value = textNodeData.text;
+    }
+  }
+  
   }
 
 function freeWriterTextChanged(event){
-  if(event.data == null){
-  texts_data[0].text = "";
-  texts_data[0].final_text = texts_data[0].text;
-  }else{
-    texts_data[0].text = texts_data[0].text + event.data;
-  texts_data[0].final_text = texts_data[0].text;
-  }
+  const value = document.getElementById('freeWriterText').value;
   
+  texts_data[0].text = value;
+  texts_data[0].final_text = texts_data[0].text;
+ 
   parent.postMessage({ pluginMessage: { type: 'free_writer' , text_data :texts_data } }, '*')
 }
   
@@ -241,6 +255,8 @@ function detectTextsOnBatchUI(texts_data){
   // Show the current tab, and add an "active" class to the button that opened the tab
   document.getElementById(tabName).style.display = "block";
   evt.currentTarget.className += " active";
+
+ 
 }
 
 /* When the user clicks on the button,
@@ -264,6 +280,7 @@ window.onclick = function(event) {
   }
 }
  
+
  document.getElementById("batchWriterButton").click();
 
 

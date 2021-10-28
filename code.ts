@@ -83,12 +83,8 @@ function sanitizeTexts(text_node:TextNode){
 
 function fillSelectedTextNodes(text_node:TextNode){
   stats.textsCount++;
-
-  var text = text_node.characters;
-  var direction = detectDirection(text);
-  if(direction === RTL){
-    text = reverseString(text);
-  }
+  var text = detectDirection(text_node.characters) == LTR ? text_node.characters : reverseString(text_node.characters);
+  
   selected_text_nodes.push(new TextNodeData(text_node ,text));
 }
 
@@ -118,16 +114,11 @@ function detectDirection(text :string){
 
 
 function reverseString(str:string) {
-  var text_array = str.split("");
-  var final_text = [];
-  var number = text_array.length
-  for (var i = 0; i < text_array.length; i++) {
-    const char = text_array[number - 1];
-    if(RTL_ALPHAET.indexOf(char) !== -1) continue;
-    final_text.push(char)
-    number = number - 1
+  return upsideDown(str.split('').reverse().join(""));
 }
-  return final_text.join("");
+
+function upsideDown(str:string){  
+return str.split('\n').reverse().join('\n');
 }
 
 function showNotification(message : string){
@@ -263,13 +254,13 @@ figma.ui.onmessage = async msg => {
 
     case "delete_text":
       const text_node_id = msg['text_node_id'] as string;
-      const text_node = selected_text_nodes.find(node => node.id === text_node_id) as TextNodeData;
-      
+      const text_node= selected_text_nodes.find(node => node.id === text_node_id) as TextNodeData;
+      text_node.node.remove();
       selected_text_nodes = selected_text_nodes.filter(node => node.id !== text_node_id) as Array<TextNodeData> ;
 
       showNotification("text removed");
 
-     postDetectMessage();
+      postDetectMessage();
       break;
 
       case "copy_text":
@@ -339,6 +330,8 @@ figma.ui.onmessage = async msg => {
 
             var free_writer_final_data:Array<TextNodeData> = msg['text_data'] as Array<TextNodeData>;            
 
+            console.log(free_writer_final_data[0]);
+            
               var typedFreeWriterText = free_writer_final_data[0].final_text;
               var typedFreeWriterDirectionFixedText = detectDirection(typedFreeWriterText) == LTR ? typedFreeWriterText : reverseString(typedFreeWriterText);
               
@@ -368,6 +361,7 @@ figma.ui.onmessage = async msg => {
                 break;
                 }
             break;
+
   }
 
 
