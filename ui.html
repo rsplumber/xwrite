@@ -9,12 +9,23 @@ href="https://fonts.googleapis.com/css?family=Poppins">
     <div onclick="myFunction()" class="dropdown">
       <img  class="dropbtn" src="https://img.icons8.com/fluency-systems-regular/48/5e5e5e/resize-diagonal.png"/>
     <div id="myDropdown" class="dropdown-content">
-      <a href="#">Minimize</a>
-      <a href="#">Regular</a>
-      <a href="#">Full Screen</a>
+      <div onclick="resize('minimize')">
+        <img style="width: 24px; height: 24px;" src="https://img.icons8.com/fluency-systems-regular/48/25a75d/shrink.png"/>
+        Minimize
+      </div>
+
+      <div onclick="resize('standard')">
+        <img style="width: 24px; height: 24px;" src="https://img.icons8.com/fluency-systems-regular/48/25a75d/picture-in-picture-alternative.png"/>
+        Standard
+      </div>
+
+      <div onclick="resize('fullScreen')">
+        <img style="width: 24px; height: 24px;" src="https://img.icons8.com/fluency-systems-regular/48/25a75d/page-size--v3.png"/>
+        Full Screen
+      </div>
+
     </div>
     </div>
-    
 </div>
 
 <div id="batchWriter" class="tabContent">
@@ -646,27 +657,26 @@ window.onclick = function(event) {
   border-radius: 4px;
 }
 
-.dropdown-content a {
+.dropdown-content div {
   float: none;
   color: #979797;
   font-size: smaller;
   font-weight: 600;
-  padding: 12px 16px;
+  padding: 12px 8px;
   text-decoration: none;
-  display: block;
+  display: flex;
+  align-items: center;
   text-align: left;
+  cursor: pointer;
 }
 
-.dropdown-content span {
-  border-bottom: #5e5e5e;
-  padding: 16px 16px;
-  margin: 16px 0;
-  font-size: small;
-  font-weight: 500;
-}
 
-.dropdown-content a:hover {
+.dropdown-content div:hover {
   color: #25a75d;
+}
+
+.dropdown-content div img:hover {
+  background-color: white;
 }
 
 .dropdown:hover .dropdown-content {
