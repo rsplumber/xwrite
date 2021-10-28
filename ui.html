@@ -6,7 +6,7 @@ href="https://fonts.googleapis.com/css?family=Poppins">
     <button class="tablinks" onclick="tabSelected(event, 'batchWriter')" id="batchWriterButton">Batch Writer</button>
     <button class="tablinks" onclick="tabSelected(event, 'freeWriter')"  id="freeWriterButton">Free Writer</button>
     <button class="tablinks" onclick="tabSelected(event, 'replacer')" id="replacerButton">Find & Replace</button>
-    <div onclick="myFunction()" class="dropdown">
+    <div onclick="openDropDown()" class="dropdown">
       <img  class="dropbtn" src="https://img.icons8.com/fluency-systems-regular/48/5e5e5e/resize-diagonal.png"/>
     <div id="myDropdown" class="dropdown-content">
       <div onclick="resize('minimize')">
@@ -134,6 +134,23 @@ function applyChanges(){
 
 function autoDirection(){
   parent.postMessage({ pluginMessage: { type: 'auto_direction' , text_data :texts_data } }, '*')
+}
+
+function resize(sizeParams){
+  if(sizeParams == "minimize"){
+    showMinimizedUI();
+  }else{
+    showStandardUI();
+  }
+  parent.postMessage({ pluginMessage: { type: 'resize' , sizeParam :sizeParams } }, '*')
+}
+
+function showMinimizedUI(){
+
+}
+
+function showStandardUI(){
+  
 }
 
 
@@ -270,29 +287,12 @@ function detectTextsOnBatchUI(texts_data){
  
 }
 
-/* When the user clicks on the button,
-toggle between hiding and showing the dropdown content */
-function myFunction() {
+ document.getElementById("batchWriterButton").click();
+
+ function openDropDown() {
   document.getElementById("myDropdown").classList.toggle("show");
   document.getElementsByClassName("dropdown").setAttribute('style')
 }
-
-// Close the dropdown menu if the user clicks outside of it
-window.onclick = function(event) {
-  if (!event.target.matches('.dropbtn')) {
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
-      }
-    }
-  }
-}
- 
-
- document.getElementById("batchWriterButton").click();
 
 
 </script>

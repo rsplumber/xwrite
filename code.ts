@@ -350,13 +350,13 @@ figma.ui.onmessage = async msg => {
               const resizeParam = msg['sizeParam'] as string;
               switch (resizeParam){
         
-                case 'small':
+                case 'minimize':
                   figma.ui.resize(100,100)
                 break;
-                case 'medium':
+                case 'standard':
                   figma.ui.resize(660,560)
                 break;
-                case 'large':
+                case 'fullScreen':
                   figma.ui.resize(1920,1080)
                 break;
                 }
