@@ -1,6 +1,7 @@
 figma.showUI(__html__);
 figma.ui.resize(660,560)
 
+
 class Statistics{
   framesCount:number = 0;
   groupsCount:number = 0;
@@ -330,8 +331,6 @@ figma.ui.onmessage = async msg => {
             case "free_writer":
 
             var free_writer_final_data:Array<TextNodeData> = msg['text_data'] as Array<TextNodeData>;            
-
-            console.log(free_writer_final_data[0]);
             
               var typedFreeWriterText = free_writer_final_data[0].final_text;
               var typedFreeWriterDirectionFixedText = detectDirection(typedFreeWriterText) == LTR ? typedFreeWriterText : reverseString(typedFreeWriterText);
