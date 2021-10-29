@@ -25,6 +25,9 @@ href="https://fonts.googleapis.com/css?family=Poppins">
           </div>
         </div>
         </div>
+        <button class="tablinks" onclick="tabSelected(event, 'aboutUs')" id="aboutUsButton">
+          <img src="https://img.icons8.com/material-outlined/24/979797/filled-like.png"/>
+        </button>
     </div>
 
     <div id="batchWriter" class="tabContent">
@@ -77,6 +80,43 @@ href="https://fonts.googleapis.com/css?family=Poppins">
           Type *.* to select all texts
         </div>
       </div>
+    </div>
+
+    <div id="aboutUs" class="tabContent">
+      <div>
+        <h2><strong>Thanks for using XWrite</strong></h2>
+
+<p>This GOAT plugin is created and developed with ❤️</p>
+<p>For whom that makes the world beautiful.</p>
+
+<p>With special thanks to&nbsp;<strong>Mohammad Shendabadi</strong>&nbsp;as Designer </p>
+  <p> all others&nbsp;who helped us with ideas &amp; feedbacks.</p>
+
+<p>we would appriciate any suggestion or critics</p>
+
+<p style="color: #5e5e5e;"><strong>Contact Us</strong>
+ 
+    <p style="color: #5e5e5e;">Develop: <strong>Plumber</strong> sha.a.wf@gmail.com</p>
+
+    <p style="color: #5e5e5e;">Design: <strong>Alireza Rahmani</strong>&nbsp;alirezaa.rahmanii@gmail.com</p>
+  
+</p>
+
+
+
+<p>Buy us a coffee, we&#39;ll share the coffee together without&nbsp;any arguments, it&#39;s safe</p>
+
+<p>Great Master🤙</p>
+
+<p>این&nbsp;اَبر&nbsp;پلاگین&nbsp;با ❤️&nbsp;ساخته و توسعه داده شده برای کسانی که جهان را زیباتر میکنند</p>
+
+<p>یک قهوه برای ما به حساب شما. ما قهوه رو بدون جنگ باهم تقسیم میکنیم سیفه</p>
+
+<p>استادِ&nbsp;بزرگ🤙</p>
+
+<p>USDT Wallet:&nbsp;<strong>0x5f75d1F6727ea00A4253c66734b27E01B54976AB</strong></p>
+
+        </div>
     </div>
 </div>
 
@@ -300,7 +340,6 @@ function detectTextsOnBatchUI(texts_data){
 
  function openDropDown() {
   document.getElementById("myDropdown").classList.toggle("show");
-  document.getElementsByClassName("dropdown").setAttribute('style')
 }
 
 
@@ -728,6 +767,13 @@ function detectTextsOnBatchUI(texts_data){
   transition: 00.4s all;
 }
 
+#aboutUsButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  float: right;
+}
+
 /* Change background color of buttons on hover */
 .tab button:hover {
   color: #25a75d;
@@ -772,5 +818,8 @@ function detectTextsOnBatchUI(texts_data){
     height: 100%;
 }
 
+#aboutUs {
+  overflow: hidden;
+}
 
 </style>
