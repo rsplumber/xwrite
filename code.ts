@@ -314,15 +314,16 @@ figma.ui.onmessage = async msg => {
             selected_text_nodes.forEach(async node_data =>{
               var text_node = node_data.node as TextNode;
 
-              await figma.loadFontAsync(text_node.fontName as FontName);
-                 
-                var selected_text_direction = detectDirection(node_data.text);
-                if(selected_text_direction === LTR){
-                  text_node.characters = node_data.text;
-                }else{
+              await figma.loadFontAsync(text_node.fontName as FontName);  
+              
+                if(detectDirection(node_data.text) === RTL){
                   text_node.characters = reverseString(node_data.text);
                 }
+
+                prepareData();
+
             });
+
             showNotification("changes applied");
             break;
 
