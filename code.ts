@@ -1,7 +1,10 @@
 figma.showUI(__html__);
 figma.ui.resize(660,560)
 
+
 class Statistics{
+  componentsCount:number = 0;
+  instancesCount:number = 0;
   framesCount:number = 0;
   groupsCount:number = 0;
   textsCount:number = 0;
@@ -26,14 +29,91 @@ class TextNodeData{
 const LTR  = 'LTR';
 const RTL = 'RTL';
 
+function detectTextsComponent(component:ComponentNode){
+  
+  stats.componentsCount++;
+      
+  const componentNodes:ComponentNode[] = component.children.filter(node =>node.type ==="COMPONENT") as ComponentNode[];
+  const instancesNodes:InstanceNode[] = component.children.filter(node =>node.type ==="INSTANCE") as InstanceNode[];
+  const frameNodes:FrameNode[] = component.children.filter(node =>node.type ==="FRAME") as FrameNode[];
+  const textNodes:TextNode[] = component.children.filter(node =>node.type ==="TEXT") as TextNode[];
+  const  groups:GroupNode[] = component.children.filter(node =>node.type ==="GROUP") as GroupNode[];
+  
+  
+  componentNodes.forEach(c =>{
+    detectTextsComponent(c);
+  });
+  instancesNodes.forEach(i =>{
+    detectTextsInstance(i);
+  });
+
+  frameNodes.forEach(f =>{
+    detectTextsOfFrame(f);
+  });
+  
+  groups.forEach(group =>{
+    detectTextOfGroup(group);
+  });
+
+  textNodes.forEach(text_node => {        
+    sanitizeTexts(text_node);
+  });
+
+}
+
+function detectTextsInstance(instance:InstanceNode){
+  
+  stats.instancesCount++;
+      
+  const componentNodes:ComponentNode[] = instance.children.filter(node =>node.type ==="COMPONENT") as ComponentNode[];
+  const instancesNodes:InstanceNode[] = instance.children.filter(node =>node.type ==="INSTANCE") as InstanceNode[];
+  const frameNodes:FrameNode[] = instance.children.filter(node =>node.type ==="FRAME") as FrameNode[];
+  const textNodes:TextNode[] = instance.children.filter(node =>node.type ==="TEXT") as TextNode[];
+  const  groups:GroupNode[] = instance.children.filter(node =>node.type ==="GROUP") as GroupNode[];
+  
+  
+  componentNodes.forEach(c =>{
+    detectTextsComponent(c);
+  });
+  instancesNodes.forEach(i =>{
+    detectTextsInstance(i);
+  });
+
+  frameNodes.forEach(f =>{
+    detectTextsOfFrame(f);
+  });
+  
+  groups.forEach(group =>{
+    detectTextOfGroup(group);
+  });
+
+  textNodes.forEach(text_node => {        
+    sanitizeTexts(text_node);
+  });
+
+}
+
+
+
 
  function detectTextsOfFrame(frame:FrameNode){
   
   stats.framesCount++;
       
+  const componentNodes:ComponentNode[] = frame.children.filter(node =>node.type ==="COMPONENT") as ComponentNode[];
+  const instancesNodes:InstanceNode[] = frame.children.filter(node =>node.type ==="INSTANCE") as InstanceNode[];
   const frameNodes:FrameNode[] = frame.children.filter(node =>node.type ==="FRAME") as FrameNode[];
   const textNodes:TextNode[] = frame.children.filter(node =>node.type ==="TEXT") as TextNode[];
   const  groups:GroupNode[] = frame.children.filter(node =>node.type ==="GROUP") as GroupNode[];
+  
+  
+  componentNodes.forEach(c =>{
+    detectTextsComponent(c);
+  });
+  instancesNodes.forEach(i =>{
+    detectTextsInstance(i);
+  });
+
   
   frameNodes.forEach(f =>{
     detectTextsOfFrame(f);
@@ -52,9 +132,19 @@ const RTL = 'RTL';
 function detectTextOfGroup(group : GroupNode){
   stats.groupsCount++;
 
+  const componentNodes:ComponentNode[] = group.children.filter(node =>node.type ==="COMPONENT") as ComponentNode[];
+  const instancesNodes:InstanceNode[] = group.children.filter(node =>node.type ==="INSTANCE") as InstanceNode[];
   const frameNodes:FrameNode[] = group.children.filter(node =>node.type ==="FRAME") as FrameNode[];
-  const textNodes:TextNode[] = group.children.filter(node =>node.type ==="TEXT") as TextNode[]
+  const textNodes:TextNode[] = group.children.filter(node =>node.type ==="TEXT") as TextNode[];
   const  groups:GroupNode[] = group.children.filter(node =>node.type ==="GROUP") as GroupNode[];
+  
+  
+  componentNodes.forEach(c =>{
+    detectTextsComponent(c);
+  });
+  instancesNodes.forEach(i =>{
+    detectTextsInstance(i);
+  });
 
   frameNodes.forEach(f =>{
     detectTextsOfFrame(f);
@@ -163,6 +253,14 @@ function prepareData(){
 
   for(const node of figma.currentPage.selection){
     switch(node.type){
+      case "COMPONENT":
+        const component = node;
+        detectTextsComponent(component);      
+        break;
+        case "INSTANCE":
+          const instance = node;
+          detectTextsInstance(instance);      
+        break;
       case "FRAME":
         const frame = node;
         detectTextsOfFrame(frame);      
@@ -204,6 +302,12 @@ function showStatsMessage(){
   }
   if(stats.framesCount > 0){
     statsMessage += stats.framesCount + " Frame, "
+  }
+  if(stats.componentsCount > 0){
+    statsMessage += stats.componentsCount + " Component, "
+  }
+  if(stats.instancesCount > 0){
+    statsMessage += stats.instancesCount + " Instance, "
   }
   if(stats.groupsCount > 0){
     statsMessage += stats.groupsCount + " Group, "
@@ -330,8 +434,6 @@ figma.ui.onmessage = async msg => {
             case "free_writer":
 
             var free_writer_final_data:Array<TextNodeData> = msg['text_data'] as Array<TextNodeData>;            
-
-            console.log(free_writer_final_data[0]);
             
               var typedFreeWriterText = free_writer_final_data[0].final_text;
               var typedFreeWriterDirectionFixedText = detectDirection(typedFreeWriterText) == LTR ? typedFreeWriterText : reverseString(typedFreeWriterText);
