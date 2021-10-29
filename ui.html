@@ -21,9 +21,8 @@ href="https://fonts.googleapis.com/css?family=Poppins">
 
           <div onclick="resize('fullScreen')">
             <img style="width: 24px; height: 24px;" src="https://img.icons8.com/fluency-systems-regular/48/25a75d/page-size--v3.png"/>
-            Full Screen
+            Fullscreen
           </div>
-
         </div>
         </div>
     </div>
@@ -155,7 +154,7 @@ function resize(sizeParams){
 
 function showMinimizedUI(){
   document.getElementById('base').setAttribute('style', 'display:none;')
-  document.getElementById('minimizedButton').setAttribute('style', 'display:block;')
+  document.getElementById('minimizedButton').setAttribute('style', 'display:flex;')
 }
 
 function showStandardUI(){
@@ -242,7 +241,7 @@ function detectTextsOnBatchUI(texts_data){
     const copyText = document.createElement('img')
     copyText.setAttribute('id' , id)
     copyText.setAttribute('onclick' , "copyButtonOnClick(this)")
-    copyText.setAttribute('src', 'https://img.icons8.com/fluency-systems-regular/48/979797/export.png')
+    copyText.setAttribute('src', 'https://img.icons8.com/metro/26/979797/send-file.png')
     return copyText;
   }
 
@@ -506,6 +505,7 @@ function detectTextsOnBatchUI(texts_data){
     background-color: #f9f9f9;
   }
 
+
   #bottomBar {
     width: 100%;
     position: sticky;
@@ -639,6 +639,7 @@ function detectTextsOnBatchUI(texts_data){
   width: auto;
   height: 100%;
   overflow: hidden;
+  padding: 24px;
 }
 
 #freewriter > span {
@@ -653,9 +654,7 @@ function detectTextsOnBatchUI(texts_data){
 }
 
   #freeWriterText {
-    width: 600px;
     height: 400px;
-    margin: 16px 24px;
   }
 
   .dropdown {
@@ -767,9 +766,10 @@ function detectTextsOnBatchUI(texts_data){
 
 #minimizedButton {
   display: none;
-  position: absolute;
-  margin: auto;
-  text-align: center;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
 }
 
 
