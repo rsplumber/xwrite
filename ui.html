@@ -7,27 +7,32 @@ href="https://fonts.googleapis.com/css?family=Poppins">
         <button class="tablinks" onclick="tabSelected(event, 'freeWriter')"  id="freeWriterButton">Free Writer</button>
         <button class="tablinks" onclick="tabSelected(event, 'replacer')" id="replacerButton">Find & Replace</button>
         <div onclick="openDropDown()" class="dropdown">
-          <img  class="dropbtn" src="https://img.icons8.com/fluency-systems-regular/48/5e5e5e/resize-diagonal.png"/>
+          <img  class="dropbtn" src="https://img.icons8.com/windows/32/979797/menu-2.png"/>
         <div id="myDropdown" class="dropdown-content">
-          <div onclick="resize('minimize')">
+          <div style="padding-left: 0; margin-left: 0;" onclick="tabSelected(event, 'aboutUs')" id="aboutUsButton">
+            <img style="width: 24px; height: 24px; padding-left: 0; margin-left: 0;" src="https://img.icons8.com/material-outlined/24/25a75d/filled-like.png"/>
+            About Us
+          </div>
+        </div>
+        </div>
+        <div class="tablinks" id="sizeBar">
+          <div class="tooltip" onclick="resize('minimize')">
+            <span class="tooltiptext">Minimize</span>
             <img style="width: 24px; height: 24px;" src="https://img.icons8.com/fluency-systems-regular/48/25a75d/shrink.png"/>
-            Minimize
           </div>
 
-          <div onclick="resize('standard')">
+          <div class="tooltip" onclick="resize('standard')">
+            <span class="tooltiptext">Standard</span>
             <img style="width: 24px; height: 24px;" src="https://img.icons8.com/fluency-systems-regular/48/25a75d/picture-in-picture-alternative.png"/>
-            Standard
           </div>
 
-          <div onclick="resize('fullScreen')">
+          <div class="tooltip" onclick="resize('fullScreen')">
+            <span class="tooltiptext">Full Screen</span>
             <img style="width: 24px; height: 24px;" src="https://img.icons8.com/fluency-systems-regular/48/25a75d/page-size--v3.png"/>
-            Fullscreen
           </div>
         </div>
-        </div>
-        <button class="tablinks" onclick="tabSelected(event, 'aboutUs')" id="aboutUsButton">
-          <img src="https://img.icons8.com/material-outlined/24/979797/filled-like.png"/>
-        </button>
+        
+        
     </div>
 
     <div id="batchWriter" class="tabContent">
@@ -86,35 +91,32 @@ href="https://fonts.googleapis.com/css?family=Poppins">
       <div>
         <h2><strong>Thanks for using XWrite</strong></h2>
 
-<p>This GOAT plugin is created and developed with ❤️</p>
-<p>For whom that makes the world beautiful.</p>
+<p>This GOAT plugin is created and developed with ❤️<br>
+to whom that makes the world beautiful.<br>
 
-<p>With special thanks to&nbsp;<strong>Mohammad Shendabadi</strong>&nbsp;as Designer </p>
-  <p> all others&nbsp;who helped us with ideas &amp; feedbacks.</p>
+<p>With special thanks to anyone who helped us with their ideas &amp; feedbacks.</p>
 
-<p>we would appreciate any suggestion or critics</p>
+<h3>we would appreciate any suggestion or critics </h3>
 
-<p style="color: #5e5e5e;"><strong>Contact Us</strong>
+<p style="color: #5e5e5e;"><strong>Contact Us</strong><br>
  
-    <p style="color: #5e5e5e;">Develop: <strong>Plumber</strong> sha.a.wf@gmail.com</p>
+    <p style="color: #5e5e5e;">Develop: <strong>Plumber</strong> sha.a.wf@gmail.com<br></p>
 
-    <p style="color: #5e5e5e;">Design: <strong>Alireza Rahmani</strong>&nbsp;alirezaa.rahmanii@gmail.com</p>
+    <p style="color: #5e5e5e;">UI Developer: <strong>Alireza Rahmani</strong>&nbsp;alirezaa.rahmanii@gmail.com<br></p>
+
+    <p style="color: #5e5e5e;">Designer: <strong>Mohammad Shendabadi</strong> mohamad.shendabadi@gmail.com <br></p>
   
 </p>
 
-
-
+<h3>Great Master 🤌</h3>
 <p>Buy us a coffee, we&#39;ll share the coffee together without&nbsp;any arguments, it&#39;s safe</p>
-
-<p>Great Master🤙</p>
+<p style="margin-bottom: 24px;">USDT Wallet:&nbsp;<strong>0x5f75d1F6727ea00A4253c66734b27E01B54976AB</strong></p>
 
 <p>این&nbsp;اَبر&nbsp;پلاگین&nbsp;با ❤️&nbsp;ساخته و توسعه داده شده برای کسانی که جهان را زیباتر میکنند</p>
 
 <p>یک قهوه برای ما به حساب شما. ما قهوه رو بدون جنگ باهم تقسیم میکنیم سیفه</p>
 
-<p>استادِ&nbsp;بزرگ🤙</p>
-
-<p>USDT Wallet:&nbsp;<strong>0x5f75d1F6727ea00A4253c66734b27E01B54976AB</strong></p>
+<h3>استادِ&nbsp;بزرگ 🤌</h3>
 
         </div>
     </div>
@@ -774,7 +776,6 @@ function detectTextsOnBatchUI(texts_data){
   display: flex;
   justify-content: center;
   align-items: center;
-  float: right;
 }
 
 /* Change background color of buttons on hover */
@@ -833,5 +834,44 @@ function detectTextsOnBatchUI(texts_data){
 #aboutUs {
   overflow: hidden;
 }
+
+#sizeBar {
+  height: 56px;
+  display: flex;
+  flex-direction: row;
+  float: right;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Tooltip container */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: none; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  position: absolute;
+  visibility: hidden;
+  background-color: #5e5e5e;
+  color: #fff;
+  text-align: center;
+  padding: 4px 8px;
+  border-radius: 4px;
+ 
+  /* Position the tooltip text - see examples below! */
+  right: 105%;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
 
 </style>
