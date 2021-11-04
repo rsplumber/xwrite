@@ -1,13 +1,10 @@
-import {ICommand} from "../abstraction/ICommand";
+import {AbstractCommand} from "../abstractions/AbstractCommand";
 import {Response} from "../../../shared/Response";
 import {Request} from "../../../shared/Request";
 import {Context} from "../../Context";
-import {TextDirectionFixer} from "../../helpers/TextDirectionFixer";
 
-export class CopyTextCommand implements ICommand {
-    identifier(): string {
-        return "copyText";
-    }
+export class CopyTextCommand extends AbstractCommand {
+
 
     execute(request: Request): Response {
 
@@ -17,7 +14,7 @@ export class CopyTextCommand implements ICommand {
             .getAll()
             .filter(value => value.id == textNodeId)
             .forEach(value => {
-            value.final_text = value.text;
+                value.final_text = value.text;
             });
 
         // postDetectMessage();?

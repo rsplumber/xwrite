@@ -1,11 +1,9 @@
-import {ICommand} from "../abstraction/ICommand";
+import {AbstractCommand} from "../abstractions/AbstractCommand";
 import {Response} from "../../../shared/Response";
 import {Request} from "../../../shared/Request";
 
-export class ResizeCommand implements ICommand {
-    identifier(): string {
-        return "resize";
-    }
+export class ResizeCommand extends AbstractCommand {
+
 
     execute(request: Request): Response {
         const resizeParam = request.data['sizeParam'] as string;

@@ -1,7 +1,7 @@
 import {TextNodeData} from "../../../shared/TextNodeData";
-import {BaseContainer} from "../BaseContainer";
+import {AbstractContainer} from "../abstractions/AbstractContainer";
 
-export class TextNodesContainer extends BaseContainer<TextNodeData> {
+export class TextNodesContainer extends AbstractContainer<TextNodeData> {
 
     private static instance: TextNodesContainer;
 

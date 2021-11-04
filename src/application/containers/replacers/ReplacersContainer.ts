@@ -1,7 +1,7 @@
-import {BaseContainer} from "../BaseContainer";
+import {AbstractContainer} from "../abstractions/AbstractContainer";
 import {IReplacer} from "../../commands/replacer/IReplacer";
 
-export class ReplacersContainer extends BaseContainer<IReplacer> {
+export class ReplacersContainer extends AbstractContainer<IReplacer> {
 
     private static instance: ReplacersContainer;
 

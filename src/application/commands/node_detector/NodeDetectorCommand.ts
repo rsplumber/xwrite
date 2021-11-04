@@ -1,21 +1,15 @@
-import {ICommand} from "../abstraction/ICommand";
+import {AbstractCommand} from "../abstractions/AbstractCommand";
 import {Response} from "../../../shared/Response";
 import {Request} from "../../../shared/Request";
 import {TextNodeData} from "../../../shared/TextNodeData";
 import {Context} from "../../Context";
 
-export class NodeDetectorCommand implements ICommand {
-    identifier(): string {
-        return "nodeDetector";
-    }
+export class NodeDetectorCommand extends AbstractCommand {
+
 
     execute(request: Request): Response {
         const detected = this.detect();
-        const response = new Response();
-        response.type = request.type;
-        response.message = "Texts detected"
-        response.success = detected;
-        return response;
+        return;
     }
 
     private detect() {
@@ -27,10 +21,10 @@ export class NodeDetectorCommand implements ICommand {
         while (!(res = walker.next()).done) {
             let node = res.value
             if (node.type === 'TEXT') {
-                if(textsContainer.getById(node.id) != null) continue;
+                if (textsContainer.getById(node.id) != null) continue;
                 textsContainer.add(new TextNodeData(node, node.characters));
             }
-            if (++count === 1000) {
+            if (++count === 100) {
                 return false;
             }
         }

@@ -1,6 +1,6 @@
 import {IContainer} from "./IContainer";
 
-export abstract class BaseContainer<Type> implements IContainer<Type> {
+export abstract class AbstractContainer<Type> implements IContainer<Type> {
 
     protected constructor() {
     }

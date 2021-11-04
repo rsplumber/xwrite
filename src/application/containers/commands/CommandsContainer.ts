@@ -1,8 +1,7 @@
-import {BaseContainer} from "../BaseContainer";
-import {IReplacer} from "../../commands/replacer/IReplacer";
-import {ICommand} from "../../commands/abstraction/ICommand";
+import {AbstractContainer} from "../abstractions/AbstractContainer";
+import {AbstractCommand} from "../../commands/abstractions/AbstractCommand";
 
-export class CommandsContainer extends BaseContainer<ICommand> {
+export class CommandsContainer extends AbstractContainer<AbstractCommand> {
 
     private static instance: CommandsContainer;
 
@@ -19,10 +18,10 @@ export class CommandsContainer extends BaseContainer<ICommand> {
     }
 
     initItems(): void {
-        super.items = new Array<ICommand>();
+        super.items = new Array<AbstractCommand>();
     }
 
-    getById(id: string): ICommand {
+    getById(id: string): AbstractCommand {
         return super.items.find(value => value.identifier() === id);
     }
 }

@@ -1,15 +1,11 @@
-import {ICommand} from "../abstraction/ICommand";
+import {AbstractCommand} from "../abstractions/AbstractCommand";
 import {Response} from "../../../shared/Response";
 import {Request} from "../../../shared/Request";
 import {Context} from "../../Context";
 import {IReplacer} from "./IReplacer";
 
-export class ReplacerCommand implements ICommand {
+export class ReplacerCommand extends AbstractCommand {
 
-
-    identifier(): string {
-        return "replacer";
-    }
 
     execute(request: Request): Response {
         const replaceFrom = request.data['replace_from'] as string;
@@ -27,10 +23,10 @@ export class ReplacerCommand implements ICommand {
         return undefined;
     }
 
-    private static getReplacer(id:string): IReplacer{
+    private static getReplacer(id: string): IReplacer {
         const container = Context.getReplacersContainer();
         let replacer = container.getById(id);
-        if(replacer == null){
+        if (replacer == null) {
             replacer = container.getById("$__standard");
         }
         return replacer;

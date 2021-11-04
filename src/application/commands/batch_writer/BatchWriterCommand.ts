@@ -1,14 +1,11 @@
-import {ICommand} from "../abstraction/ICommand";
+import {AbstractCommand} from "../abstractions/AbstractCommand";
 import {Response} from "../../../shared/Response";
 import {Request} from "../../../shared/Request";
 import {TextNodeData} from "../../../shared/TextNodeData";
 import {Context} from "../../Context";
 import {TextDirectionFixer} from "../../helpers/TextDirectionFixer";
 
-export class BatchWriterCommand implements ICommand {
-    identifier(): string {
-        return "batchWriter";
-    }
+export class BatchWriterCommand extends AbstractCommand {
 
     execute(request: Request): Response {
         const final_data: Array<TextNodeData> = request.data['text_data'] as Array<TextNodeData>;

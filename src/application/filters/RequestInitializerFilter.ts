@@ -1,11 +1,14 @@
 import {AbstractFilter} from "./abstractions/AbstractFilter";
 import {Request} from "../../shared/Request";
 import {Response} from "../../shared/Response";
-import {CommandExecutor} from "../commands/abstractions/CommandExecutor";
+import {Context} from "../Context";
 
-export class CommandProviderFilter extends AbstractFilter {
+export class RequestInitializerFilter extends AbstractFilter {
     public handle(request: Request): Response {
-        CommandExecutor.getInstance().execute(request);
+        request.attachToData("debug_mode" ,Context.isDebugMode());
+        if(request.commandIdentifier == null || request.data == null){
+            return;
+        }
         return super.handle(request);
     }
 

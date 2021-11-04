@@ -1,12 +1,12 @@
-import {IFilter} from "./filters/abstraction/IFilter";
-import {ICommand} from "./commands/abstraction/ICommand";
+import {IFilter} from "./filters/abstractions/IFilter";
 import {IReplacer} from "./commands/replacer/IReplacer";
 import {ReplacersContainer} from "./containers/replacers/ReplacersContainer";
 import {CommandsContainer} from "./containers/commands/CommandsContainer";
 import {TextNodesContainer} from "./containers/nodes/TextNodesContainer";
 import {Response} from "../shared/Response";
 import {Request} from "../shared/Request";
-import {AbstractFilter} from "./filters/abstraction/AbstractFilter";
+import {AbstractFilter} from "./filters/abstractions/AbstractFilter";
+import {AbstractCommand} from "./commands/abstractions/AbstractCommand";
 
 export class Context {
 
@@ -14,9 +14,9 @@ export class Context {
 
     static requestChainFilter: IFilter;
 
-    static response : Response;
+    static response: Response;
 
-    public static builder() : ContextBuilder {
+    public static builder(): ContextBuilder {
         return new ContextBuilder();
     }
 
@@ -40,30 +40,29 @@ export class Context {
         return this._debug;
     }
 
-    public static generateRequest(commandIdentifier : string) : Request {
+    public static generateRequest(commandIdentifier: string): Request {
         return new Request(commandIdentifier);
     }
 
-    public static currentResponse() : Response {
+    public static currentResponse(): Response {
         return this.response;
     }
 
-    public static generateResponse() : Response {
-        this.response = new Response();
-        return this.response;
+    public static responseGenerator(): ResponseGenerator {
+        return new ResponseGenerator();
     }
 
 }
 
 export class ContextBuilder {
     public initializeFilters(filters: AbstractFilter[]): ContextBuilder {
-        filters.sort(a=> a.order());
+        filters.sort(a => a.order());
         Context.requestChainFilter = filters[0];
         filters.slice(1).forEach(value => Context.requestChainFilter.setNext(value));
         return this;
     }
 
-    public initializeCommands(commands: ICommand[]): ContextBuilder {
+    public initializeCommands(commands: AbstractCommand[]): ContextBuilder {
         CommandsContainer.getInstance().addRange(commands);
         return this;
     }
@@ -73,7 +72,42 @@ export class ContextBuilder {
         return this;
     }
 
-    public build(debugMode: boolean = false){
+    public build(debugMode: boolean = false) {
         Context._debug = debugMode;
+    }
+}
+
+export class ResponseGenerator {
+
+
+    constructor() {
+        Context.response = new Response();
+    }
+
+    public setNotificationMessage(message: string): ResponseGenerator {
+        Context.response.attachToData("notificationMessage", message);
+        return this;
+    }
+
+    public setMessageCenterText(message: string): ResponseGenerator {
+        Context.response.attachToData("messageCenterType", "message_center");
+        Context.response.attachToData("messageCenter", message);
+        return this;
+    }
+
+    public refreshData(): ResponseGenerator {
+        Context.response.attachToData("prepareData", true);
+        return this;
+    }
+
+    public eventOnUi(type: string, data): ResponseGenerator {
+        Context.response.attachToData("type", type);
+        Context.response.attachToData("data", data);
+        return this;
+    }
+
+    public generate(): Response {
+        Context.response.attachToData("debug_mode", Context.isDebugMode());
+        return Context.response;
     }
 }

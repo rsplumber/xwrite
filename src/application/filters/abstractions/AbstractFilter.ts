@@ -11,11 +11,8 @@ export abstract class AbstractFilter implements IFilter {
     }
 
     public handle(request: Request): Response {
-        if (this.nextHandler) {
-            return this.nextHandler.handle(request);
-        }
-
-        return null;
+        if (request.canceled || !this.nextHandler) return null;
+        return this.nextHandler.handle(request);
     }
 
     abstract order(): number;
