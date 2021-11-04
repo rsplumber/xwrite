@@ -6,6 +6,7 @@ import {CommandsContainer} from "./containers/commands/CommandsContainer";
 import {TextNodesContainer} from "./containers/nodes/TextNodesContainer";
 import {Response} from "../shared/Response";
 import {Request} from "../shared/Request";
+import {AbstractFilter} from "./filters/abstraction/AbstractFilter";
 
 export class Context {
 
@@ -55,7 +56,8 @@ export class Context {
 }
 
 export class ContextBuilder {
-    public initializeFilters(filters: IFilter[]): ContextBuilder {
+    public initializeFilters(filters: AbstractFilter[]): ContextBuilder {
+        filters.sort(a=> a.order());
         Context.requestChainFilter = filters[0];
         filters.slice(1).forEach(value => Context.requestChainFilter.setNext(value));
         return this;
