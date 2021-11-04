@@ -1,18 +1,8 @@
 export class Response {
 
-    private _type: string;
     private _success : boolean;
     private _message: string;
-    private _data : any;
-
-
-    get type(): string {
-        return this._type;
-    }
-
-    set type(value: string) {
-        this._type = value;
-    }
+    private _data : Map<string, any> = new Map<string, any>();
 
     get success(): boolean {
         return this._success;
@@ -36,5 +26,10 @@ export class Response {
 
     set data(value: any) {
         this._data = value;
+    }
+
+    public attachToData(key , value) : Response{
+        this.data.set(key , value);
+        return this;
     }
 }

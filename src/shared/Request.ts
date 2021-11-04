@@ -2,7 +2,7 @@ export class Request {
 
     private _type;
     private _commandIdentifier : string;
-    private _data : any;
+    private _data : Map<string, any> = new Map<string, any>();
 
     constructor(commandIdentifier: string) {
         this._commandIdentifier = commandIdentifier;
@@ -30,5 +30,10 @@ export class Request {
 
     set data(value: any) {
         this._data = value;
+    }
+
+    public attachToData(key , value) : Request{
+        this.data.set(key , value);
+        return this;
     }
 }
