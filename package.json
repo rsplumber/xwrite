@@ -2,7 +2,7 @@
   "name": "XWrite",
   "version": "1.4.0",
   "description": "Xwrite provides writing tools.",
-  "main": "code.js",
+  "main": "./dist/code.js",
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "watch" : "webpack --watch"

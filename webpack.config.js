@@ -1,6 +1,6 @@
 const path = require('path');
 module.exports = {
-  entry: './code.ts',
+  entry: './src/code.ts',
   mode : "production",
   module: {
     rules: [
@@ -16,6 +16,6 @@ module.exports = {
   },
   output: {
     filename: 'code.js',
-    path: __dirname,
+    path: path.resolve(__dirname, 'dist')
   },
 };
