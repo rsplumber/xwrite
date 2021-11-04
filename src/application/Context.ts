@@ -7,33 +7,16 @@ import {TextNodesContainer} from "./containers/nodes/TextNodesContainer";
 
 export class Context {
 
-    private _debug: boolean;
+    static _debug: boolean;
 
-    private static requestChainFilter: IFilter;
+    static requestChainFilter: IFilter;
 
-    public initializeFilters(filters: IFilter[]): Context {
-        Context.requestChainFilter = filters[0];
-        filters.slice(1).forEach(value => Context.requestChainFilter.setNext(value));
-        return this;
-    }
-
-    public initializeCommands(commands: ICommand[]): Context {
-        CommandsContainer.getInstance().addRange(commands);
-        return this;
-    }
-
-    public initializeReplacers(replacers: IReplacer[]): Context {
-        ReplacersContainer.getInstance().addRange(replacers);
-        return this;
+    public static builder() : ContextBuilder {
+        return new ContextBuilder();
     }
 
     public static getRequestChainFilter(): IFilter {
         return this.requestChainFilter;
-    }
-
-    public run(debugMode: boolean = false): Context {
-        this._debug = debugMode;
-        return this;
     }
 
     public static getTextNodesContainer(): TextNodesContainer {
@@ -48,4 +31,30 @@ export class Context {
         return ReplacersContainer.getInstance();
     }
 
+    public static isDebugMode(): boolean {
+        return this._debug;
+    }
+
+}
+
+export class ContextBuilder {
+    public initializeFilters(filters: IFilter[]): ContextBuilder {
+        Context.requestChainFilter = filters[0];
+        filters.slice(1).forEach(value => Context.requestChainFilter.setNext(value));
+        return this;
+    }
+
+    public initializeCommands(commands: ICommand[]): ContextBuilder {
+        CommandsContainer.getInstance().addRange(commands);
+        return this;
+    }
+
+    public initializeReplacers(replacers: IReplacer[]): ContextBuilder {
+        ReplacersContainer.getInstance().addRange(replacers);
+        return this;
+    }
+
+    public build(debugMode: boolean = false){
+        Context._debug = debugMode;
+    }
 }
