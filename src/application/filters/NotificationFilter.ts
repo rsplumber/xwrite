@@ -6,4 +6,8 @@ export class NotificationFilter extends AbstractFilter {
     public handle(request: Request): Response {
         return super.handle(request);
     }
+
+    order(): number {
+        return 0;
+    }
 }
