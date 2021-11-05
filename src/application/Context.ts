@@ -7,6 +7,7 @@ import {Response} from "../shared/Response";
 import {Request} from "../shared/Request";
 import {AbstractFilter} from "./filters/abstractions/AbstractFilter";
 import {AbstractCommand} from "./commands/abstractions/AbstractCommand";
+import {ReflectionHelper} from "./helpers/ReflectionHelper";
 
 export class Context {
 
@@ -40,8 +41,8 @@ export class Context {
         return this._debug;
     }
 
-    public static generateRequest(commandIdentifier: string): Request {
-        return new Request(commandIdentifier);
+    public static generateRequest(command): Request {
+        return new Request(command);
     }
 
     public static currentResponse(): Response {
@@ -55,8 +56,6 @@ export class Context {
 }
 
 export class ContextBuilder {
-    private filters: AbstractFilter[];
-    private commands: AbstractCommand[];
 
     constructor() {
         this.initCommands();
@@ -66,58 +65,32 @@ export class ContextBuilder {
 
 
     private initCommands() {
-        this.commands = new Array<AbstractCommand>();
-        this.getAllSubclasses(AbstractCommand)
-            .forEach(value => {
-                const newInstance = Object.create(window[value].prototype);
-                newInstance.constructor.apply(newInstance, null);
-                this.commands.push((newInstance));
-            });
-        CommandsContainer.getInstance().addRange(this.commands);
-    }
-
-    private getAllSubclasses(baseClass) {
-        const globalObject = Function('return this')();
-        const allVars = Object.keys(globalObject);
-        return allVars.filter(function (key) {
-            try {
-                const obj = globalObject[key];
-                return obj.prototype instanceof baseClass;
-            } catch (e) {
-                return null;
-            }
-        });
+        const commands = new Array<AbstractCommand>();
+        this.createSubClassesFor(AbstractCommand)
+            .forEach(value => commands.push(value));
+        CommandsContainer.getInstance().addRange(commands);
     }
 
 
     private initFilters() {
-        this.filters = new Array<AbstractFilter>();
-        this.getAllSubclasses(AbstractFilter)
-            .forEach(value => {
-                const newInstance = Object.create(window[value].prototype);
-                newInstance.constructor.apply(newInstance, null);
-                this.filters.push((newInstance));
-            })
-
-
-        this.filters.filter(value => !value.disabled())
+        const filters = new Array<AbstractFilter>();
+        this.createSubClassesFor(AbstractFilter)
+            .forEach(value => filters.push(value));
+        filters.filter(value => !value.disabled())
             .sort(a => a.order());
 
-        Context.requestChainFilter = this.filters[0];
-        for (let i = 1; i < this.filters.length; i++) {
-            if (i < this.filters.length - 1) {
-                this.filters[i].setNext(this.filters[i + 1]);
+        Context.requestChainFilter = filters[0];
+        for (let i = 1; i < filters.length; i++) {
+            if (i < filters.length - 1) {
+                filters[i].setNext(filters[i + 1]);
             }
         }
     }
 
     private initReplacers() {
-        this.getAllSubclasses(AbstractReplacer)
-            .forEach(value => {
-                const newInstance = Object.create(window[value].prototype);
-                newInstance.constructor.apply(newInstance, null);
-                this.filters.push((newInstance));
-            })
+        const replacers = new Array<AbstractReplacer>();
+        this.createSubClassesFor(AbstractReplacer)
+            .forEach(value => replacers.push(value));
         ReplacersContainer.getInstance().addRange(replacers);
     }
 
@@ -125,10 +98,19 @@ export class ContextBuilder {
     public build(debugMode: boolean = false) {
         Context._debug = debugMode;
     }
+
+    private createSubClassesFor(baseClass) {
+        const classes = [];
+        ReflectionHelper.getSubclasses(baseClass)
+            .forEach(value => {
+                classes.push(ReflectionHelper.createInstance(value, null));
+            });
+        return classes;
+    }
+
 }
 
 export class ResponseGenerator {
-
 
     constructor() {
         Context.response = new Response();

@@ -1,12 +1,12 @@
 import {AbstractFilter} from "./abstractions/AbstractFilter";
 import {Request} from "../../shared/Request";
 import {Response} from "../../shared/Response";
-import {CommandExecutor} from "../commands/abstractions/CommandExecutor";
 import {Context} from "../Context";
+import {NodeDetectorCommand} from "../commands/node_detector/NodeDetectorCommand";
 
 export class PrepareDataFilter extends AbstractFilter {
     public handle(request: Request): Response {
-        Context.generateRequest("nodeDetector");
+        Context.generateRequest(NodeDetectorCommand);
         return super.handle(request);
     }
 
