@@ -288,7 +288,7 @@ function detectTextsOnBatchUI(texts_data){
   }
 
   function copyButtonOnClick(clickedButton){
-    parent.postMessage({ pluginMessage: { type: 'copy_text' , text_node_id :clickedButton.id } }, '*')
+    parent.postMessage({ pluginMessage: { type: 'moveText' , data :clickedButton.id } }, '*')
   }
 
   function createDeleteButton(id){

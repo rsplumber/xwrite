@@ -87,9 +87,7 @@ export class NodeDetectorCommand extends AbstractCommand {
     }
 
     private countStatistics(type: string): void {
-
         if (this.statistics.has(type)) {
-            console.log("TYPE: " + type);
             this.statistics.set(type, this.statistics.get(type) + 1);
         }
     }

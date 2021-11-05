@@ -3,27 +3,28 @@ import {Response} from "../../../shared/Response";
 import {Request} from "../../../shared/Request";
 import {Context} from "../../Context";
 
-export class CopyTextCommand extends AbstractCommand {
+export class MoveTextCommand extends AbstractCommand {
 
 
     execute(request: Request): Response {
 
-        const textNodeId = request.data['text_node_id'] as string;
+        const textNodeId = request.getValue("data") as string;
 
         Context.getTextNodesContainer()
             .getAll()
             .filter(value => value.id == textNodeId)
-            .forEach(value => {
+            .map(value => {
                 value.final_text = value.text;
             });
 
-        // postDetectMessage();?
-
-        return undefined;
+        return Context.responseGenerator(true)
+            .eventOnUi("detect_texts", Context.getTextNodesContainer().getAll())
+            .setNotificationMessage("Text moved")
+            .generate();
     }
 
     identifier(): string {
-        return "copyText";
+        return "moveText";
     }
 
 
