@@ -7,6 +7,7 @@ export class TextNodesContainer extends AbstractContainer<TextNodeData> {
 
     protected constructor() {
         super();
+        this.initItems();
     }
 
     public static getInstance(): TextNodesContainer {

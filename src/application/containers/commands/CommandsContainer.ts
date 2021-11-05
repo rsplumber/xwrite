@@ -7,6 +7,7 @@ export class CommandsContainer extends AbstractContainer<AbstractCommand> {
 
     protected constructor() {
         super();
+        this.initItems();
     }
 
     public static getInstance(): CommandsContainer {

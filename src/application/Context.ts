@@ -8,23 +8,38 @@ import {Request} from "../shared/Request";
 import {AbstractFilter} from "./filters/abstractions/AbstractFilter";
 import {AbstractCommand} from "./commands/abstractions/AbstractCommand";
 import {ReflectionHelper} from "./helpers/ReflectionHelper";
+import {RequestExecutor} from "./RequestExecutor";
+import {ReplaceAllReplacer} from "./commands/replacer/ReplaceAllReplacer";
+import {StandardReplaceReplacer} from "./commands/replacer/StandardReplaceReplacer";
 
 export class Context {
 
-    static _debug: boolean;
+    private _debug: boolean;
 
-    static requestChainFilter: IFilter;
+    private _requestChainFilter: IFilter;
 
     static response: Response;
 
     static statistics: Map<string, any>;
 
+    static instance: Context;
+
+
     public static builder(): ContextBuilder {
         return new ContextBuilder();
     }
 
-    public static getRequestChainFilter(): IFilter {
-        return this.requestChainFilter;
+    public static getInstance(): Context {
+        return Context.instance;
+    }
+
+    public getRequestChainFilter(): IFilter {
+        return this._requestChainFilter;
+    }
+
+
+    set requestChainFilter(value: IFilter) {
+        this._requestChainFilter = value;
     }
 
     public static getTextNodesContainer(): TextNodesContainer {
@@ -39,83 +54,119 @@ export class Context {
         return ReplacersContainer.getInstance();
     }
 
-    public static isDebugMode(): boolean {
+    public isDebugMode(): boolean {
         return this._debug;
+    }
+
+
+    set debug(value: boolean) {
+        this._debug = value;
     }
 
     public static generateRequest(command): Request {
         return new Request(command);
     }
 
+    public static executeRequest(request: Request): void {
+        RequestExecutor.execute(request);
+    }
+
     public static currentResponse(): Response {
         return this.response;
     }
 
-    public static responseGenerator(): ResponseGenerator {
-        return new ResponseGenerator();
+    public static responseGenerator(success: boolean): ResponseGenerator {
+        return new ResponseGenerator(success);
     }
 
 }
 
 export class ContextBuilder {
 
+    private readonly commands: Array<AbstractCommand>;
+    private readonly filters: Array<AbstractFilter>;
+
     constructor() {
-        this.initCommands();
-        this.initFilters();
-        this.initReplacers();
+        this.commands = new Array<AbstractCommand>();
+        this.filters = new Array<AbstractFilter>();
     }
 
-
-    private initCommands() {
+    private autoInitCommands() {
         const commands = new Array<AbstractCommand>();
-        this.createSubClassesFor(AbstractCommand)
+        ReflectionHelper.createSubClassesFor(AbstractCommand)
             .forEach(value => commands.push(value));
         CommandsContainer.getInstance().addRange(commands);
     }
 
+    private autoInitFilters() {
 
-    private initFilters() {
         const filters = new Array<AbstractFilter>();
-        this.createSubClassesFor(AbstractFilter)
+        ReflectionHelper.createSubClassesFor(AbstractFilter)
             .forEach(value => filters.push(value));
-        filters.filter(value => !value.disabled())
+        const organizedFilters = filters.filter(value => !value.disabled())
             .sort(a => a.order());
 
-        Context.requestChainFilter = filters[0];
-        for (let i = 1; i < filters.length; i++) {
-            if (i < filters.length - 1) {
-                filters[i].setNext(filters[i + 1]);
+        Context.getInstance().requestChainFilter = organizedFilters[0];
+        for (let i = 1; i < organizedFilters.length; i++) {
+            if (i < organizedFilters.length - 1) {
+                organizedFilters[i].setNext(organizedFilters[i + 1]);
             }
         }
     }
 
-    private initReplacers() {
+    private autoInitReplacers() {
         const replacers = new Array<AbstractReplacer>();
-        this.createSubClassesFor(AbstractReplacer)
+        ReflectionHelper.createSubClassesFor(AbstractReplacer)
             .forEach(value => replacers.push(value));
         ReplacersContainer.getInstance().addRange(replacers);
     }
 
-
-    public build(debugMode: boolean = false) {
-        Context._debug = debugMode;
+    private static initReplacers() {
+        ReplacersContainer.getInstance().addRange([
+            new ReplaceAllReplacer(),
+            new StandardReplaceReplacer()
+        ]);
     }
 
-    private createSubClassesFor(baseClass) {
-        const classes = [];
-        ReflectionHelper.getSubclasses(baseClass)
-            .forEach(value => {
-                classes.push(ReflectionHelper.createInstance(value, null));
-            });
-        return classes;
+    public addCommands(commands: AbstractCommand[]): ContextBuilder {
+        commands.forEach(value => this.commands.push(value));
+        return this;
+    }
+
+    private initCommands() {
+        CommandsContainer.getInstance().addRange(this.commands)
+    }
+
+    public addFilters(filters: AbstractFilter[]): ContextBuilder {
+        filters.forEach(value => this.filters.push(value));
+        return this;
+    }
+
+    private initFilters() {
+        const organizedFilters = this.filters.filter(value => !value.disabled())
+            .sort(a => a.order());
+        Context.getInstance().requestChainFilter = organizedFilters[0];
+        for (let i = 1; i < organizedFilters.length; i++) {
+            if (i < organizedFilters.length - 1) {
+                organizedFilters[i].setNext(organizedFilters[i + 1]);
+            }
+        }
+    }
+
+    public build(debugMode: boolean = false) {
+        Context.instance = new Context();
+        this.initFilters();
+        this.initCommands();
+        ContextBuilder.initReplacers();
+        Context.getInstance().debug = debugMode;
     }
 
 }
 
 export class ResponseGenerator {
 
-    constructor() {
-        Context.response = new Response();
+    constructor(success: boolean) {
+        Context.response = new Response(success);
     }
 
     public setNotificationMessage(message: string): ResponseGenerator {
@@ -145,7 +196,7 @@ export class ResponseGenerator {
     }
 
     public generate(): Response {
-        Context.response.attachData("debug_mode", Context.isDebugMode());
+        Context.response.attachData("debug_mode", Context.getInstance().isDebugMode());
         return Context.response;
     }
 }

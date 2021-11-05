@@ -4,7 +4,7 @@ export class ReflectionHelper {
         return newInstance.constructor.apply(newInstance, constructorParams);
     }
 
-    public static getSubclasses(baseClass){
+    public static getSubclasses(baseClass) {
         const globalObject = Function('return this')();
         const allVars = Object.keys(globalObject);
         return allVars.filter(function (key) {
@@ -15,5 +15,14 @@ export class ReflectionHelper {
                 return null;
             }
         });
+    }
+
+    public static createSubClassesFor(baseClass) {
+        const classes = [];
+        ReflectionHelper.getSubclasses(baseClass)
+            .forEach(value => {
+                classes.push(ReflectionHelper.createInstance(value, null));
+            });
+        return classes;
     }
 }

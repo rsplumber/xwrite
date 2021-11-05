@@ -4,6 +4,11 @@ export class Response {
     private _message: string;
     private _data: Map<string, any> = new Map<string, any>();
 
+
+    constructor(success: boolean) {
+        this._success = success;
+    }
+
     get success(): boolean {
         return this._success;
     }

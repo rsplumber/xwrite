@@ -8,8 +8,13 @@ export class NodeDetectorCommand extends AbstractCommand {
 
 
     execute(request: Request): Response {
+        console.log("here")
         const detected = this.detect();
-        return;
+        return Context.responseGenerator(detected)
+            .eventOnUi("detect_texts", Context.getTextNodesContainer().getAll())
+            .setMessageCenterText("hello")
+            .setNotificationMessage("Haha")
+            .generate();
     }
 
     private detect() {
