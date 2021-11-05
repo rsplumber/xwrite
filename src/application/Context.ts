@@ -1,5 +1,5 @@
 import {IFilter} from "./filters/abstractions/IFilter";
-import {IReplacer} from "./commands/replacer/IReplacer";
+import {AbstractReplacer} from "./commands/replacer/AbstractReplacer";
 import {ReplacersContainer} from "./containers/replacers/ReplacersContainer";
 import {CommandsContainer} from "./containers/commands/CommandsContainer";
 import {TextNodesContainer} from "./containers/nodes/TextNodesContainer";
@@ -55,22 +55,72 @@ export class Context {
 }
 
 export class ContextBuilder {
-    public initializeFilters(filters: AbstractFilter[]): ContextBuilder {
-        filters.sort(a => a.order());
-        Context.requestChainFilter = filters[0];
-        filters.slice(1).forEach(value => Context.requestChainFilter.setNext(value));
-        return this;
+    private filters: AbstractFilter[];
+    private commands: AbstractCommand[];
+
+    constructor() {
+        this.initCommands();
+        this.initFilters();
+        this.initReplacers();
     }
 
-    public initializeCommands(commands: AbstractCommand[]): ContextBuilder {
-        CommandsContainer.getInstance().addRange(commands);
-        return this;
+
+    private initCommands() {
+        this.commands = new Array<AbstractCommand>();
+        this.getAllSubclasses(AbstractCommand)
+            .forEach(value => {
+                const newInstance = Object.create(window[value].prototype);
+                newInstance.constructor.apply(newInstance, null);
+                this.commands.push((newInstance));
+            });
+        CommandsContainer.getInstance().addRange(this.commands);
     }
 
-    public initializeReplacers(replacers: IReplacer[]): ContextBuilder {
+    private getAllSubclasses(baseClass) {
+        const globalObject = Function('return this')();
+        const allVars = Object.keys(globalObject);
+        return allVars.filter(function (key) {
+            try {
+                const obj = globalObject[key];
+                return obj.prototype instanceof baseClass;
+            } catch (e) {
+                return null;
+            }
+        });
+    }
+
+
+    private initFilters() {
+        this.filters = new Array<AbstractFilter>();
+        this.getAllSubclasses(AbstractFilter)
+            .forEach(value => {
+                const newInstance = Object.create(window[value].prototype);
+                newInstance.constructor.apply(newInstance, null);
+                this.filters.push((newInstance));
+            })
+
+
+        this.filters.filter(value => !value.disabled())
+            .sort(a => a.order());
+
+        Context.requestChainFilter = this.filters[0];
+        for (let i = 1; i < this.filters.length; i++) {
+            if (i < this.filters.length - 1) {
+                this.filters[i].setNext(this.filters[i + 1]);
+            }
+        }
+    }
+
+    private initReplacers() {
+        this.getAllSubclasses(AbstractReplacer)
+            .forEach(value => {
+                const newInstance = Object.create(window[value].prototype);
+                newInstance.constructor.apply(newInstance, null);
+                this.filters.push((newInstance));
+            })
         ReplacersContainer.getInstance().addRange(replacers);
-        return this;
     }
+
 
     public build(debugMode: boolean = false) {
         Context._debug = debugMode;

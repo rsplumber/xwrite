@@ -1,3 +1,11 @@
+import {Context} from "./application/Context";
+import {RequestInitializerFilter} from "./application/filters/RequestInitializerFilter";
+import {CommandProviderFilter} from "./application/filters/CommandProviderFilter";
+import {PrepareDataFilter} from "./application/filters/PrepareDataFilter";
+import {EventOnUIFilter} from "./application/filters/EventOnUIFilter";
+import {NotificationFilter} from "./application/filters/NotificationFilter";
+import {MessageCenterFilter} from "./application/filters/MessageCenterFilter";
+
 figma.showUI(__html__);
 figma.ui.resize(660,560)
 
@@ -245,6 +253,9 @@ figma.on("run", () => {
  
 })
 
+figma.on("run", () => {
+  Context.builder().build(true);
+})
 
 
 function prepareData(){

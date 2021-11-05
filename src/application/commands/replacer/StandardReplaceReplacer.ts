@@ -1,8 +1,8 @@
-import {IReplacer} from "./IReplacer";
+import {AbstractReplacer} from "./AbstractReplacer";
 import {TextNodeData} from "../../../shared/TextNodeData";
 import {TextDirectionFixer} from "../../helpers/TextDirectionFixer";
 
-export class StandardReplaceReplacer implements IReplacer {
+export class StandardReplaceReplacer extends AbstractReplacer {
 
     replace(textNodeData: TextNodeData, replaceFrom: string, replaceTo: string): void {
         if (!textNodeData.text.includes(replaceFrom)) return;

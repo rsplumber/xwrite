@@ -1,7 +1,7 @@
 import {AbstractContainer} from "../abstractions/AbstractContainer";
-import {IReplacer} from "../../commands/replacer/IReplacer";
+import {AbstractReplacer} from "../../commands/replacer/AbstractReplacer";
 
-export class ReplacersContainer extends AbstractContainer<IReplacer> {
+export class ReplacersContainer extends AbstractContainer<AbstractReplacer> {
 
     private static instance: ReplacersContainer;
 
@@ -18,10 +18,10 @@ export class ReplacersContainer extends AbstractContainer<IReplacer> {
     }
 
     initItems(): void {
-        super.items = new Array<IReplacer>();
+        super.items = new Array<AbstractReplacer>();
     }
 
-    getById(id: string): IReplacer {
+    getById(id: string): AbstractReplacer {
         return super.items.find(value => value.sign() === id);
     }
 }

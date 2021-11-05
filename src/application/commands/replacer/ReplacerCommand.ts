@@ -2,7 +2,7 @@ import {AbstractCommand} from "../abstractions/AbstractCommand";
 import {Response} from "../../../shared/Response";
 import {Request} from "../../../shared/Request";
 import {Context} from "../../Context";
-import {IReplacer} from "./IReplacer";
+import {AbstractReplacer} from "./AbstractReplacer";
 
 export class ReplacerCommand extends AbstractCommand {
 
@@ -23,7 +23,7 @@ export class ReplacerCommand extends AbstractCommand {
         return undefined;
     }
 
-    private static getReplacer(id: string): IReplacer {
+    private static getReplacer(id: string): AbstractReplacer {
         const container = Context.getReplacersContainer();
         let replacer = container.getById(id);
         if (replacer == null) {

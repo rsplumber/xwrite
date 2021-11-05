@@ -1,7 +1,7 @@
-import {IReplacer} from "./IReplacer";
+import {AbstractReplacer} from "./AbstractReplacer";
 import {TextNodeData} from "../../../shared/TextNodeData";
 
-export class ReplaceAllReplacer implements IReplacer {
+export class ReplaceAllReplacer extends AbstractReplacer {
 
     replace(textNodeData: TextNodeData, replaceFrom: string, replaceTo: string): void {
         textNodeData.node.characters = replaceTo;

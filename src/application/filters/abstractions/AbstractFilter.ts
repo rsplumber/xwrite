@@ -17,5 +17,9 @@ export abstract class AbstractFilter implements IFilter {
 
     abstract order(): number;
 
+    disabled(): boolean {
+        return false;
+    };
+
 
 }
