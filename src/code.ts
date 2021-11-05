@@ -2,12 +2,13 @@ import {Context} from "./application/Context";
 import {NodeDetectorCommand} from "./application/commands/node_detector/NodeDetectorCommand";
 import {RequestInitializerFilter} from "./application/filters/RequestInitializerFilter";
 import {CommandProviderFilter} from "./application/filters/CommandProviderFilter";
-import {PrepareDataFilter} from "./application/filters/PrepareDataFilter";
+import {RefreshDataFilter} from "./application/filters/RefreshDataFilter";
 import {EventOnUIFilter} from "./application/filters/EventOnUIFilter";
 import {MessageCenterFilter} from "./application/filters/MessageCenterFilter";
 import {NotificationFilter} from "./application/filters/NotificationFilter";
 import {FreeWriterCommand} from "./application/commands/free_writer/FreeWriterCommand";
 import {MoveTextCommand} from "./application/commands/move_text/MoveTextCommand";
+import {DeleteTextCommand} from "./application/commands/delete_text/DeleteTextCommand";
 
 figma.showUI(__html__);
 figma.ui.resize(660, 560)
@@ -254,7 +255,7 @@ figma.on("run", () => {
         .addFilters([
             new RequestInitializerFilter(),
             new CommandProviderFilter(),
-            new PrepareDataFilter(),
+            new RefreshDataFilter(),
             new EventOnUIFilter(),
             new MessageCenterFilter(),
             new NotificationFilter()
@@ -262,6 +263,7 @@ figma.on("run", () => {
         .addCommands([
             new NodeDetectorCommand(),
             new MoveTextCommand(),
+            new DeleteTextCommand(),
             new FreeWriterCommand()
         ])
         .build(true);

@@ -300,7 +300,7 @@ function detectTextsOnBatchUI(texts_data){
   }
 
   function deleteButtonOnClick(clickedButton){
-    parent.postMessage({ pluginMessage: { type: 'delete_text' , text_node_id :clickedButton.id } }, '*')
+    parent.postMessage({ pluginMessage: { type: 'deleteText' , data :clickedButton.id } }, '*')
   }
 
   function createInput(id , text){
