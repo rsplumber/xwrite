@@ -7,7 +7,7 @@ export class ReplacersContainer extends AbstractContainer<AbstractReplacer> {
 
     protected constructor() {
         super();
-        this.initItems();
+
     }
 
     public static getInstance(): ReplacersContainer {
@@ -18,11 +18,8 @@ export class ReplacersContainer extends AbstractContainer<AbstractReplacer> {
         return ReplacersContainer.instance;
     }
 
-    initItems(): void {
-        super.items = new Array<AbstractReplacer>();
-    }
 
     getById(id: string): AbstractReplacer {
-        return super.items.find(value => value.sign() === id);
+        return this.getAll().find(value => value.sign() === id);
     }
 }

@@ -7,7 +7,6 @@ export class TextNodesContainer extends AbstractContainer<TextNodeData> {
 
     protected constructor() {
         super();
-        this.initItems();
     }
 
     public static getInstance(): TextNodesContainer {
@@ -18,11 +17,8 @@ export class TextNodesContainer extends AbstractContainer<TextNodeData> {
         return TextNodesContainer.instance;
     }
 
-    initItems(): void {
-        super.items = new Array<TextNodeData>();
-    }
 
     getById(id: string): TextNodeData {
-        return super.items.find(value => value.id === id);
+        return this.getAll().find(value => value.id === id);
     }
 }

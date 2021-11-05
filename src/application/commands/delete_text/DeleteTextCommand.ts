@@ -17,5 +17,9 @@ export class DeleteTextCommand extends AbstractCommand {
         return undefined;
     }
 
+    identifier(): string {
+        return "deleteText";
+    }
+
 
 }

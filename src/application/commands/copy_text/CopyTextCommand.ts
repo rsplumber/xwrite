@@ -22,5 +22,9 @@ export class CopyTextCommand extends AbstractCommand {
         return undefined;
     }
 
+    identifier(): string {
+        return "copyText";
+    }
+
 
 }

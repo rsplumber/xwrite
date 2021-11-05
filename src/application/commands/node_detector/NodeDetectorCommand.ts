@@ -6,9 +6,7 @@ import {Context} from "../../Context";
 
 export class NodeDetectorCommand extends AbstractCommand {
 
-
     execute(request: Request): Response {
-        console.log("here")
         const detected = this.detect();
         return Context.responseGenerator(detected)
             .eventOnUi("detect_texts", Context.getTextNodesContainer().getAll())
@@ -16,6 +14,11 @@ export class NodeDetectorCommand extends AbstractCommand {
             .setNotificationMessage("Haha")
             .generate();
     }
+
+    identifier(): string {
+        return "nodeDetector";
+    }
+
 
     private detect() {
         let walker = this.walkTree(figma.currentPage.selection)
@@ -26,6 +29,7 @@ export class NodeDetectorCommand extends AbstractCommand {
         while (!(res = walker.next()).done) {
             let node = res.value
             if (node.type === 'TEXT') {
+                console.log("text: " + node.characters)
                 if (textsContainer.getById(node.id) != null) continue;
                 textsContainer.add(new TextNodeData(node, node.characters));
             }
@@ -39,6 +43,7 @@ export class NodeDetectorCommand extends AbstractCommand {
     private* walkTree(node) {
         yield node;
         let children = node.children;
+        console.log("childred: " + node.children);
         if (children) {
             for (let child of children) {
                 yield* this.walkTree(child)

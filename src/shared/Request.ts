@@ -1,5 +1,3 @@
-import {AbstractCommand} from "../application/commands/abstractions/AbstractCommand";
-
 export class Request {
 
     private _canceled: boolean = false;
@@ -7,9 +5,8 @@ export class Request {
     private readonly _commandIdentifier: string;
     private _data: Map<string, any> = new Map<string, any>();
 
-    constructor(command) {
-        if (command ! instanceof AbstractCommand) return;
-        this._commandIdentifier = command.constructor.name.replace("Command", "");
+    constructor(command: string) {
+        this._commandIdentifier = command;
     }
 
 

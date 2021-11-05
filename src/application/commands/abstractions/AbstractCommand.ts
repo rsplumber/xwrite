@@ -5,7 +5,9 @@ export abstract class AbstractCommand {
 
     abstract execute(request: Request): Response;
 
-    public identifier(): string {
+    abstract identifier(): string;
+
+    public autoIdentifier(): string {
         return this.constructor.name.replace("Command", "");
     }
 }

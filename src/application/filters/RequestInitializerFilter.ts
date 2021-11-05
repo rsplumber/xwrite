@@ -5,7 +5,7 @@ import {Context} from "../Context";
 export class RequestInitializerFilter extends AbstractFilter {
     public handle(request: Request): void {
         request.attachToData("debug_mode", Context.getInstance().isDebugMode());
-        if (request.commandIdentifier == null || request.data == null) {
+        if (request.commandIdentifier == null) {
             return;
         }
         super.handle(request);

@@ -5,9 +5,7 @@ export abstract class AbstractContainer<Type> implements IContainer<Type> {
     protected constructor() {
     }
 
-    protected items: Array<Type>;
-
-    abstract initItems(): void;
+    protected items: Array<Type> = new Array<Type>();
 
     abstract getById(id: string): Type;
 

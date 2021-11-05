@@ -23,4 +23,8 @@ export class BatchWriterCommand extends AbstractCommand {
         return undefined;
     }
 
+    identifier(): string {
+        return "batchWriter";
+    }
+
 }

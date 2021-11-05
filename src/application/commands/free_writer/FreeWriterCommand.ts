@@ -20,5 +20,9 @@ export class FreeWriterCommand extends AbstractCommand {
         return undefined;
     }
 
+    identifier(): string {
+        return "freeWriter";
+    }
+
 
 }

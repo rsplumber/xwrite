@@ -32,5 +32,9 @@ export class ReplacerCommand extends AbstractCommand {
         return replacer;
     }
 
+    identifier(): string {
+        return "replacer";
+    }
+
 
 }

@@ -20,4 +20,8 @@ export class ResizeCommand extends AbstractCommand {
         }
         return undefined;
     }
+
+    identifier(): string {
+        return "resize";
+    }
 }

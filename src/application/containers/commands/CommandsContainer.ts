@@ -7,7 +7,6 @@ export class CommandsContainer extends AbstractContainer<AbstractCommand> {
 
     protected constructor() {
         super();
-        this.initItems();
     }
 
     public static getInstance(): CommandsContainer {
@@ -18,11 +17,7 @@ export class CommandsContainer extends AbstractContainer<AbstractCommand> {
         return CommandsContainer.instance;
     }
 
-    initItems(): void {
-        super.items = new Array<AbstractCommand>();
-    }
-
     getById(id: string): AbstractCommand {
-        return super.items.find(value => value.identifier() === id);
+        return this.getAll().find(value => value.identifier() === id);
     }
 }

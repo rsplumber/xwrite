@@ -63,7 +63,7 @@ export class Context {
         this._debug = value;
     }
 
-    public static generateRequest(command): Request {
+    public static generateRequest(command: string): Request {
         return new Request(command);
     }
 
@@ -143,10 +143,11 @@ export class ContextBuilder {
     }
 
     private initFilters() {
-        const organizedFilters = this.filters.filter(value => !value.disabled())
-            .sort(a => a.order());
+        const organizedFilters = this.filters;
+        // .filter(value => !value.disabled())
+        // .sort(a => a.order());
         Context.getInstance().requestChainFilter = organizedFilters[0];
-        for (let i = 1; i < organizedFilters.length; i++) {
+        for (let i = 0; i < organizedFilters.length; i++) {
             if (i < organizedFilters.length - 1) {
                 organizedFilters[i].setNext(organizedFilters[i + 1]);
             }
