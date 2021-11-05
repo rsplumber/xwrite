@@ -1,10 +1,9 @@
 import {AbstractFilter} from "./abstractions/AbstractFilter";
 import {Request} from "../../shared/Request";
-import {Response} from "../../shared/Response";
 import {Context} from "../Context";
 
 export class EventOnUIFilter extends AbstractFilter {
-    public handle(request: Request): Response {
+    public handle(request: Request): void {
         const type = Context.currentResponse().data['type'] as string;
         const data = Context.currentResponse().data['data'];
         if (type != null) {
@@ -14,7 +13,7 @@ export class EventOnUIFilter extends AbstractFilter {
             })
         }
 
-        return super.handle(request);
+        super.handle(request);
     }
 
     order(): number {

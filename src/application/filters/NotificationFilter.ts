@@ -1,15 +1,14 @@
 import {AbstractFilter} from "./abstractions/AbstractFilter";
 import {Request} from "../../shared/Request";
-import {Response} from "../../shared/Response";
 import {Context} from "../Context";
 
 export class NotificationFilter extends AbstractFilter {
-    public handle(request: Request): Response {
+    public handle(request: Request): void {
         const notification = Context.currentResponse().data['notificationMessage'];
-        if(notification != null){
+        if (notification != null) {
             figma.notify(notification);
         }
-        return super.handle(request);
+        super.handle(request);
     }
 
     order(): number {

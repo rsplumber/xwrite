@@ -1,10 +1,9 @@
 import {AbstractFilter} from "./abstractions/AbstractFilter";
 import {Request} from "../../shared/Request";
-import {Response} from "../../shared/Response";
 import {Context} from "../Context";
 
 export class MessageCenterFilter extends AbstractFilter {
-    public handle(request: Request): Response {
+    public handle(request: Request): void {
         const type = Context.currentResponse().data['messageCenterType'] as string;
         const message = Context.currentResponse().data['messageCenter'];
         if (type && message) {
@@ -13,7 +12,7 @@ export class MessageCenterFilter extends AbstractFilter {
                 'data': message
             })
         }
-        return super.handle(request);
+        super.handle(request);
     }
 
     order(): number {

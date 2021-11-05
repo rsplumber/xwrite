@@ -1,6 +1,5 @@
 import {IFilter} from './IFilter';
 import {Request} from "../../../shared/Request";
-import {Response} from "../../../shared/Response";
 
 export abstract class AbstractFilter implements IFilter {
     private nextHandler: IFilter;
@@ -10,9 +9,9 @@ export abstract class AbstractFilter implements IFilter {
         return handler;
     }
 
-    public handle(request: Request): Response {
+    public handle(request: Request): void {
         if (request.canceled || !this.nextHandler) return null;
-        return this.nextHandler.handle(request);
+        this.nextHandler.handle(request);
     }
 
     abstract order(): number;
