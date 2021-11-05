@@ -1,8 +1,8 @@
 export class Response {
 
-    private _success : boolean;
+    private _success: boolean;
     private _message: string;
-    private _data : Map<string, any> = new Map<string, any>();
+    private _data: Map<string, any> = new Map<string, any>();
 
     get success(): boolean {
         return this._success;
@@ -28,8 +28,8 @@ export class Response {
         this._data = value;
     }
 
-    public attachToData(key , value) : Response{
-        this.data.set(key , value);
+    public attachData(key, value): Response {
+        this.data.set(key, value);
         return this;
     }
 }

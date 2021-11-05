@@ -17,6 +17,8 @@ export class Context {
 
     static response: Response;
 
+    static statistics: Map<string, any>;
+
     public static builder(): ContextBuilder {
         return new ContextBuilder();
     }
@@ -117,29 +119,33 @@ export class ResponseGenerator {
     }
 
     public setNotificationMessage(message: string): ResponseGenerator {
-        Context.response.attachToData("notificationMessage", message);
+        Context.response.attachData("notificationMessage", message);
         return this;
     }
 
     public setMessageCenterText(message: string): ResponseGenerator {
-        Context.response.attachToData("messageCenterType", "message_center");
-        Context.response.attachToData("messageCenter", message);
+        Context.response.attachData("messageCenterType", "message_center");
+        Context.response.attachData("messageCenter", message);
         return this;
     }
 
     public refreshData(): ResponseGenerator {
-        Context.response.attachToData("prepareData", true);
+        Context.response.attachData("prepareData", true);
         return this;
     }
 
     public eventOnUi(type: string, data): ResponseGenerator {
-        Context.response.attachToData("type", type);
-        Context.response.attachToData("data", data);
+        Context.response.attachData("type", type);
+        Context.response.attachData("data", data);
         return this;
     }
 
+    public addStatistics() {
+        Context.response.attachData("statistics", true);
+    }
+
     public generate(): Response {
-        Context.response.attachToData("debug_mode", Context.isDebugMode());
+        Context.response.attachData("debug_mode", Context.isDebugMode());
         return Context.response;
     }
 }
