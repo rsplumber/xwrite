@@ -4,8 +4,8 @@ import {Context} from "../Context";
 
 export class MessageCenterFilter extends AbstractFilter {
     public handle(request: Request): void {
-        const type = Context.currentResponse().data['messageCenterType'] as string;
-        const message = Context.currentResponse().data['messageCenter'];
+        const type = Context.currentResponse().getValue("messageCenterType") as string;
+        const message = Context.currentResponse().getValue("messageCenter");
         if (type && message) {
             figma.ui.postMessage({
                 'type': type,

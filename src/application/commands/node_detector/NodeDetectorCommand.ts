@@ -6,49 +6,93 @@ import {Context} from "../../Context";
 
 export class NodeDetectorCommand extends AbstractCommand {
 
-    execute(request: Request): Response {
-        const detected = this.detect();
-        return Context.responseGenerator(detected)
-            .eventOnUi("detect_texts", Context.getTextNodesContainer().getAll())
-            .setMessageCenterText("hello")
-            .setNotificationMessage("Haha")
-            .generate();
-    }
+    private statistics: Map<string, number>;
 
     identifier(): string {
         return "nodeDetector";
     }
 
+    execute(request: Request): Response {
 
-    private detect() {
-        let walker = this.walkTree(figma.currentPage.selection)
+        this.initStatistics();
+
+        figma.currentPage.selection.forEach(value => this.detect(value));
+
+        return Context.responseGenerator(true)
+            .eventOnUi("detect_texts", Context.getTextNodesContainer().getAll())
+            .setMessageCenterText(this.generateStatisticsText())
+            .generate();
+    }
+
+    private initStatistics() {
+        this.statistics = new Map<string, number>();
+        this.statistics.set("FRAME", 0);
+        this.statistics.set("GROUP", 0);
+        this.statistics.set("INSTANCE", 0);
+        this.statistics.set("COMPONENT", 0);
+        this.statistics.set("TEXT", 0);
+    }
+
+    private generateStatisticsText(): string {
+        let statsMessage = "";
+        if (this.statistics.get("TEXT") <= 0) {
+            return "Select some texts";
+        }
+
+        if (this.statistics.get("FRAME") > 0) {
+            statsMessage += this.statistics.get("FRAME") + " Frame, ";
+        }
+        if (this.statistics.get("COMPONENT") > 0) {
+            statsMessage += this.statistics.get("COMPONENT") + " Component, ";
+        }
+        if (this.statistics.get("INSTANCE") > 0) {
+            statsMessage += this.statistics.get("INSTANCE") + " Instance, ";
+        }
+        if (this.statistics.get("GROUP") > 0) {
+            statsMessage += this.statistics.get("GROUP") + " Group, ";
+        }
+        statsMessage += this.statistics.get("TEXT") + " Text Selected";
+        return statsMessage;
+    }
+
+
+    private detect(sceneNode: SceneNode): void {
+        let walker = this.walkTree(sceneNode);
         let res;
         let count = 0;
         const textsContainer = Context.getTextNodesContainer();
         textsContainer.refresh();
         while (!(res = walker.next()).done) {
             let node = res.value
+            this.countStatistics(node.type);
             if (node.type === 'TEXT') {
-                console.log("text: " + node.characters)
                 if (textsContainer.getById(node.id) != null) continue;
                 textsContainer.add(new TextNodeData(node, node.characters));
             }
             if (++count === 100) {
-                return false;
+                return;
             }
         }
-        return true;
+        return;
     }
 
     private* walkTree(node) {
         yield node;
         let children = node.children;
-        console.log("childred: " + node.children);
         if (children) {
             for (let child of children) {
                 yield* this.walkTree(child)
             }
         }
     }
+
+    private countStatistics(type: string): void {
+
+        if (this.statistics.has(type)) {
+            console.log("TYPE: " + type);
+            this.statistics.set(type, this.statistics.get(type) + 1);
+        }
+    }
+
 
 }

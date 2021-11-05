@@ -4,7 +4,11 @@ import {Context} from "../Context";
 
 export class PrepareDataFilter extends AbstractFilter {
     public handle(request: Request): void {
-        Context.generateRequest("nodeDetector");
+        const needRefresh = Context.currentResponse().getValue("refreshData") as boolean;
+        if (needRefresh) {
+            console.log("here!");
+            Context.generateRequest("nodeDetector");
+        }
         super.handle(request);
     }
 

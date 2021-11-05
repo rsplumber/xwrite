@@ -4,9 +4,9 @@ import {Context} from "../Context";
 
 export class EventOnUIFilter extends AbstractFilter {
     public handle(request: Request): void {
-        const type = Context.currentResponse().data['type'] as string;
-        const data = Context.currentResponse().data['data'];
-        if (type != null) {
+        const type = Context.currentResponse().getValue("type") as string;
+        const data = Context.currentResponse().getValue("data");
+        if (type) {
             figma.ui.postMessage({
                 'type': type,
                 'data': data

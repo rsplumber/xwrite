@@ -18,7 +18,7 @@ export class Context {
 
     private _requestChainFilter: IFilter;
 
-    static response: Response;
+    private response: Response;
 
     static statistics: Map<string, any>;
 
@@ -71,8 +71,16 @@ export class Context {
         RequestExecutor.execute(request);
     }
 
-    public static currentResponse(): Response {
+    public currentResponse(): Response {
         return this.response;
+    }
+
+    public attachResponse(response: Response): void {
+        this.response = response;
+    }
+
+    public static currentResponse(): Response {
+        return Context.getInstance().currentResponse();
     }
 
     public static responseGenerator(success: boolean): ResponseGenerator {
@@ -167,37 +175,37 @@ export class ContextBuilder {
 export class ResponseGenerator {
 
     constructor(success: boolean) {
-        Context.response = new Response(success);
+        Context.getInstance().attachResponse(new Response(success));
     }
 
     public setNotificationMessage(message: string): ResponseGenerator {
-        Context.response.attachData("notificationMessage", message);
+        Context.currentResponse().attachData("notificationMessage", message);
         return this;
     }
 
     public setMessageCenterText(message: string): ResponseGenerator {
-        Context.response.attachData("messageCenterType", "message_center");
-        Context.response.attachData("messageCenter", message);
+        Context.currentResponse().attachData("messageCenterType", "message_center");
+        Context.currentResponse().attachData("messageCenter", message);
         return this;
     }
 
     public refreshData(): ResponseGenerator {
-        Context.response.attachData("prepareData", true);
+        Context.currentResponse().attachData("refreshData", true);
         return this;
     }
 
     public eventOnUi(type: string, data): ResponseGenerator {
-        Context.response.attachData("type", type);
-        Context.response.attachData("data", data);
+        Context.currentResponse().attachData("type", type);
+        Context.currentResponse().attachData("data", data);
         return this;
     }
 
     public addStatistics() {
-        Context.response.attachData("statistics", true);
+        Context.currentResponse().attachData("statistics", true);
     }
 
     public generate(): Response {
-        Context.response.attachData("debug_mode", Context.getInstance().isDebugMode());
-        return Context.response;
+        Context.currentResponse().attachData("debug_mode", Context.getInstance().isDebugMode());
+        return Context.currentResponse();
     }
 }
