@@ -8,8 +8,8 @@ export class ReplacerCommand extends AbstractCommand {
 
 
     execute(request: Request): Response {
-        const replaceFrom = request.data['replace_from'] as string;
-        const replaceTo = request.data['replace_to'] as string;
+        const replaceFrom = request.getValue("data")['replace_from'] as string;
+        const replaceTo = request.getValue("data")['replace_to'] as string;
         Context.getTextNodesContainer().getAll().forEach(async nodeData => {
 
             const text_node = nodeData.node as TextNode;
@@ -20,7 +20,9 @@ export class ReplacerCommand extends AbstractCommand {
 
         });
 
-        return undefined;
+        return Context.responseGenerator(true)
+            .setNotificationMessage("Replaced")
+            .generate();
     }
 
     private static getReplacer(id: string): AbstractReplacer {

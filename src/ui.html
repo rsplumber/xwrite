@@ -284,7 +284,7 @@
     function replaceText() {
         const replaceFrom = document.getElementById('replace_from').value;
         const replaceTo = document.getElementById('replace_to').value;
-        parent.postMessage({pluginMessage: {type: 'replace', replace_from: replaceFrom, replace_to: replaceTo}}, '*')
+        parent.postMessage({pluginMessage: {type: 'replacer', data: {replace_from : replaceFrom, replace_to: replaceTo}}}, '*')
     }
 
     function createCopyButton(id) {
