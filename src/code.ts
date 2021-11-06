@@ -10,6 +10,7 @@ import {FreeWriterCommand} from "./application/commands/free_writer/FreeWriterCo
 import {MoveTextCommand} from "./application/commands/move_text/MoveTextCommand";
 import {DeleteTextCommand} from "./application/commands/delete_text/DeleteTextCommand";
 import {BatchWriterCommand} from "./application/commands/batch_writer/BatchWriterCommand";
+import {AutoDirectionCommand} from "./application/commands/auto_direction/AutoDirectionCommand";
 
 figma.showUI(__html__);
 figma.ui.resize(660, 560)
@@ -267,6 +268,7 @@ figma.on("run", () => {
             new DeleteTextCommand(),
             new FreeWriterCommand(),
             new BatchWriterCommand(),
+            new AutoDirectionCommand(),
         ])
         .build(true);
 })
