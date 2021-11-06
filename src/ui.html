@@ -149,14 +149,14 @@
         switch (type) {
             case 'detect_texts' :
                 texts_data = pluginMessage['data'];
-                if (texts_data.length == 1) {
+                if (texts_data.length === 1) {
                     document.getElementById("freeWriterButton").click();
                     detectTextsOnUI(texts_data);
-
                 } else {
                     document.getElementById("batchWriterButton").click();
                     detectTextsOnUI(texts_data);
                 }
+
                 document.getElementById('bottomBar').setAttribute('style', "display: flex;");
 
                 break;
