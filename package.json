@@ -5,7 +5,7 @@
   "main": "./dist/code.js",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "watch" : "webpack --watch"
+    "watch": "webpack --watch"
   },
   "author": "Plumber sha.a.wf@gmail.com",
   "license": "",

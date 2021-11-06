@@ -13,6 +13,7 @@ import {BatchWriterCommand} from "./application/commands/batch_writer/BatchWrite
 import {AutoDirectionCommand} from "./application/commands/auto_direction/AutoDirectionCommand";
 import {ResizeCommand} from "./application/commands/resize/ResizeCommand";
 import {ReplacerCommand} from "./application/commands/replacer/ReplacerCommand";
+import {CopyToClipboardCommand} from "./application/commands/copy_to_clipboard/CopyToClipboardCommand";
 
 figma.showUI(__html__);
 figma.ui.resize(660, 560)
@@ -45,7 +46,8 @@ figma.on("run", () => {
             new BatchWriterCommand(),
             new AutoDirectionCommand(),
             new ResizeCommand(),
-            new ReplacerCommand()
+            new ReplacerCommand(),
+            new CopyToClipboardCommand()
         ])
         .build(true);
 
