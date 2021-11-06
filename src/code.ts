@@ -9,6 +9,7 @@ import {NotificationFilter} from "./application/filters/NotificationFilter";
 import {FreeWriterCommand} from "./application/commands/free_writer/FreeWriterCommand";
 import {MoveTextCommand} from "./application/commands/move_text/MoveTextCommand";
 import {DeleteTextCommand} from "./application/commands/delete_text/DeleteTextCommand";
+import {BatchWriterCommand} from "./application/commands/batch_writer/BatchWriterCommand";
 
 figma.showUI(__html__);
 figma.ui.resize(660, 560)
@@ -264,7 +265,8 @@ figma.on("run", () => {
             new NodeDetectorCommand(),
             new MoveTextCommand(),
             new DeleteTextCommand(),
-            new FreeWriterCommand()
+            new FreeWriterCommand(),
+            new BatchWriterCommand(),
         ])
         .build(true);
 })

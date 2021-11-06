@@ -148,7 +148,9 @@ onmessage = (event) => {
         document.getElementById("batchWriterButton").click();
         detectTextsOnUI(texts_data);
       }
-      break;
+        document.getElementById('bottomBar').setAttribute('style',"display: flex;");
+
+        break;
       case 'message_center':
       const message = pluginMessage['data'];
       showMessage(message);
@@ -178,7 +180,7 @@ function applyChanges(){
      texts_data[i].final_text = element.value;     
    }
 
-  parent.postMessage({ pluginMessage: { type: 'apply_changes' , text_data :texts_data } }, '*')
+  parent.postMessage({ pluginMessage: { type: 'batchWriter' , data :texts_data } }, '*')
 }
 
 function autoDirection(){
