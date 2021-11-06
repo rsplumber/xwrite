@@ -149,16 +149,10 @@
         switch (type) {
             case 'detect_texts' :
                 texts_data = pluginMessage['data'];
-                if (texts_data.length === 1) {
-                    document.getElementById("freeWriterButton").click();
-                    detectTextsOnUI(texts_data);
-                } else {
-                    document.getElementById("batchWriterButton").click();
-                    detectTextsOnUI(texts_data);
+                detectTextsOnUI(texts_data);
+                if(texts_data.length > 0){
+                    document.getElementById('bottomBar').setAttribute('style', "display: flex;");
                 }
-
-                document.getElementById('bottomBar').setAttribute('style', "display: flex;");
-
                 break;
             case 'message_center':
                 const message = pluginMessage['data'];
