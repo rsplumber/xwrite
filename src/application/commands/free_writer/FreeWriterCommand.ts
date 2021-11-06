@@ -15,8 +15,16 @@ export class FreeWriterCommand extends AbstractCommand {
             await figma.loadFontAsync(textNode.fontName as FontName);
             textNode.characters = directionFixedText;
         });
+        this.delay(1000).then(_ => {
+            Context.executeRequest(Context.generateRequest("nodeDetector"));
+        });
+
         return Context.responseGenerator(true)
             .generate();
+    }
+
+    private delay(ms: number) {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 
     identifier(): string {
