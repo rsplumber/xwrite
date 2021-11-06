@@ -201,7 +201,7 @@
         } else {
             showStandardUI();
         }
-        parent.postMessage({pluginMessage: {type: 'resize', sizeParam: sizeParams}}, '*')
+        parent.postMessage({pluginMessage: {type: 'resize', data: sizeParams}}, '*')
     }
 
     function showMinimizedUI() {

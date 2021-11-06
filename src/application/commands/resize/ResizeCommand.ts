@@ -1,12 +1,13 @@
 import {AbstractCommand} from "../abstractions/AbstractCommand";
 import {Response} from "../../../shared/Response";
 import {Request} from "../../../shared/Request";
+import {Context} from "../../Context";
 
 export class ResizeCommand extends AbstractCommand {
 
 
     execute(request: Request): Response {
-        const resizeParam = request.data['sizeParam'] as string;
+        const resizeParam = request.getValue("data") as string;
         switch (resizeParam) {
             case 'minimize':
                 figma.ui.resize(100, 100)
@@ -18,7 +19,8 @@ export class ResizeCommand extends AbstractCommand {
                 figma.ui.resize(1920, 1080)
                 break;
         }
-        return undefined;
+        return Context.responseGenerator(true)
+            .generate();
     }
 
     identifier(): string {
