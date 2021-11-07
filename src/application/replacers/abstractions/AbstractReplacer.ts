@@ -4,6 +4,6 @@ export abstract class AbstractReplacer {
 
     abstract replace(textNodeData: TextNodeData, replaceFrom: string, replaceTo: string): void;
 
-    abstract sign() : string;
+    abstract sign(): string;
 
 }

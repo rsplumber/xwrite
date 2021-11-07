@@ -1,8 +1,8 @@
-import {AbstractCommand} from "../abstractions/AbstractCommand";
-import {Response} from "../../../shared/Response";
-import {Request} from "../../../shared/Request";
-import {TextNodeData} from "../../../shared/TextNodeData";
-import {Context} from "../../Context";
+import {AbstractCommand} from "./abstractions/AbstractCommand";
+import {Response} from "../../shared/Response";
+import {Request} from "../../shared/Request";
+import {TextNodeData} from "../../shared/TextNodeData";
+import {Context} from "../Context";
 
 export class NodeDetectorCommand extends AbstractCommand {
 

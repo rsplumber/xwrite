@@ -1,7 +1,7 @@
-import {AbstractCommand} from "../abstractions/AbstractCommand";
-import {Response} from "../../../shared/Response";
-import {Request} from "../../../shared/Request";
-import {Context} from "../../Context";
+import {AbstractCommand} from "./abstractions/AbstractCommand";
+import {Response} from "../../shared/Response";
+import {Request} from "../../shared/Request";
+import {Context} from "../Context";
 
 export class MoveTextCommand extends AbstractCommand {
 

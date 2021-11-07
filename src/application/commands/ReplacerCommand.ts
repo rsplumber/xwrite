@@ -1,8 +1,8 @@
-import {AbstractCommand} from "../abstractions/AbstractCommand";
-import {Response} from "../../../shared/Response";
-import {Request} from "../../../shared/Request";
-import {Context} from "../../Context";
-import {AbstractReplacer} from "./AbstractReplacer";
+import {AbstractCommand} from "./abstractions/AbstractCommand";
+import {Response} from "../../shared/Response";
+import {Request} from "../../shared/Request";
+import {Context} from "../Context";
+import {AbstractReplacer} from "../replacers/abstractions/AbstractReplacer";
 
 export class ReplacerCommand extends AbstractCommand {
 

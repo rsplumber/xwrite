@@ -1,5 +1,5 @@
-import {AbstractContainer} from "../abstractions/AbstractContainer";
-import {AbstractCommand} from "../../commands/abstractions/AbstractCommand";
+import {AbstractContainer} from "./abstractions/AbstractContainer";
+import {AbstractCommand} from "../commands/abstractions/AbstractCommand";
 
 export class CommandsContainer extends AbstractContainer<AbstractCommand> {
 

@@ -1,5 +1,5 @@
-import {AbstractContainer} from "../abstractions/AbstractContainer";
-import {AbstractReplacer} from "../../commands/replacer/AbstractReplacer";
+import {AbstractContainer} from "./abstractions/AbstractContainer";
+import {AbstractReplacer} from "../replacers/abstractions/AbstractReplacer";
 
 export class ReplacersContainer extends AbstractContainer<AbstractReplacer> {
 

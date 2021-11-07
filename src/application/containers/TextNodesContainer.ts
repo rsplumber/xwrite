@@ -1,5 +1,5 @@
-import {TextNodeData} from "../../../shared/TextNodeData";
-import {AbstractContainer} from "../abstractions/AbstractContainer";
+import {TextNodeData} from "../../shared/TextNodeData";
+import {AbstractContainer} from "./abstractions/AbstractContainer";
 
 export class TextNodesContainer extends AbstractContainer<TextNodeData> {
 

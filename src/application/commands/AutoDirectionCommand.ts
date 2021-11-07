@@ -1,8 +1,8 @@
-import {AbstractCommand} from "../abstractions/AbstractCommand";
-import {Response} from "../../../shared/Response";
-import {Request} from "../../../shared/Request";
-import {Context} from "../../Context";
-import {TextDirectionFixer} from "../../helpers/TextDirectionFixer";
+import {AbstractCommand} from "./abstractions/AbstractCommand";
+import {Response} from "../../shared/Response";
+import {Request} from "../../shared/Request";
+import {Context} from "../Context";
+import {TextDirectionFixer} from "../helpers/TextDirectionFixer";
 
 export class AutoDirectionCommand extends AbstractCommand {
 

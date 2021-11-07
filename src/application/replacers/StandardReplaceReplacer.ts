@@ -1,5 +1,5 @@
-import {AbstractReplacer} from "./AbstractReplacer";
-import {TextNodeData} from "../../../shared/TextNodeData";
+import {AbstractReplacer} from "./abstractions/AbstractReplacer";
+import {TextNodeData} from "../../shared/TextNodeData";
 
 export class StandardReplaceReplacer extends AbstractReplacer {
 

@@ -1,19 +1,19 @@
 import {Context} from "./application/Context";
-import {NodeDetectorCommand} from "./application/commands/node_detector/NodeDetectorCommand";
+import {NodeDetectorCommand} from "./application/commands/NodeDetectorCommand";
 import {RequestInitializerFilter} from "./application/filters/RequestInitializerFilter";
 import {CommandProviderFilter} from "./application/filters/CommandProviderFilter";
 import {RefreshDataFilter} from "./application/filters/RefreshDataFilter";
 import {EventOnUIFilter} from "./application/filters/EventOnUIFilter";
 import {MessageCenterFilter} from "./application/filters/MessageCenterFilter";
 import {NotificationFilter} from "./application/filters/NotificationFilter";
-import {FreeWriterCommand} from "./application/commands/free_writer/FreeWriterCommand";
-import {MoveTextCommand} from "./application/commands/move_text/MoveTextCommand";
-import {DeleteTextCommand} from "./application/commands/delete_text/DeleteTextCommand";
-import {BatchWriterCommand} from "./application/commands/batch_writer/BatchWriterCommand";
-import {AutoDirectionCommand} from "./application/commands/auto_direction/AutoDirectionCommand";
-import {ResizeCommand} from "./application/commands/resize/ResizeCommand";
-import {ReplacerCommand} from "./application/commands/replacer/ReplacerCommand";
-import {CopyToClipboardCommand} from "./application/commands/copy_to_clipboard/CopyToClipboardCommand";
+import {FreeWriterCommand} from "./application/commands/FreeWriterCommand";
+import {MoveTextCommand} from "./application/commands/MoveTextCommand";
+import {DeleteTextCommand} from "./application/commands/DeleteTextCommand";
+import {BatchWriterCommand} from "./application/commands/BatchWriterCommand";
+import {AutoDirectionCommand} from "./application/commands/AutoDirectionCommand";
+import {ResizeCommand} from "./application/commands/ResizeCommand";
+import {ReplacerCommand} from "./application/commands/ReplacerCommand";
+import {CopyToClipboardCommand} from "./application/commands/CopyToClipboardCommand";
 
 figma.showUI(__html__);
 figma.ui.resize(660, 560)

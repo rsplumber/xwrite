@@ -1,16 +1,16 @@
 import {IFilter} from "./filters/abstractions/IFilter";
-import {AbstractReplacer} from "./commands/replacer/AbstractReplacer";
-import {ReplacersContainer} from "./containers/replacers/ReplacersContainer";
-import {CommandsContainer} from "./containers/commands/CommandsContainer";
-import {TextNodesContainer} from "./containers/nodes/TextNodesContainer";
+import {AbstractReplacer} from "./replacers/abstractions/AbstractReplacer";
+import {ReplacersContainer} from "./containers/ReplacersContainer";
+import {CommandsContainer} from "./containers/CommandsContainer";
+import {TextNodesContainer} from "./containers/TextNodesContainer";
 import {Response} from "../shared/Response";
 import {Request} from "../shared/Request";
 import {AbstractFilter} from "./filters/abstractions/AbstractFilter";
 import {AbstractCommand} from "./commands/abstractions/AbstractCommand";
 import {ReflectionHelper} from "./helpers/ReflectionHelper";
 import {RequestExecutor} from "./RequestExecutor";
-import {ReplaceAllReplacer} from "./commands/replacer/ReplaceAllReplacer";
-import {StandardReplaceReplacer} from "./commands/replacer/StandardReplaceReplacer";
+import {ReplaceAllReplacer} from "./replacers/ReplaceAllReplacer";
+import {StandardReplaceReplacer} from "./replacers/StandardReplaceReplacer";
 
 export class Context {
 
