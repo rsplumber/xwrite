@@ -8,17 +8,19 @@ import {RequestExecutor} from "../../RequestExecutor";
 
 export class BatchWriterCommand extends AbstractCommand {
 
-    execute(request: Request): Response {
+    identifier(): string {
+        return "batchWriter";
+    }
 
-        this.applyChanges(request).then(_ =>{
-            RequestExecutor.execute(Context.generateRequest("nodeDetector"));
-        });
+    async execute(request: Request): Promise<Response> {
+        await BatchWriterCommand.applyChanges(request);
         return Context.responseGenerator(true)
+            .refreshData()
             .setNotificationMessage("Changes applied")
             .generate();
     }
 
-    private async applyChanges(request: Request) {
+    private static async applyChanges(request: Request) {
         const finalData: Array<TextNodeData> = request.getValue("data") as Array<TextNodeData>;
 
         for (const nodeData of Context.getTextNodesContainer().getAll()) {
@@ -29,10 +31,6 @@ export class BatchWriterCommand extends AbstractCommand {
                 textNode.characters = TextDirectionFixer.fix(selectedTextData.final_text);
             }
         }
-    }
-
-    identifier(): string {
-        return "batchWriter";
     }
 
 }

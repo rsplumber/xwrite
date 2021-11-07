@@ -5,17 +5,15 @@ import {Context} from "../../Context";
 
 export class CopyToClipboardCommand extends AbstractCommand {
 
-    execute(request: Request): Response {
+    identifier(): string {
+        return "copyToClipboard";
+    }
 
-        console.log("Here")
+    async execute(request: Request): Promise<Response> {
         const textToCopy = request.getValue("data") as string;
         return Context.responseGenerator(true)
             .setNotificationMessage("Copy to clipboard")
             .generate();
-    }
-
-    identifier(): string {
-        return "copyToClipboard";
     }
 
 

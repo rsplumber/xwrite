@@ -6,23 +6,33 @@ import {AbstractReplacer} from "./AbstractReplacer";
 
 export class ReplacerCommand extends AbstractCommand {
 
+    identifier(): string {
+        return "replacer";
+    }
 
-    execute(request: Request): Response {
-        const replaceFrom = request.getValue("data")['replace_from'] as string;
-        const replaceTo = request.getValue("data")['replace_to'] as string;
-        Context.getTextNodesContainer().getAll().forEach(async nodeData => {
+    async execute(request: Request): Promise<Response> {
 
-            const text_node = nodeData.node as TextNode;
-            await figma.loadFontAsync(text_node.fontName as FontName);
-
-            const replacer = ReplacerCommand.getReplacer(replaceFrom);
-            replacer.replace(nodeData, replaceFrom, replaceTo);
-
-        });
+        await ReplacerCommand.applyChanges(request);
 
         return Context.responseGenerator(true)
             .setNotificationMessage("Replaced")
             .generate();
+    }
+
+    private static async applyChanges(request: Request) {
+        const replaceFrom = request.getValue("data")['replace_from'] as string;
+        const replaceTo = request.getValue("data")['replace_to'] as string;
+
+        const replacer = ReplacerCommand.getReplacer(replaceFrom);
+
+        for (const nodeData of Context.getTextNodesContainer().getAll()) {
+
+            const text_node = nodeData.node as TextNode;
+            await figma.loadFontAsync(text_node.fontName as FontName);
+
+            replacer.replace(nodeData, replaceFrom, replaceTo);
+
+        }
     }
 
     private static getReplacer(id: string): AbstractReplacer {
@@ -32,10 +42,6 @@ export class ReplacerCommand extends AbstractCommand {
             replacer = container.getById("$__standard");
         }
         return replacer;
-    }
-
-    identifier(): string {
-        return "replacer";
     }
 
 

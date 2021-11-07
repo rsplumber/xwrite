@@ -3,9 +3,10 @@ import {Request} from "../../shared/Request";
 import {CommandExecutor} from "../commands/abstractions/CommandExecutor";
 
 export class CommandProviderFilter extends AbstractFilter {
-    public handle(request: Request): void {
-        CommandExecutor.getInstance().execute(request);
-        super.handle(request);
+    public async handle(request: Request): Promise<void> {
+        console.log("command:" + request.commandIdentifier);
+        await CommandExecutor.getInstance().execute(request);
+        await super.handle(request);
     }
 
     order(): number {

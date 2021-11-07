@@ -5,8 +5,11 @@ import {Context} from "../../Context";
 
 export class ResizeCommand extends AbstractCommand {
 
+    identifier(): string {
+        return "resize";
+    }
 
-    execute(request: Request): Response {
+    async execute(request: Request): Promise<Response> {
         const resizeParam = request.getValue("data") as string;
         switch (resizeParam) {
             case 'minimize':
@@ -23,7 +26,5 @@ export class ResizeCommand extends AbstractCommand {
             .generate();
     }
 
-    identifier(): string {
-        return "resize";
-    }
+
 }

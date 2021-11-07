@@ -67,8 +67,8 @@ export class Context {
         return new Request(command);
     }
 
-    public static executeRequest(request: Request): void {
-        RequestExecutor.execute(request);
+    public static async executeRequest(request: Request): Promise<void> {
+        await RequestExecutor.execute(request);
     }
 
     public currentResponse(): Response {

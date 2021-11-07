@@ -6,24 +6,24 @@ import {TextDirectionFixer} from "../../helpers/TextDirectionFixer";
 
 export class AutoDirectionCommand extends AbstractCommand {
 
+    identifier(): string {
+        return "autoDirection";
+    }
 
-    execute(request: Request): Response {
-        Context.getTextNodesContainer().getAll().forEach(async nodeData => {
-            const textNode = nodeData.node as TextNode;
-
-            await figma.loadFontAsync(textNode.fontName as FontName);
-
-            textNode.characters = TextDirectionFixer.fix(nodeData.text);
-
-        });
-
+    async execute(request: Request): Promise<Response> {
+        await AutoDirectionCommand.applyChanges(request);
         return Context.responseGenerator(true)
             .setNotificationMessage("Direction fixed")
             .generate();
     }
 
-    identifier(): string {
-        return "autoDirection";
+
+    private static async applyChanges(request: Request) {
+        for (const nodeData of Context.getTextNodesContainer().getAll()) {
+            const textNode = nodeData.node as TextNode;
+            await figma.loadFontAsync(textNode.fontName as FontName);
+            textNode.characters = TextDirectionFixer.fix(nodeData.text);
+        }
     }
 
 

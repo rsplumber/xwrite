@@ -9,9 +9,9 @@ export abstract class AbstractFilter implements IFilter {
         return handler;
     }
 
-    public handle(request: Request): void {
+    public async handle(request: Request): Promise<void> {
         if (request.canceled || !this.nextHandler) return null;
-        this.nextHandler.handle(request);
+        await this.nextHandler.handle(request);
     }
 
     abstract order(): number;

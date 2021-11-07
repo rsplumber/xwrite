@@ -46,6 +46,6 @@ export class Request {
     }
 
     public getValue(key: string): any {
-        return this.data.get(key);
+        return this.data.get(key) ?? {};
     }
 }

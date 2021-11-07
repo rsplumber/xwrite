@@ -6,19 +6,12 @@ import {TextDirectionFixer} from "../../helpers/TextDirectionFixer";
 
 export class FreeWriterCommand extends AbstractCommand {
 
+    identifier(): string {
+        return "freeWriter";
+    }
 
-    execute(request: Request): Response {
-        const finalText = request.getValue("data") as string;
-        const directionFixedText = TextDirectionFixer.fix(finalText);
-        Context.getTextNodesContainer().getAll().forEach(async nodeData => {
-            const textNode = nodeData.node as TextNode;
-            await figma.loadFontAsync(textNode.fontName as FontName);
-            textNode.characters = directionFixedText;
-        });
-        this.delay(1000).then(_ => {
-            Context.executeRequest(Context.generateRequest("nodeDetector"));
-        });
-
+    async execute(request: Request): Promise<Response> {
+        await FreeWriterCommand.applyChanges(request);
         return Context.responseGenerator(true)
             .generate();
     }
@@ -27,8 +20,15 @@ export class FreeWriterCommand extends AbstractCommand {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-    identifier(): string {
-        return "freeWriter";
+    private static async applyChanges(request: Request) {
+        const finalText = request.getValue("data") as string;
+        const directionFixedText = TextDirectionFixer.fix(finalText);
+
+        for (const nodeData of Context.getTextNodesContainer().getAll()) {
+            const textNode = nodeData.node as TextNode;
+            await figma.loadFontAsync(textNode.fontName as FontName);
+            textNode.characters = directionFixedText;
+        }
     }
 
 

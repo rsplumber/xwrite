@@ -6,8 +6,7 @@ import {Context} from "../../Context";
 export class MoveTextCommand extends AbstractCommand {
 
 
-    execute(request: Request): Response {
-
+    async execute(request: Request): Promise<Response> {
         const textNodeId = request.getValue("data") as string;
 
         Context.getTextNodesContainer()

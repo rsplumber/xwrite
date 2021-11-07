@@ -3,7 +3,8 @@ import {Request} from "../../shared/Request";
 import {Context} from "../Context";
 
 export class EventOnUIFilter extends AbstractFilter {
-    public handle(request: Request): void {
+    public async handle(request: Request): Promise<void> {
+        console.log("ui" + + request.commandIdentifier)
         const type = Context.currentResponse().getValue("type") as string;
         const data = Context.currentResponse().getValue("data");
         if (type) {
@@ -13,7 +14,7 @@ export class EventOnUIFilter extends AbstractFilter {
             })
         }
 
-        super.handle(request);
+        await super.handle(request);
     }
 
     order(): number {

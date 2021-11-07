@@ -3,7 +3,7 @@ import {Response} from "../../../shared/Response";
 
 export abstract class AbstractCommand {
 
-    abstract execute(request: Request): Response;
+    abstract execute(request: Request): Promise<Response>;
 
     abstract identifier(): string;
 

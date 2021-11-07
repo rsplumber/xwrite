@@ -12,11 +12,17 @@ export class NodeDetectorCommand extends AbstractCommand {
         return "nodeDetector";
     }
 
-    execute(request: Request): Response {
+    async execute(request: Request): Promise<Response> {
 
         this.initStatistics();
+        const findInPage = request.getValue("data")['findInPage'] as boolean;
 
-        figma.currentPage.selection.forEach(value => this.detect(value));
+        if(findInPage){
+            this.detect(figma.currentPage);
+        }else{
+            figma.currentPage.selection.forEach(value => this.detect(value));
+        }
+
 
         return Context.responseGenerator(true)
             .eventOnUi("detect_texts", Context.getTextNodesContainer().getAll())
@@ -56,8 +62,8 @@ export class NodeDetectorCommand extends AbstractCommand {
     }
 
 
-    private detect(sceneNode: SceneNode): void {
-        let walker = this.walkTree(sceneNode);
+    private detect(nodes): void {
+        let walker = this.walkTree(nodes);
         let res;
         let count = 0;
         const textsContainer = Context.getTextNodesContainer();
