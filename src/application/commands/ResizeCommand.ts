@@ -9,8 +9,8 @@ export class ResizeCommand extends AbstractCommand {
         return "resize";
     }
 
-    async execute(request: Request): Promise<Response> {
-        const resizeParam = request.getValue("data") as string;
+    async executeAsync(request: Request): Promise<Response> {
+        const resizeParam = request.getFromData("data") as string;
         switch (resizeParam) {
             case 'minimize':
                 figma.ui.resize(100, 100)

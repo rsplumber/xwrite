@@ -10,8 +10,8 @@ export class DeleteTextCommand extends AbstractCommand {
         return "deleteText";
     }
 
-    async execute(request: Request): Promise<Response> {
-        const textNodeId = request.getValue("data") as string;
+    async executeAsync(request: Request): Promise<Response> {
+        const textNodeId = request.getFromData("data") as string;
         const textNode = Context.getTextNodesContainer().getById(textNodeId) as TextNodeData;
         textNode.node.remove();
         return Context.responseGenerator(true)

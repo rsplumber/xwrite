@@ -4,5 +4,5 @@ export interface IFilter {
 
     setNext(handler: IFilter): IFilter;
 
-    handle(request: Request): Promise<void>;
+    handleAsync(request: Request): Promise<void>;
 }

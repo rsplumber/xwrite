@@ -3,12 +3,12 @@ import {Request} from "../../shared/Request";
 import {Context} from "../Context";
 
 export class RefreshDataFilter extends AbstractFilter {
-    public async handle(request: Request): Promise<void> {
-        const needRefresh = Context.currentResponse().getValue("refreshData") as boolean;
+    public async handleAsync(request: Request): Promise<void> {
+        const needRefresh = Context.currentResponse().getFromData("refreshData") as boolean;
         if (needRefresh) {
-            await Context.executeRequest(Context.generateRequest("detectNode"));
+            await Context.executeRequestAsync(Context.generateRequest("detectNode"));
         }
-        await super.handle(request);
+        await super.handleAsync(request);
     }
 
     order(): number {

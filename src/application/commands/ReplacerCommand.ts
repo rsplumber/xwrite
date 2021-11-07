@@ -10,18 +10,18 @@ export class ReplacerCommand extends AbstractCommand {
         return "replacer";
     }
 
-    async execute(request: Request): Promise<Response> {
+    async executeAsync(request: Request): Promise<Response> {
 
-        await ReplacerCommand.applyChanges(request);
+        await ReplacerCommand.applyChangesAsync(request);
 
         return Context.responseGenerator(true)
             .setNotificationMessage("Replaced")
             .generate();
     }
 
-    private static async applyChanges(request: Request) {
-        const replaceFrom = request.getValue("data")['replace_from'] as string;
-        const replaceTo = request.getValue("data")['replace_to'] as string;
+    private static async applyChangesAsync(request: Request) {
+        const replaceFrom = request.getFromData("data")['replace_from'] as string;
+        const replaceTo = request.getFromData("data")['replace_to'] as string;
 
         const replacer = ReplacerCommand.getReplacer(replaceFrom);
 

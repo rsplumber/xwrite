@@ -10,15 +10,15 @@ export class AutoDirectionCommand extends AbstractCommand {
         return "autoDirection";
     }
 
-    async execute(request: Request): Promise<Response> {
-        await AutoDirectionCommand.applyChanges(request);
+    async executeAsync(request: Request): Promise<Response> {
+        await AutoDirectionCommand.applyChangesAsync();
         return Context.responseGenerator(true)
             .setNotificationMessage("Direction fixed")
             .generate();
     }
 
 
-    private static async applyChanges(request: Request) {
+    private static async applyChangesAsync() {
         for (const nodeData of Context.getTextNodesContainer().getAll()) {
             const textNode = nodeData.node as TextNode;
             await figma.loadFontAsync(textNode.fontName as FontName);

@@ -3,16 +3,16 @@ import {Request} from "../../shared/Request";
 import {Context} from "../Context";
 
 export class MessageCenterFilter extends AbstractFilter {
-    public async handle(request: Request): Promise<void> {
-        const type = Context.currentResponse().getValue("messageCenterType") as string;
-        const message = Context.currentResponse().getValue("messageCenter");
+    public async handleAsync(request: Request): Promise<void> {
+        const type = Context.currentResponse().getFromData("messageCenterType") as string;
+        const message = Context.currentResponse().getFromData("messageCenter");
         if (type && message) {
             figma.ui.postMessage({
                 'type': type,
                 'data': message
             })
         }
-        await super.handle(request);
+        await super.handleAsync(request);
     }
 
     order(): number {

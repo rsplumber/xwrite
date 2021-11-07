@@ -12,10 +12,10 @@ export class NodeDetectorCommand extends AbstractCommand {
         return "nodeDetector";
     }
 
-    async execute(request: Request): Promise<Response> {
+    async executeAsync(request: Request): Promise<Response> {
 
         this.initStatistics();
-        const findInPage = request.getValue("data")['findInPage'] as boolean;
+        const findInPage = request.getFromData("data")['findInPage'] as boolean;
 
         if(findInPage){
             this.detect(figma.currentPage);

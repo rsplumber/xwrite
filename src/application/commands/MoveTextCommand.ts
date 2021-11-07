@@ -5,9 +5,12 @@ import {Context} from "../Context";
 
 export class MoveTextCommand extends AbstractCommand {
 
+    identifier(): string {
+        return "moveText";
+    }
 
-    async execute(request: Request): Promise<Response> {
-        const textNodeId = request.getValue("data") as string;
+    async executeAsync(request: Request): Promise<Response> {
+        const textNodeId = request.getFromData("data") as string;
 
         Context.getTextNodesContainer()
             .getAll()
@@ -22,9 +25,6 @@ export class MoveTextCommand extends AbstractCommand {
             .generate();
     }
 
-    identifier(): string {
-        return "moveText";
-    }
 
 
 }

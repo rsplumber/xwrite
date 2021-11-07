@@ -3,12 +3,12 @@ import {Request} from "../../shared/Request";
 import {Context} from "../Context";
 
 export class NotificationFilter extends AbstractFilter {
-    public async handle(request: Request): Promise<void> {
-        const notification = Context.currentResponse().getValue("notificationMessage");
+    public async handleAsync(request: Request): Promise<void> {
+        const notification = Context.currentResponse().getFromData("notificationMessage");
         if (notification) {
             figma.notify(notification);
         }
-        await super.handle(request);
+        await super.handleAsync(request);
     }
 
     order(): number {

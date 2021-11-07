@@ -11,16 +11,16 @@ export class BatchWriterCommand extends AbstractCommand {
         return "batchWriter";
     }
 
-    async execute(request: Request): Promise<Response> {
-        await BatchWriterCommand.applyChanges(request);
+    async executeAsync(request: Request): Promise<Response> {
+        await BatchWriterCommand.applyChangesAsync(request);
         return Context.responseGenerator(true)
             .refreshData()
             .setNotificationMessage("Changes applied")
             .generate();
     }
 
-    private static async applyChanges(request: Request) {
-        const finalData: Array<TextNodeData> = request.getValue("data") as Array<TextNodeData>;
+    private static async applyChangesAsync(request: Request) {
+        const finalData: Array<TextNodeData> = request.getFromData("data") as Array<TextNodeData>;
 
         for (const nodeData of Context.getTextNodesContainer().getAll()) {
             const textNode = nodeData.node as TextNode;

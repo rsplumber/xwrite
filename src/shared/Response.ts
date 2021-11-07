@@ -38,7 +38,7 @@ export class Response {
         return this;
     }
 
-    public getValue(key: string): any {
+    public getFromData(key: string): any {
         return this.data.get(key);
     }
 }

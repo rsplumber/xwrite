@@ -67,8 +67,8 @@ export class Context {
         return new Request(command);
     }
 
-    public static async executeRequest(request: Request): Promise<void> {
-        await RequestExecutor.execute(request);
+    public static async executeRequestAsync(request: Request): Promise<void> {
+        await RequestExecutor.executeAsync(request);
     }
 
     public currentResponse(): Response {
@@ -198,10 +198,6 @@ export class ResponseGenerator {
         Context.currentResponse().attachData("type", type);
         Context.currentResponse().attachData("data", data);
         return this;
-    }
-
-    public addStatistics() {
-        Context.currentResponse().attachData("statistics", true);
     }
 
     public generate(): Response {

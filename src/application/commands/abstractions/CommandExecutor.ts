@@ -17,9 +17,9 @@ export class CommandExecutor {
         return CommandExecutor.instance;
     }
 
-    async execute(request: Request): Promise<Response> {
+    async executeAsync(request: Request): Promise<Response> {
         return Context.getCommandsContainer()
             .getById(request.commandIdentifier)
-            .execute(request);
+            .executeAsync(request);
     }
 }

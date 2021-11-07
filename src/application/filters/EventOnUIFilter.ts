@@ -3,10 +3,10 @@ import {Request} from "../../shared/Request";
 import {Context} from "../Context";
 
 export class EventOnUIFilter extends AbstractFilter {
-    public async handle(request: Request): Promise<void> {
+    public async handleAsync(request: Request): Promise<void> {
         console.log("ui" + + request.commandIdentifier)
-        const type = Context.currentResponse().getValue("type") as string;
-        const data = Context.currentResponse().getValue("data");
+        const type = Context.currentResponse().getFromData("type") as string;
+        const data = Context.currentResponse().getFromData("data");
         if (type) {
             figma.ui.postMessage({
                 'type': type,
@@ -14,7 +14,7 @@ export class EventOnUIFilter extends AbstractFilter {
             })
         }
 
-        await super.handle(request);
+        await super.handleAsync(request);
     }
 
     order(): number {

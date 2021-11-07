@@ -10,8 +10,8 @@ export class FreeWriterCommand extends AbstractCommand {
         return "freeWriter";
     }
 
-    async execute(request: Request): Promise<Response> {
-        await FreeWriterCommand.applyChanges(request);
+    async executeAsync(request: Request): Promise<Response> {
+        await FreeWriterCommand.applyChangesAsync(request);
         return Context.responseGenerator(true)
             .generate();
     }
@@ -20,8 +20,8 @@ export class FreeWriterCommand extends AbstractCommand {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-    private static async applyChanges(request: Request) {
-        const finalText = request.getValue("data") as string;
+    private static async applyChangesAsync(request: Request) {
+        const finalText = request.getFromData("data") as string;
         const directionFixedText = TextDirectionFixer.fix(finalText);
 
         for (const nodeData of Context.getTextNodesContainer().getAll()) {
