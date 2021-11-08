@@ -1,29 +1,56 @@
-export class DirectionDetector{
+import {RandomHelper} from "./RandomHelper";
 
-    private static readonly LTR_ALPHABET:string[] = [
-        "A", "a", "B" , "b" , "C", "c" ,  "D" ,  "d" ,  "E" ,  "e" ,  "F" ,  "f" ,  "G" ,  "g" ,  "H" ,  "h" ,  "I" ,  "i" ,  "J" ,  "j", "K", "k", "L", "l", "M", "m", "N", "n", "O", "o", "P", "p", "Q", "q", "R", "r", "S", "s", "T", "t", "U", "u", "V", "v", "W", "w", "X", "x", "Y", "y", "Z", "z",
-        "1" , "2", "3", "4", "5", "6", "7", "8", "9", "0" ," "
-    ];
-    private static readonly  RTL_ALPHABET: string[]= [
-        "ی", "ه" , "و" ,"ن" , "م" ,"ل","گ","ک","ق","ف","غ","ع","ظ","ط","ض","ص","ش","س","ژ","ز","ر","ذ","د","خ","ح","چ","ج","ث","ت","پ","ب","ا","آ","ء" ,
-        "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹", "۰" , " "
+export class DirectionDetector {
+
+    private static readonly RTL_CHARACTERS: string[] = [
+        "ی", "ه", "و", "ن", "م", "ل", "گ", "ک", "ق", "ف", "غ", "ع", "ظ", "ط", "ض", "ص", "ش", "س", "ژ", "ز", "ر", "ذ", "د", "خ", "ح", "چ", "ج", "ث", "ت", "پ", "ب", "ا", "آ", "ء",
+        "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹", "۰",
     ];
 
+    private static readonly CHECK_PERCENT = 80;
+    private static readonly PASS_PERCENT = 40;
 
-    public static detectDirection(text :string) : Direction{
-        if(text.length <= 1){
-            return Direction.LTR;
+    public static detectDirection(text: string): Direction {
+        if (text.length <= 1) {
+            return Direction.Unknown;
         }
-        const firstChar = text[0];
-        const secondChar = text[1];
-        if(this.RTL_ALPHABET.indexOf(firstChar) !== -1 && this.RTL_ALPHABET.indexOf(secondChar) !== -1){
-            return Direction.RTL;
+
+        const charsToCheck = DirectionDetector.findRandomCharsToCheck(text);
+
+        const rtlDetected = DirectionDetector.checkIfTextPassRtlDetection(charsToCheck);
+
+        return rtlDetected ? Direction.RTL : Direction.LTR;
+    }
+
+
+    private static findRandomCharsToCheck(text: string): string[] {
+        const charsToCheckCount = Math.floor((text.length * DirectionDetector.CHECK_PERCENT) / 100);
+        const charsToCheck = [];
+        for (let i = 0; i < charsToCheckCount; i++) {
+            charsToCheck.push(text[RandomHelper.getRandomInt(0, text.length)])
         }
-        return Direction.LTR;
+
+        return charsToCheck;
+    }
+
+    private static checkIfTextPassRtlDetection(charsToCheck: string[]): boolean {
+        let currentPassPercent = 0;
+        let countedPass = 0;
+        charsToCheck.forEach(value => {
+            if (this.RTL_CHARACTERS.indexOf(value) !== -1) {
+                countedPass++;
+                currentPassPercent = (countedPass * 100) / charsToCheck.length;
+            }
+            if (currentPassPercent >= DirectionDetector.PASS_PERCENT) {
+                return true;
+            }
+        });
+        return false;
     }
 
 }
 
+
 export enum Direction {
-    RTL = "RTL",LTR = "LTR"
+    RTL = "RTL", LTR = "LTR", Unknown = LTR
 }
