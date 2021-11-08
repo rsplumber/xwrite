@@ -13,13 +13,14 @@ export class NodeDetectorCommand extends AbstractCommand {
     }
 
     async executeAsync(request: Request): Promise<Response> {
-        console.log("node_te")
         this.initStatistics();
         const findInPage = request.getFromData("data")['findInPage'] as boolean;
 
         if (findInPage) {
             this.detect(figma.currentPage);
         } else {
+            console.log("refreshed");
+            Context.getTextNodesContainer().refresh();
             figma.currentPage.selection.forEach(value => this.detect(value));
         }
 
@@ -67,13 +68,10 @@ export class NodeDetectorCommand extends AbstractCommand {
         let res;
         let count = 0;
         const textsContainer = Context.getTextNodesContainer();
-        textsContainer.refresh();
         while (!(res = walker.next()).done) {
             let node = res.value
             this.countStatistics(node.type);
             if (node.type === 'TEXT') {
-                if (textsContainer.getById(node.id) != null) continue;
-                console.log(node.characters);
                 textsContainer.add(new TextNodeData(node, node.characters));
             }
             if (++count === 100) {

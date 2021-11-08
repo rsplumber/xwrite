@@ -9,12 +9,10 @@ export class RefreshDataFilter extends AbstractFilter {
         if (needRefresh) {
             const delay = Context.currentResponse().getFromData("refreshDataDelay") as number;
             if (delay && delay > 0) {
-                console.log("with delay")
                 this.delay(delay).then(async _ => {
                     await RefreshDataFilter.detectNodes();
                 })
             } else {
-                console.log("normal")
                 await RefreshDataFilter.detectNodes();
             }
 
