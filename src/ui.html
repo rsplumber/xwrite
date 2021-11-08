@@ -221,15 +221,13 @@
 
     function detectTextsOnFreeWriterUI(texts_data) {
         const freeWriterTextArea = document.getElementById('freeWriterText');
-        const textNodeData = texts_data[0];
-        freeWriterTextArea.value = textNodeData.text;
-        if (texts_data.length > 1) {
-            freeWriterTextArea.setAttribute("placeholder", "Type to replace all texts");
-        } else {
+
+        if (texts_data.length === 1) {
             freeWriterTextArea.setAttribute("placeholder", "Type to replace text");
-            if (texts_data[0] != null) {
-                freeWriterTextArea.value = textNodeData.text;
-            }
+            const textNodeData = texts_data[0];
+            freeWriterTextArea.value = textNodeData.text;
+        } else {
+            freeWriterTextArea.setAttribute("placeholder", "Type to replace all texts");
         }
 
     }
@@ -242,18 +240,17 @@
 
     function detectTextsOnBatchUI(texts_data) {
         clearFreeWriterUI();
-        var cont = document.getElementById('container');
-        var ul = document.createElement('ul');
+        const container = document.getElementById('container');
+        const ul = document.createElement('ul');
         ul.setAttribute('id', 'theList');
-        cont.innerHTML = "";
-
+        container.innerHTML = "";
 
         for (let i = 0; i < texts_data.length; i++) {
             const text_id = texts_data[i].id;
-            var li = document.createElement('li');
+            const li = document.createElement('li');
 
             li.setAttribute('style', 'display: flex;');
-            li.appendChild(createDeleteButton(text_id))
+            li.appendChild(createDeleteButton(text_id));
             li.appendChild(createParagraph(text_id, texts_data[i].text));
             li.appendChild(createCopyButton(text_id));
             li.appendChild(createInput(text_id, texts_data[i].final_text));
@@ -261,7 +258,7 @@
             ul.appendChild(li);     // append li to ul.
         }
 
-        cont.appendChild(ul);       // add list to the container.
+        container.appendChild(ul);       // add list to the container.
     }
 
     function createParagraph(id, text) {

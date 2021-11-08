@@ -13,6 +13,7 @@ export class NodeDetectorCommand extends AbstractCommand {
     }
 
     async executeAsync(request: Request): Promise<Response> {
+        console.log("node_te")
         this.initStatistics();
         const findInPage = request.getFromData("data")['findInPage'] as boolean;
 
@@ -72,6 +73,7 @@ export class NodeDetectorCommand extends AbstractCommand {
             this.countStatistics(node.type);
             if (node.type === 'TEXT') {
                 if (textsContainer.getById(node.id) != null) continue;
+                console.log(node.characters);
                 textsContainer.add(new TextNodeData(node, node.characters));
             }
             if (++count === 100) {
