@@ -220,14 +220,14 @@
     }
 
     function detectTextsOnFreeWriterUI(texts_data) {
-        var freeWriterTextArea = document.getElementById('freeWriterText');
-        freeWriterTextArea.value = "";
+        const freeWriterTextArea = document.getElementById('freeWriterText');
+        const textNodeData = texts_data[0];
+        freeWriterTextArea.value = textNodeData.text;
         if (texts_data.length > 1) {
             freeWriterTextArea.setAttribute("placeholder", "Type to replace all texts");
         } else {
             freeWriterTextArea.setAttribute("placeholder", "Type to replace text");
-            const textNodeData = texts_data[0];
-            if (texts_data != null && texts_data[0] != null) {
+            if (texts_data[0] != null) {
                 freeWriterTextArea.value = textNodeData.text;
             }
         }

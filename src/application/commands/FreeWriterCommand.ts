@@ -3,6 +3,7 @@ import {Response} from "../../shared/Response";
 import {Request} from "../../shared/Request";
 import {Context} from "../Context";
 import {TextDirectionFixer} from "../helpers/TextDirectionFixer";
+import {CommandExecutor} from "./abstractions/CommandExecutor";
 
 export class FreeWriterCommand extends AbstractCommand {
 
@@ -13,12 +14,11 @@ export class FreeWriterCommand extends AbstractCommand {
     async executeAsync(request: Request): Promise<Response> {
         await FreeWriterCommand.applyChangesAsync(request);
         return Context.responseGenerator(true)
+            .refreshData(1000)
             .generate();
     }
 
-    private delay(ms: number) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
+
 
     private static async applyChangesAsync(request: Request) {
         const finalText = request.getFromData("data") as string;

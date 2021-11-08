@@ -4,16 +4,15 @@ import {Context} from "../Context";
 
 export class EventOnUIFilter extends AbstractFilter {
     public async handleAsync(request: Request): Promise<void> {
-        console.log("ui" + + request.commandIdentifier)
-        const type = Context.currentResponse().getFromData("type") as string;
-        const data = Context.currentResponse().getFromData("data");
-        if (type) {
-            figma.ui.postMessage({
-                'type': type,
-                'data': data
-            })
+        const uiEvents = Context.currentResponse().getFromData("ui_events") as Map<string, any>
+        if (uiEvents) {
+            uiEvents.forEach((value, key) => {
+                figma.ui.postMessage({
+                    'type': key,
+                    'data': value
+                })
+            });
         }
-
         await super.handleAsync(request);
     }
 

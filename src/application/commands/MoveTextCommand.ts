@@ -20,7 +20,7 @@ export class MoveTextCommand extends AbstractCommand {
             });
 
         return Context.responseGenerator(true)
-            .eventOnUi("detect_texts", Context.getTextNodesContainer().getAll())
+            .addEventOnUi("detect_texts", Context.getTextNodesContainer().getAll())
             .setNotificationMessage("Text moved")
             .generate();
     }

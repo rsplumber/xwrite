@@ -20,11 +20,11 @@ figma.ui.resize(660, 560)
 
 
 figma.on("selectionchange", () => {
-    Context.executeRequestAsync(Context.generateRequest("nodeDetector"));
+    executeNodeDetector();
 })
 
 figma.on("currentpagechange", () => {
-    Context.executeRequestAsync(Context.generateRequest("nodeDetector"));
+    executeNodeDetector();
 })
 
 
@@ -51,7 +51,7 @@ figma.on("run", () => {
         ])
         .build(true);
 
-    Context.executeRequestAsync(Context.generateRequest("nodeDetector"));
+    executeNodeDetector();
 })
 
 
@@ -59,5 +59,9 @@ figma.ui.onmessage = async msg => {
     const request = Context.generateRequest(msg['type']).attachToData("data", msg['data']);
     Context.executeRequestAsync(request);
 };
+
+function executeNodeDetector() {
+    Context.executeRequestAsync(Context.generateRequest("nodeDetector"));
+}
 
 

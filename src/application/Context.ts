@@ -189,14 +189,19 @@ export class ResponseGenerator {
         return this;
     }
 
-    public refreshData(): ResponseGenerator {
+    public refreshData(delay: number = 0): ResponseGenerator {
         Context.currentResponse().attachData("refreshData", true);
+        if (delay > 0) {
+            Context.currentResponse().attachData("refreshDataDelay", delay);
+        }
         return this;
     }
 
-    public eventOnUi(type: string, data): ResponseGenerator {
-        Context.currentResponse().attachData("type", type);
-        Context.currentResponse().attachData("data", data);
+    public addEventOnUi(type: string, data): ResponseGenerator {
+        if (!Context.currentResponse().getFromData("ui_events")) {
+            Context.currentResponse().attachData("ui_events", new Map<string, any>());
+        }
+        Context.currentResponse().getFromData("ui_events").set(type, data);
         return this;
     }
 
