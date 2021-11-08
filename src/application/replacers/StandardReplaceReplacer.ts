@@ -1,5 +1,6 @@
 import {AbstractReplacer} from "./abstractions/AbstractReplacer";
 import {TextNodeData} from "../../shared/TextNodeData";
+import {TextDirectionFixer} from "../helpers/TextDirectionFixer";
 
 export class StandardReplaceReplacer extends AbstractReplacer {
 
@@ -7,7 +8,8 @@ export class StandardReplaceReplacer extends AbstractReplacer {
         if (!textNodeData.text.includes(replaceFrom)) return;
         await figma.loadFontAsync(textNodeData.node.fontName as FontName);
         const needToReplace = textNodeData.text;
-        textNodeData.node.characters = needToReplace.replace(new RegExp(replaceFrom, 'g'), replaceTo);
+        const replacedText = needToReplace.replace(new RegExp(replaceFrom, 'g'), replaceTo);
+        textNodeData.node.characters = TextDirectionFixer.fix(replacedText);
     }
 
     sign(): string {

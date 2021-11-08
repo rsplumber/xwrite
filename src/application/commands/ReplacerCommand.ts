@@ -4,6 +4,7 @@ import {Request} from "../../shared/Request";
 import {Context} from "../Context";
 import {AbstractReplacer} from "../replacers/abstractions/AbstractReplacer";
 import {CommandExecutor} from "./abstractions/CommandExecutor";
+import {TextDirectionFixer} from "../helpers/TextDirectionFixer";
 
 export class ReplacerCommand extends AbstractCommand {
 
@@ -25,11 +26,11 @@ export class ReplacerCommand extends AbstractCommand {
     }
 
     private static async applyChangesAsync(request: Request) {
+
         const replaceFrom = request.getFromData("data")['replace_from'] as string;
         const replaceTo = request.getFromData("data")['replace_to'] as string;
 
         const replacer = ReplacerCommand.getReplacer(replaceFrom);
-
         for (const nodeData of Context.getTextNodesContainer().getAll()) {
             await replacer.replaceAsync(nodeData, replaceFrom, replaceTo);
         }
