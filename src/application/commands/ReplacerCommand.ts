@@ -3,6 +3,7 @@ import {Response} from "../../shared/Response";
 import {Request} from "../../shared/Request";
 import {Context} from "../Context";
 import {AbstractReplacer} from "../replacers/abstractions/AbstractReplacer";
+import {CommandExecutor} from "./abstractions/CommandExecutor";
 
 export class ReplacerCommand extends AbstractCommand {
 
@@ -12,10 +13,14 @@ export class ReplacerCommand extends AbstractCommand {
 
     async executeAsync(request: Request): Promise<Response> {
 
+        if (Context.getTextNodesContainer().getAll().length === 0) {
+            await CommandExecutor.executeAsync(Context.generateRequest("nodeDetector")
+                .attachToData("findInPage", true));
+        }
         await ReplacerCommand.applyChangesAsync(request);
-
         return Context.responseGenerator(true)
             .setNotificationMessage("Replaced")
+            .refreshData()
             .generate();
     }
 
@@ -26,12 +31,7 @@ export class ReplacerCommand extends AbstractCommand {
         const replacer = ReplacerCommand.getReplacer(replaceFrom);
 
         for (const nodeData of Context.getTextNodesContainer().getAll()) {
-
-            const text_node = nodeData.node as TextNode;
-            await figma.loadFontAsync(text_node.fontName as FontName);
-
-            replacer.replace(nodeData, replaceFrom, replaceTo);
-
+            await replacer.replaceAsync(nodeData, replaceFrom, replaceTo);
         }
     }
 

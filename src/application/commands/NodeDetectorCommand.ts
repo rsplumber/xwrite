@@ -13,17 +13,13 @@ export class NodeDetectorCommand extends AbstractCommand {
     }
 
     async executeAsync(request: Request): Promise<Response> {
-        this.initStatistics();
-        const findInPage = request.getFromData("data")['findInPage'] as boolean;
+        this.refreshData();
 
-        if (findInPage) {
+        if (request.getFromData("findInPage")) {
             this.detect(figma.currentPage);
         } else {
-            console.log("refreshed");
-            Context.getTextNodesContainer().refresh();
             figma.currentPage.selection.forEach(value => this.detect(value));
         }
-
 
         return Context.responseGenerator(true)
             .addEventOnUi("detect_texts", Context.getTextNodesContainer().getAll())
@@ -31,6 +27,10 @@ export class NodeDetectorCommand extends AbstractCommand {
             .generate();
     }
 
+    private refreshData(){
+        this.initStatistics();
+        Context.getTextNodesContainer().refresh();
+    }
     private initStatistics() {
         this.statistics = new Map<string, number>();
         this.statistics.set("FRAME", 0);

@@ -2,7 +2,7 @@ import {TextNodeData} from "../../../shared/TextNodeData";
 
 export abstract class AbstractReplacer {
 
-    abstract replace(textNodeData: TextNodeData, replaceFrom: string, replaceTo: string): void;
+    abstract replaceAsync(textNodeData: TextNodeData, replaceFrom: string, replaceTo: string);
 
     abstract sign(): string;
 

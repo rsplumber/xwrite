@@ -4,7 +4,7 @@ import {CommandExecutor} from "../commands/abstractions/CommandExecutor";
 
 export class CommandProviderFilter extends AbstractFilter {
     public async handleAsync(request: Request): Promise<void> {
-        await CommandExecutor.getInstance().executeAsync(request);
+        await CommandExecutor.executeAsync(request);
         await super.handleAsync(request);
     }
 

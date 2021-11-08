@@ -22,4 +22,8 @@ export class CommandExecutor {
             .getById(request.commandIdentifier)
             .executeAsync(request);
     }
+
+    public static async executeAsync(request: Request){
+        return await CommandExecutor.getInstance().executeAsync(request);
+    }
 }

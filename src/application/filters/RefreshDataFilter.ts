@@ -12,7 +12,7 @@ export class RefreshDataFilter extends AbstractFilter {
             if (delay && delay > 0) {
                 await DelayProvider.getInstance().delay(delay);
             }
-            await RefreshDataFilter.detectNodes();
+            await RefreshDataFilter.detectNodes(request);
 
         }
         await super.handleAsync(request);
@@ -22,8 +22,9 @@ export class RefreshDataFilter extends AbstractFilter {
         return 0;
     }
 
-    private static async detectNodes() {
-        await CommandExecutor.getInstance().executeAsync(Context.generateRequest("nodeDetector"));
+    private static async detectNodes(request: Request) {
+        await CommandExecutor.executeAsync(Context.generateRequest("nodeDetector")
+            .attachToData("findInPage", request.getFromData("findInPage")));
     }
 
 }
