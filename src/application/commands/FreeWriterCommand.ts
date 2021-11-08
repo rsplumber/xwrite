@@ -14,7 +14,7 @@ export class FreeWriterCommand extends AbstractCommand {
     async executeAsync(request: Request): Promise<Response> {
         await FreeWriterCommand.applyChangesAsync(request);
         return Context.responseGenerator(true)
-            .refreshData(4000)
+            .refreshData(1000)
             .generate();
     }
 
