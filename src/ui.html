@@ -150,9 +150,6 @@
             case 'detect_texts' :
                 texts_data = pluginMessage['data'];
                 detectTextsOnUI(texts_data);
-                if (texts_data.length > 0) {
-                    document.getElementById('bottomBar').setAttribute('style', "display: flex;");
-                }
                 break;
             case 'message_center':
                 const message = pluginMessage['data'];
@@ -222,7 +219,10 @@
     function detectTextsOnFreeWriterUI(texts_data) {
         const freeWriterTextArea = document.getElementById('freeWriterText');
 
-        if (texts_data.length === 1) {
+        if(texts_data.length === 0){
+            freeWriterTextArea.setAttribute("placeholder", "Select texts");
+            freeWriterTextArea.value = "";
+        }else if (texts_data.length === 1) {
             freeWriterTextArea.setAttribute("placeholder", "Type to replace text");
             const textNodeData = texts_data[0];
             freeWriterTextArea.value = textNodeData.text;
@@ -240,6 +240,7 @@
 
     function detectTextsOnBatchUI(texts_data) {
         clearFreeWriterUI();
+        document.getElementById('bottomBar').setAttribute('style', texts_data.length > 0 ? "display: flex;" :"display: hidden;" );
         const container = document.getElementById('container');
         const ul = document.createElement('ul');
         ul.setAttribute('id', 'theList');
@@ -247,7 +248,7 @@
 
         for (let i = 0; i < texts_data.length; i++) {
             const text_id = texts_data[i].id;
-            console.log("on UI: " + texts_data[i].text);
+
             const li = document.createElement('li');
 
             li.setAttribute('style', 'display: flex;');
