@@ -14,6 +14,7 @@ export class AutoDirectionCommand extends AbstractCommand {
         await AutoDirectionCommand.applyChangesAsync();
         return Context.responseGenerator(true)
             .setNotificationMessage("Direction fixed")
+            .refreshData(200)
             .generate();
     }
 
@@ -22,7 +23,7 @@ export class AutoDirectionCommand extends AbstractCommand {
         for (const nodeData of Context.getTextNodesContainer().getAll()) {
             const textNode = nodeData.node as TextNode;
             await figma.loadFontAsync(textNode.fontName as FontName);
-            textNode.characters = TextDirectionFixer.fix(nodeData.text);
+            textNode.characters = TextDirectionFixer.fix(textNode.characters);
         }
     }
 
