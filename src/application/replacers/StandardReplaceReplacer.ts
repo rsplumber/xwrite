@@ -8,7 +8,8 @@ export class StandardReplaceReplacer extends AbstractReplacer {
         if (!textNodeData.text.includes(replaceFrom)) return;
         await figma.loadFontAsync(textNodeData.node.fontName as FontName);
         const needToReplace = textNodeData.text;
-        const replacedText = needToReplace.replace(new RegExp(replaceFrom, 'g'), replaceTo);
+        // const replacedText = needToReplace.replace(new RegExp(replaceFrom, 'g'), replaceTo);
+        const replacedText = needToReplace.split(replaceFrom).join(replaceTo);
         textNodeData.node.characters = TextDirectionFixer.fix(replacedText);
     }
 
