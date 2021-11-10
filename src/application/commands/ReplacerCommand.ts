@@ -4,6 +4,7 @@ import {Request} from "../../shared/Request";
 import {Context} from "../Context";
 import {AbstractReplacer} from "../replacers/abstractions/AbstractReplacer";
 import {CommandExecutor} from "./abstractions/CommandExecutor";
+import {Figma} from "../helpers/Figma";
 
 export class ReplacerCommand extends AbstractCommand {
 
@@ -31,8 +32,8 @@ export class ReplacerCommand extends AbstractCommand {
 
         const replacer = ReplacerCommand.getReplacer(replaceFrom);
         for (const nodeData of Context.getTextNodesContainer().getAll()) {
-            await figma.loadFontAsync(nodeData.node.fontName as FontName);
-            nodeData.node.characters = await replacer.replaceAsync(nodeData, replaceFrom, replaceTo);
+            const replacedText = await replacer.replaceAsync(nodeData, replaceFrom, replaceTo);
+            await Figma.setNodeText(nodeData.node, replacedText);
         }
     }
 

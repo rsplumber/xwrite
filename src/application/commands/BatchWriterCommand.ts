@@ -4,6 +4,7 @@ import {Request} from "../../shared/Request";
 import {TextNodeData} from "../../shared/TextNodeData";
 import {Context} from "../Context";
 import {TextDirectionFixer} from "../helpers/TextDirectionFixer";
+import {Figma} from "../helpers/Figma";
 
 export class BatchWriterCommand extends AbstractCommand {
 
@@ -25,9 +26,9 @@ export class BatchWriterCommand extends AbstractCommand {
         for (const nodeData of Context.getTextNodesContainer().getAll()) {
             const textNode = nodeData.node as TextNode;
             const selectedTextData = finalData.find(d => d.id == textNode.id);
-            await figma.loadFontAsync(textNode.fontName as FontName);
             if (selectedTextData.final_text.length !== 0) {
-                textNode.characters = TextDirectionFixer.fix(selectedTextData.final_text);
+                const finalText = TextDirectionFixer.fix(selectedTextData.final_text);
+                await Figma.setNodeText(textNode, finalText);
             }
         }
     }

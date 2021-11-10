@@ -4,6 +4,7 @@ import {Request} from "../../shared/Request";
 import {Context} from "../Context";
 import {CommandExecutor} from "./abstractions/CommandExecutor";
 import {AbstractJustifier} from "../justifiers/abstarctions/AbstractJustifier";
+import {Figma} from "../helpers/Figma";
 
 export class JustifyCommand extends AbstractCommand {
 
@@ -36,9 +37,9 @@ export class JustifyCommand extends AbstractCommand {
                     maxWidth = value.length;
                 }
             })
-            await figma.loadFontAsync(nodeData.node.fontName as FontName);
             const words = nodeData.text.split("\n").join(" ").split(" ");
-            nodeData.node.characters = await justifier.justifyAsync(words, maxWidth);
+            const justifiedText = await justifier.justifyAsync(words, maxWidth);
+            await Figma.setNodeText(nodeData.node, justifiedText);
         }
     }
 
