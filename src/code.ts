@@ -14,6 +14,7 @@ import {AutoDirectionCommand} from "./application/commands/AutoDirectionCommand"
 import {ResizeCommand} from "./application/commands/ResizeCommand";
 import {ReplacerCommand} from "./application/commands/ReplacerCommand";
 import {CopyToClipboardCommand} from "./application/commands/CopyToClipboardCommand";
+import {JustifyCommand} from "./application/commands/JustifyCommand";
 
 figma.showUI(__html__);
 figma.ui.resize(660, 560)
@@ -48,6 +49,7 @@ figma.on("run", () => {
             new AutoDirectionCommand(),
             new ResizeCommand(),
             new ReplacerCommand(),
+            new JustifyCommand(),
             new CopyToClipboardCommand()
         ])
         .build(true);

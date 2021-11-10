@@ -11,6 +11,8 @@ import {ReflectionHelper} from "./helpers/ReflectionHelper";
 import {RequestExecutor} from "./RequestExecutor";
 import {ReplaceAllReplacer} from "./replacers/ReplaceAllReplacer";
 import {StandardReplaceReplacer} from "./replacers/StandardReplaceReplacer";
+import {JustifiersContainer} from "./containers/JustifiersContainer";
+import {LTRWordJustify} from "./justifiers/LTRWordJustify";
 
 export class Context {
 
@@ -52,6 +54,10 @@ export class Context {
 
     public static getReplacersContainer(): ReplacersContainer {
         return ReplacersContainer.getInstance();
+    }
+
+    public static getJustifierContainer(): JustifiersContainer {
+        return JustifiersContainer.getInstance();
     }
 
     public isDebugMode(): boolean {
@@ -136,6 +142,12 @@ export class ContextBuilder {
         ]);
     }
 
+    private static initJustifiers() {
+        JustifiersContainer.getInstance().addRange([
+            new LTRWordJustify()
+        ]);
+    }
+
     public addCommands(commands: AbstractCommand[]): ContextBuilder {
         commands.forEach(value => this.commands.push(value));
         return this;
@@ -167,6 +179,7 @@ export class ContextBuilder {
         this.initFilters();
         this.initCommands();
         ContextBuilder.initReplacers();
+        ContextBuilder.initJustifiers();
         Context.getInstance().debug = debugMode;
     }
 

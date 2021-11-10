@@ -4,17 +4,17 @@ import {TextDirectionFixer} from "../helpers/TextDirectionFixer";
 
 export class StandardReplaceReplacer extends AbstractReplacer {
 
-    async replaceAsync(textNodeData: TextNodeData, replaceFrom: string, replaceTo: string) {
+    async replaceAsync(textNodeData: TextNodeData, replaceFrom: string, replaceTo: string): Promise<string> {
         if (!textNodeData.text.includes(replaceFrom)) return;
-        await figma.loadFontAsync(textNodeData.node.fontName as FontName);
         const needToReplace = textNodeData.text;
-        // const replacedText = needToReplace.replace(new RegExp(replaceFrom, 'g'), replaceTo);
         const replacedText = needToReplace.split(replaceFrom).join(replaceTo);
-        textNodeData.node.characters = TextDirectionFixer.fix(replacedText);
+        return TextDirectionFixer.fix(replacedText);
     }
 
     sign(): string {
         return "$__standard";
     }
+
+    // const replacedText = needToReplace.replace(new RegExp(replaceFrom, 'g'), replaceTo);
 
 }
