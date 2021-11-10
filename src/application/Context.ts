@@ -12,7 +12,7 @@ import {RequestExecutor} from "./RequestExecutor";
 import {ReplaceAllReplacer} from "./replacers/ReplaceAllReplacer";
 import {StandardReplaceReplacer} from "./replacers/StandardReplaceReplacer";
 import {JustifiersContainer} from "./containers/JustifiersContainer";
-import {LTRWordJustify} from "./justifiers/LTRWordJustify";
+import {SpaceJustify} from "./justifiers/SpaceJustify";
 
 export class Context {
 
@@ -144,7 +144,7 @@ export class ContextBuilder {
 
     private static initJustifiers() {
         JustifiersContainer.getInstance().addRange([
-            new LTRWordJustify()
+            new SpaceJustify()
         ]);
     }
 

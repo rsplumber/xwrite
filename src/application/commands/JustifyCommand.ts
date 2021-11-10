@@ -37,7 +37,8 @@ export class JustifyCommand extends AbstractCommand {
                 }
             })
             await figma.loadFontAsync(nodeData.node.fontName as FontName);
-            await justifier.justifyAsync(nodeData, maxWidth);
+            const words = nodeData.text.split("\n").join(" ").split(" ");
+            nodeData.node.characters = await justifier.justifyAsync(words, maxWidth);
         }
     }
 
