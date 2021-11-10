@@ -3,7 +3,6 @@ import {Response} from "../../shared/Response";
 import {Request} from "../../shared/Request";
 import {Context} from "../Context";
 import {Figma} from "../helpers/Figma";
-import {ReplacersContainer} from "../containers/ReplacersContainer";
 
 export class ReplacerCommand implements ICommand {
 
@@ -32,9 +31,9 @@ export class ReplacerCommand implements ICommand {
         const replaceFrom = request.getFromData("data")['replace_from'] as string;
         const replaceTo = request.getFromData("data")['replace_to'] as string;
 
-        let replacer = ReplacersContainer.getInstance().getById(replaceFrom);
+        let replacer = Context.getReplacersContainer().getById(replaceFrom);
         if (replacer == null) {
-            replacer = ReplacersContainer.getInstance().getById("$__standard");
+            replacer = Context.getReplacersContainer().getById("$__standard");
         }
         for (const nodeData of Context.getTextNodesContainer().getAll()) {
             const replacedText = await replacer.replaceAsync(nodeData, replaceFrom, replaceTo);

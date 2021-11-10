@@ -4,7 +4,6 @@ import {Request} from "../../shared/Request";
 import {Context} from "../Context";
 import {CommandExecutor} from "./abstractions/CommandExecutor";
 import {Figma} from "../helpers/Figma";
-import {JustifiersContainer} from "../containers/JustifiersContainer";
 
 export class JustifyCommand implements ICommand {
 
@@ -31,7 +30,7 @@ export class JustifyCommand implements ICommand {
 
     private static async applyChangesAsync(request: Request) {
         const justifierId = "space_justify";
-        const justifier = JustifiersContainer.getInstance().getById(justifierId);
+        const justifier = Context.getJustifierContainer().getById(justifierId);
         if (justifier == null) return;
         for (const nodeData of Context.getTextNodesContainer().getAll()) {
             const lines = nodeData.text.split("\n")

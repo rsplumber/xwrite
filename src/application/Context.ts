@@ -20,7 +20,6 @@ export class Context {
 
     static instance: Context;
 
-
     public static builder(): ContextBuilder {
         return new ContextBuilder();
     }

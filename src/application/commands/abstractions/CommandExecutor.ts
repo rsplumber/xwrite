@@ -17,7 +17,7 @@ export class CommandExecutor {
         return CommandExecutor.instance;
     }
 
-    async executeAsync(request: Request): Promise<Response> {
+    private async executeAsync(request: Request): Promise<Response> {
         return Context.getCommandsContainer()
             .getById(request.commandIdentifier)
             .executeAsync(request);

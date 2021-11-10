@@ -7,7 +7,6 @@ export class ReplacersContainer extends AbstractContainer<IReplacer> {
 
     protected constructor() {
         super();
-
     }
 
     public static getInstance(): ReplacersContainer {
