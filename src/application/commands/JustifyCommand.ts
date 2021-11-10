@@ -3,8 +3,8 @@ import {Response} from "../../shared/Response";
 import {Request} from "../../shared/Request";
 import {Context} from "../Context";
 import {CommandExecutor} from "./abstractions/CommandExecutor";
-import {AbstractJustifier} from "../justifiers/abstarctions/AbstractJustifier";
 import {Figma} from "../helpers/Figma";
+import {AbstractJustifier} from "../justifiers/abstarctions/AbstractJustifier";
 
 export class JustifyCommand extends AbstractCommand {
 
@@ -13,13 +13,12 @@ export class JustifyCommand extends AbstractCommand {
     }
 
     async executeAsync(request: Request): Promise<Response> {
-        console.log("Justify");
         if (Context.getTextNodesContainer().getAll().length === 0) {
-            await CommandExecutor.executeAsync(Context.generateRequest("nodeDetector")
+            await CommandExecutor.executeAsync(Request.generate("nodeDetector")
                 .attachToData("findInPage", true));
         }
         await JustifyCommand.applyChangesAsync(request);
-        return Context.responseGenerator(true)
+        return Response.generator(true)
             .setNotificationMessage("Justified")
             .refreshData()
             .generate();
@@ -27,7 +26,7 @@ export class JustifyCommand extends AbstractCommand {
 
     private static async applyChangesAsync(request: Request) {
         const justifierId = "space_justify";
-        const justifier = JustifyCommand.getJustifier(justifierId);
+        const justifier = AbstractJustifier.getBySign(justifierId);
         if (justifier == null) return;
         for (const nodeData of Context.getTextNodesContainer().getAll()) {
             const lines = nodeData.text.split("\n")
@@ -42,10 +41,5 @@ export class JustifyCommand extends AbstractCommand {
             await Figma.setNodeText(nodeData.node, justifiedText);
         }
     }
-
-    private static getJustifier(id: string): AbstractJustifier {
-        return Context.getJustifierContainer().getById(id);
-    }
-
 
 }

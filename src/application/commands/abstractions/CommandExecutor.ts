@@ -23,7 +23,7 @@ export class CommandExecutor {
             .executeAsync(request);
     }
 
-    public static async executeAsync(request: Request){
+    public static async executeAsync(request: Request): Promise<Response> {
         return await CommandExecutor.getInstance().executeAsync(request);
     }
 }

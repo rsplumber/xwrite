@@ -14,7 +14,7 @@ export class BatchWriterCommand extends AbstractCommand {
 
     async executeAsync(request: Request): Promise<Response> {
         await BatchWriterCommand.applyChangesAsync(request);
-        return Context.responseGenerator(true)
+        return Response.generator()
             .refreshData()
             .setNotificationMessage("Changes applied")
             .generate();

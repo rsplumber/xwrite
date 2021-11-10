@@ -1,3 +1,5 @@
+import {Context} from "../application/Context";
+
 export class Response {
 
     private _success: boolean;
@@ -40,5 +42,50 @@ export class Response {
 
     public getFromData(key: string): any {
         return this.data.get(key);
+    }
+
+    public static generator(success: boolean = true): ResponseGenerator {
+        return new ResponseGenerator(success);
+    }
+}
+
+export class ResponseGenerator {
+
+    private response: Response;
+
+    constructor(success: boolean) {
+        this.response = new Response(success);
+    }
+
+    public setNotificationMessage(message: string): ResponseGenerator {
+        this.response.attachData("notificationMessage", message);
+        return this;
+    }
+
+    public setMessageCenterText(message: string): ResponseGenerator {
+        this.response.attachData("messageCenterType", "message_center");
+        this.response.attachData("messageCenter", message);
+        return this;
+    }
+
+    public refreshData(delay: number = 0): ResponseGenerator {
+        this.response.attachData("refreshData", true);
+        if (delay > 0) {
+            this.response.attachData("refreshDataDelay", delay);
+        }
+        return this;
+    }
+
+    public addEventOnUi(type: string, data): ResponseGenerator {
+        if (!this.response.getFromData("ui_events")) {
+            this.response.attachData("ui_events", new Map<string, any>());
+        }
+        this.response.getFromData("ui_events").set(type, data);
+        return this;
+    }
+
+    public generate(): Response {
+        this.response.attachData("debug_mode", Context.getInstance().isDebugMode());
+        return this.response;
     }
 }

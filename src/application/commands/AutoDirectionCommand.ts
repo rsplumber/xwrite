@@ -13,7 +13,7 @@ export class AutoDirectionCommand extends AbstractCommand {
 
     async executeAsync(request: Request): Promise<Response> {
         await AutoDirectionCommand.applyChangesAsync();
-        return Context.responseGenerator(true)
+        return Response.generator()
             .setNotificationMessage("Direction fixed")
             .refreshData(200)
             .generate();

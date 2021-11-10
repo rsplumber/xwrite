@@ -11,7 +11,7 @@ export class CopyToClipboardCommand extends AbstractCommand {
 
     async executeAsync(request: Request): Promise<Response> {
         const textToCopy = request.getFromData("data") as string;
-        return Context.responseGenerator(true)
+        return Response.generator()
             .setNotificationMessage("copied to clipboard")
             .generate();
     }

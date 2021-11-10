@@ -15,6 +15,7 @@ import {ResizeCommand} from "./application/commands/ResizeCommand";
 import {ReplacerCommand} from "./application/commands/ReplacerCommand";
 import {CopyToClipboardCommand} from "./application/commands/CopyToClipboardCommand";
 import {JustifyCommand} from "./application/commands/JustifyCommand";
+import {Request} from "./shared/Request";
 
 figma.showUI(__html__);
 figma.ui.resize(660, 560)
@@ -30,6 +31,21 @@ figma.on("currentpagechange", async () => {
 
 
 figma.on("run", async () => {
+    initContext();
+    await executeNodeDetector();
+})
+
+
+figma.ui.onmessage = async msg => {
+    const request = Request.generate(msg['type']).attachToData("data", msg['data']);
+    await Context.executeRequestAsync(request);
+};
+
+async function executeNodeDetector() {
+    await Context.executeRequestAsync(Request.generate("nodeDetector"));
+}
+
+function initContext() {
     Context.builder()
         .addFilters([
             new RequestInitializerFilter(),
@@ -52,18 +68,6 @@ figma.on("run", async () => {
             new CopyToClipboardCommand()
         ])
         .build(true);
-
-    await executeNodeDetector();
-})
-
-
-figma.ui.onmessage = async msg => {
-    const request = Context.generateRequest(msg['type']).attachToData("data", msg['data']);
-    await Context.executeRequestAsync(request);
-};
-
-async function executeNodeDetector() {
-    await Context.executeRequestAsync(Context.generateRequest("nodeDetector"));
 }
 
 

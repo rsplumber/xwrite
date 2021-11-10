@@ -1,7 +1,6 @@
 import {AbstractCommand} from "./abstractions/AbstractCommand";
 import {Response} from "../../shared/Response";
 import {Request} from "../../shared/Request";
-import {Context} from "../Context";
 
 export class ResizeCommand extends AbstractCommand {
 
@@ -22,7 +21,7 @@ export class ResizeCommand extends AbstractCommand {
                 figma.ui.resize(1920, 1080)
                 break;
         }
-        return Context.responseGenerator(true)
+        return Response.generator()
             .generate();
     }
 

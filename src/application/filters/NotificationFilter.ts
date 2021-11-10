@@ -1,14 +1,14 @@
 import {AbstractFilter} from "./abstractions/AbstractFilter";
 import {Request} from "../../shared/Request";
-import {Context} from "../Context";
+import {Response} from "../../shared/Response";
 
 export class NotificationFilter extends AbstractFilter {
-    public async handleAsync(request: Request): Promise<void> {
-        const notification = Context.currentResponse().getFromData("notificationMessage");
+    public async handleAsync(request: Request, response: Response): Promise<void> {
+        const notification = response.getFromData("notificationMessage");
         if (notification) {
             figma.notify(notification);
         }
-        await super.handleAsync(request);
+        await super.handleAsync(request, response);
     }
 
     order(): number {

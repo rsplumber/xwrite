@@ -14,7 +14,7 @@ export class DeleteTextCommand extends AbstractCommand {
         const textNodeId = request.getFromData("data") as string;
         const textNode = Context.getTextNodesContainer().getById(textNodeId) as TextNodeData;
         textNode.node.remove();
-        return Context.responseGenerator(true)
+        return Response.generator()
             .setNotificationMessage("Text removed")
             .refreshData()
             .generate();

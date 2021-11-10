@@ -5,7 +5,7 @@ export class Request {
     private readonly _commandIdentifier: string;
     private _data: Map<string, any> = new Map<string, any>();
 
-    constructor(command: string) {
+    private constructor(command: string) {
         this._commandIdentifier = command;
     }
 
@@ -47,5 +47,9 @@ export class Request {
 
     public getFromData(key: string): any {
         return this.data.get(key) ?? false;
+    }
+
+    public static generate(command: string): Request {
+        return new Request(command);
     }
 }

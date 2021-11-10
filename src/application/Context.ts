@@ -3,7 +3,6 @@ import {AbstractReplacer} from "./replacers/abstractions/AbstractReplacer";
 import {ReplacersContainer} from "./containers/ReplacersContainer";
 import {CommandsContainer} from "./containers/CommandsContainer";
 import {TextNodesContainer} from "./containers/TextNodesContainer";
-import {Response} from "../shared/Response";
 import {Request} from "../shared/Request";
 import {AbstractFilter} from "./filters/abstractions/AbstractFilter";
 import {AbstractCommand} from "./commands/abstractions/AbstractCommand";
@@ -19,10 +18,6 @@ export class Context {
     private _debug: boolean;
 
     private _requestChainFilter: IFilter;
-
-    private response: Response;
-
-    static statistics: Map<string, any>;
 
     static instance: Context;
 
@@ -69,28 +64,8 @@ export class Context {
         this._debug = value;
     }
 
-    public static generateRequest(command: string): Request {
-        return new Request(command);
-    }
-
     public static async executeRequestAsync(request: Request): Promise<void> {
         await RequestExecutor.executeAsync(request);
-    }
-
-    public currentResponse(): Response {
-        return this.response;
-    }
-
-    public attachResponse(response: Response): void {
-        this.response = response;
-    }
-
-    public static currentResponse(): Response {
-        return Context.getInstance().currentResponse();
-    }
-
-    public static responseGenerator(success: boolean): ResponseGenerator {
-        return new ResponseGenerator(success);
     }
 
 }
@@ -183,43 +158,4 @@ export class ContextBuilder {
         Context.getInstance().debug = debugMode;
     }
 
-}
-
-export class ResponseGenerator {
-
-    constructor(success: boolean) {
-        Context.getInstance().attachResponse(new Response(success));
-    }
-
-    public setNotificationMessage(message: string): ResponseGenerator {
-        Context.currentResponse().attachData("notificationMessage", message);
-        return this;
-    }
-
-    public setMessageCenterText(message: string): ResponseGenerator {
-        Context.currentResponse().attachData("messageCenterType", "message_center");
-        Context.currentResponse().attachData("messageCenter", message);
-        return this;
-    }
-
-    public refreshData(delay: number = 0): ResponseGenerator {
-        Context.currentResponse().attachData("refreshData", true);
-        if (delay > 0) {
-            Context.currentResponse().attachData("refreshDataDelay", delay);
-        }
-        return this;
-    }
-
-    public addEventOnUi(type: string, data): ResponseGenerator {
-        if (!Context.currentResponse().getFromData("ui_events")) {
-            Context.currentResponse().attachData("ui_events", new Map<string, any>());
-        }
-        Context.currentResponse().getFromData("ui_events").set(type, data);
-        return this;
-    }
-
-    public generate(): Response {
-        Context.currentResponse().attachData("debug_mode", Context.getInstance().isDebugMode());
-        return Context.currentResponse();
-    }
 }

@@ -21,7 +21,7 @@ export class NodeDetectorCommand extends AbstractCommand {
             figma.currentPage.selection.forEach(value => this.detect(value));
         }
 
-        return Context.responseGenerator(true)
+        return Response.generator(true)
             .addEventOnUi("detect_texts", Context.getTextNodesContainer().getAll())
             .setMessageCenterText(this.generateStatisticsText())
             .generate();

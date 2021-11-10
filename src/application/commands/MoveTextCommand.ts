@@ -19,7 +19,7 @@ export class MoveTextCommand extends AbstractCommand {
                 value.final_text = value.text;
             });
 
-        return Context.responseGenerator(true)
+        return Response.generator()
             .addEventOnUi("detect_texts", Context.getTextNodesContainer().getAll())
             .setNotificationMessage("Text moved")
             .generate();

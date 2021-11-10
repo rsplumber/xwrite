@@ -1,5 +1,6 @@
 import {IFilter} from './IFilter';
 import {Request} from "../../../shared/Request";
+import {Response} from "../../../shared/Response";
 
 export abstract class AbstractFilter implements IFilter {
     private nextHandler: IFilter;
@@ -9,9 +10,9 @@ export abstract class AbstractFilter implements IFilter {
         return handler;
     }
 
-    public async handleAsync(request: Request): Promise<void> {
+    public async handleAsync(request: Request, response: Response): Promise<void> {
         if (request.canceled || !this.nextHandler) return null;
-        await this.nextHandler.handleAsync(request);
+        await this.nextHandler.handleAsync(request, response);
     }
 
     abstract order(): number;

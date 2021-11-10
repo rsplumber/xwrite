@@ -1,18 +1,19 @@
 import {AbstractFilter} from "./abstractions/AbstractFilter";
 import {Request} from "../../shared/Request";
-import {Context} from "../Context";
+import {Response} from "../../shared/Response";
 
 export class MessageCenterFilter extends AbstractFilter {
-    public async handleAsync(request: Request): Promise<void> {
-        const type = Context.currentResponse().getFromData("messageCenterType") as string;
-        const message = Context.currentResponse().getFromData("messageCenter");
+
+    public async handleAsync(request: Request, response: Response): Promise<void> {
+        const type = response.getFromData("messageCenterType") as string;
+        const message = response.getFromData("messageCenter");
         if (type && message) {
             figma.ui.postMessage({
                 'type': type,
                 'data': message
             })
         }
-        await super.handleAsync(request);
+        await super.handleAsync(request, response);
     }
 
     order(): number {
