@@ -20,17 +20,16 @@ figma.showUI(__html__);
 figma.ui.resize(660, 560)
 
 
-figma.on("selectionchange", () => {
-    executeNodeDetector();
+figma.on("selectionchange", async () => {
+    await executeNodeDetector();
 })
 
-figma.on("currentpagechange", () => {
-    executeNodeDetector();
+figma.on("currentpagechange", async () => {
+    await executeNodeDetector();
 })
 
 
-
-figma.on("run", () => {
+figma.on("run", async () => {
     Context.builder()
         .addFilters([
             new RequestInitializerFilter(),
@@ -54,17 +53,17 @@ figma.on("run", () => {
         ])
         .build(true);
 
-    executeNodeDetector();
+    await executeNodeDetector();
 })
 
 
 figma.ui.onmessage = async msg => {
     const request = Context.generateRequest(msg['type']).attachToData("data", msg['data']);
-    Context.executeRequestAsync(request);
+    await Context.executeRequestAsync(request);
 };
 
-function executeNodeDetector() {
-    Context.executeRequestAsync(Context.generateRequest("nodeDetector"));
+async function executeNodeDetector() {
+    await Context.executeRequestAsync(Context.generateRequest("nodeDetector"));
 }
 
 
