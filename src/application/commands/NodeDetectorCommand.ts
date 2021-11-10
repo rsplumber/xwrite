@@ -72,7 +72,7 @@ export class NodeDetectorCommand extends AbstractCommand {
             let node = res.value
             this.countStatistics(node.type);
             if (node.type === 'TEXT') {
-                textsContainer.add(new TextNodeData(node, node.characters));
+                textsContainer.add(new TextNodeData(node));
             }
             if (++count === 100) {
                 return;
