@@ -16,9 +16,4 @@ export class TextNodesContainer extends AbstractContainer<TextNodeData> {
 
         return TextNodesContainer.instance;
     }
-
-
-    getById(id: string): TextNodeData {
-        return this.getAll().find(value => value.id === id);
-    }
 }

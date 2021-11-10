@@ -1,7 +1,7 @@
 import {AbstractContainer} from "./abstractions/AbstractContainer";
-import {AbstractReplacer} from "../replacers/abstractions/AbstractReplacer";
+import {IReplacer} from "../replacers/abstractions/IReplacer";
 
-export class ReplacersContainer extends AbstractContainer<AbstractReplacer> {
+export class ReplacersContainer extends AbstractContainer<IReplacer> {
 
     private static instance: ReplacersContainer;
 
@@ -16,10 +16,5 @@ export class ReplacersContainer extends AbstractContainer<AbstractReplacer> {
         }
 
         return ReplacersContainer.instance;
-    }
-
-
-    getById(id: string): AbstractReplacer {
-        return this.getAll().find(value => value.sign() === id);
     }
 }

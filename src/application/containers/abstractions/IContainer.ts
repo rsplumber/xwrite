@@ -1,4 +1,6 @@
-export interface IContainer<Type> {
+import {IContainerable} from "./IContainerable";
+
+export interface IContainer<Type extends IContainerable> {
 
     refresh(): void;
 
@@ -9,5 +11,7 @@ export interface IContainer<Type> {
     remove(item: Type): void;
 
     getAll(): Array<Type>;
+
+    getById(id: string): Type;
 
 }

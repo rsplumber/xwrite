@@ -1,7 +1,7 @@
 import {AbstractContainer} from "./abstractions/AbstractContainer";
-import {AbstractJustifier} from "../justifiers/abstarctions/AbstractJustifier";
+import {IJustifier} from "../justifiers/abstarctions/IJustifier";
 
-export class JustifiersContainer extends AbstractContainer<AbstractJustifier> {
+export class JustifiersContainer extends AbstractContainer<IJustifier> {
 
     private static instance: JustifiersContainer;
 
@@ -18,8 +18,4 @@ export class JustifiersContainer extends AbstractContainer<AbstractJustifier> {
         return JustifiersContainer.instance;
     }
 
-
-    getById(id: string): AbstractJustifier {
-        return this.getAll().find(value => value.sign() === id);
-    }
 }

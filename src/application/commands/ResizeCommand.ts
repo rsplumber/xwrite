@@ -1,12 +1,17 @@
-import {AbstractCommand} from "./abstractions/AbstractCommand";
+import {ICommand} from "./abstractions/ICommand";
 import {Response} from "../../shared/Response";
 import {Request} from "../../shared/Request";
 
-export class ResizeCommand extends AbstractCommand {
+export class ResizeCommand implements ICommand {
 
     identifier(): string {
         return "resize";
     }
+
+    containerId(): string {
+        return this.identifier();
+    }
+
 
     async executeAsync(request: Request): Promise<Response> {
         const resizeParam = request.getFromData("data") as string;

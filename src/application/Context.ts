@@ -1,11 +1,10 @@
 import {IFilter} from "./filters/abstractions/IFilter";
-import {AbstractReplacer} from "./replacers/abstractions/AbstractReplacer";
 import {ReplacersContainer} from "./containers/ReplacersContainer";
 import {CommandsContainer} from "./containers/CommandsContainer";
 import {TextNodesContainer} from "./containers/TextNodesContainer";
 import {Request} from "../shared/Request";
 import {AbstractFilter} from "./filters/abstractions/AbstractFilter";
-import {AbstractCommand} from "./commands/abstractions/AbstractCommand";
+import {ICommand} from "./commands/abstractions/ICommand";
 import {ReflectionHelper} from "./helpers/ReflectionHelper";
 import {RequestExecutor} from "./RequestExecutor";
 import {ReplaceAllReplacer} from "./replacers/ReplaceAllReplacer";
@@ -72,19 +71,12 @@ export class Context {
 
 export class ContextBuilder {
 
-    private readonly commands: Array<AbstractCommand>;
+    private readonly commands: Array<ICommand>;
     private readonly filters: Array<AbstractFilter>;
 
     constructor() {
-        this.commands = new Array<AbstractCommand>();
+        this.commands = new Array<ICommand>();
         this.filters = new Array<AbstractFilter>();
-    }
-
-    private autoInitCommands() {
-        const commands = new Array<AbstractCommand>();
-        ReflectionHelper.createSubClassesFor(AbstractCommand)
-            .forEach(value => commands.push(value));
-        CommandsContainer.getInstance().addRange(commands);
     }
 
     private autoInitFilters() {
@@ -103,13 +95,6 @@ export class ContextBuilder {
         }
     }
 
-    private autoInitReplacers() {
-        const replacers = new Array<AbstractReplacer>();
-        ReflectionHelper.createSubClassesFor(AbstractReplacer)
-            .forEach(value => replacers.push(value));
-        ReplacersContainer.getInstance().addRange(replacers);
-    }
-
     private static initReplacers() {
         ReplacersContainer.getInstance().addRange([
             new ReplaceAllReplacer(),
@@ -123,7 +108,7 @@ export class ContextBuilder {
         ]);
     }
 
-    public addCommands(commands: AbstractCommand[]): ContextBuilder {
+    public addCommands(commands: ICommand[]): ContextBuilder {
         commands.forEach(value => this.commands.push(value));
         return this;
     }

@@ -1,13 +1,18 @@
-import {AbstractCommand} from "./abstractions/AbstractCommand";
+import {ICommand} from "./abstractions/ICommand";
 import {Response} from "../../shared/Response";
 import {Request} from "../../shared/Request";
 import {Context} from "../Context";
 
-export class MoveTextCommand extends AbstractCommand {
+export class MoveTextCommand implements ICommand {
 
     identifier(): string {
         return "moveText";
     }
+
+    containerId(): string {
+        return this.identifier();
+    }
+
 
     async executeAsync(request: Request): Promise<Response> {
         const textNodeId = request.getFromData("data") as string;
@@ -24,7 +29,6 @@ export class MoveTextCommand extends AbstractCommand {
             .setNotificationMessage("Text moved")
             .generate();
     }
-
 
 
 }

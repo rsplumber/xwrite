@@ -1,7 +1,14 @@
-import {AbstractJustifier} from "./abstarctions/AbstractJustifier";
+import {IJustifier} from "./abstarctions/IJustifier";
 
-export class SpaceJustify extends AbstractJustifier {
+export class SpaceJustify implements IJustifier {
 
+    type(): string {
+        return "space_justify";
+    }
+
+    containerId(): string {
+        return this.type();
+    }
 
     async justifyAsync(words: string[], maxWidth: number): Promise<string> {
         let i = 0;
@@ -26,10 +33,6 @@ export class SpaceJustify extends AbstractJustifier {
         }
 
         return result.join().split(",").join("\n");
-    }
-
-    sign(): string {
-        return "space_justify";
     }
 
     private static leftJustify(words: string[], diff: number, i: number, j: number): string {

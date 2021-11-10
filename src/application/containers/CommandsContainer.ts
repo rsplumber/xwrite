@@ -1,7 +1,7 @@
 import {AbstractContainer} from "./abstractions/AbstractContainer";
-import {AbstractCommand} from "../commands/abstractions/AbstractCommand";
+import {ICommand} from "../commands/abstractions/ICommand";
 
-export class CommandsContainer extends AbstractContainer<AbstractCommand> {
+export class CommandsContainer extends AbstractContainer<ICommand> {
 
     private static instance: CommandsContainer;
 
@@ -15,9 +15,5 @@ export class CommandsContainer extends AbstractContainer<AbstractCommand> {
         }
 
         return CommandsContainer.instance;
-    }
-
-    getById(id: string): AbstractCommand {
-        return this.getAll().find(value => value.identifier() === id);
     }
 }

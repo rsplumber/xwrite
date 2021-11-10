@@ -1,12 +1,15 @@
-import {AbstractCommand} from "./abstractions/AbstractCommand";
+import {ICommand} from "./abstractions/ICommand";
 import {Response} from "../../shared/Response";
 import {Request} from "../../shared/Request";
-import {Context} from "../Context";
 
-export class CopyToClipboardCommand extends AbstractCommand {
+export class CopyToClipboardCommand implements ICommand {
 
     identifier(): string {
         return "copyToClipboard";
+    }
+
+    containerId(): string {
+        return this.identifier();
     }
 
     async executeAsync(request: Request): Promise<Response> {

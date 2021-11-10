@@ -1,4 +1,4 @@
-import {AbstractCommand} from "./abstractions/AbstractCommand";
+import {ICommand} from "./abstractions/ICommand";
 import {Response} from "../../shared/Response";
 import {Request} from "../../shared/Request";
 import {TextNodeData} from "../../shared/TextNodeData";
@@ -6,10 +6,14 @@ import {Context} from "../Context";
 import {TextDirectionFixer} from "../helpers/TextDirectionFixer";
 import {Figma} from "../helpers/Figma";
 
-export class BatchWriterCommand extends AbstractCommand {
+export class BatchWriterCommand implements ICommand {
 
     identifier(): string {
         return "batchWriter";
+    }
+
+    containerId(): string {
+        return this.identifier();
     }
 
     async executeAsync(request: Request): Promise<Response> {

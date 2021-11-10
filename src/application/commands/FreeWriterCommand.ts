@@ -1,19 +1,24 @@
-import {AbstractCommand} from "./abstractions/AbstractCommand";
+import {ICommand} from "./abstractions/ICommand";
 import {Response} from "../../shared/Response";
 import {Request} from "../../shared/Request";
 import {Context} from "../Context";
 import {TextDirectionFixer} from "../helpers/TextDirectionFixer";
 import {Figma} from "../helpers/Figma";
 
-export class FreeWriterCommand extends AbstractCommand {
+export class FreeWriterCommand implements ICommand {
 
     identifier(): string {
         return "freeWriter";
     }
 
+    containerId(): string {
+        return this.identifier();
+    }
+
+
     async executeAsync(request: Request): Promise<Response> {
         await FreeWriterCommand.applyChangesAsync(request);
-        return Response.generator(true)
+        return Response.generator()
             .refreshData(1000)
             .generate();
     }

@@ -1,6 +1,8 @@
 import {TextDirectionFixer} from "../application/helpers/TextDirectionFixer";
+import {IContainerable} from "../application/containers/abstractions/IContainerable";
 
-export class TextNodeData {
+export class TextNodeData implements IContainerable {
+
     public id: string;
     public node: TextNode;
     public text: string;
@@ -13,6 +15,10 @@ export class TextNodeData {
         this.text = TextDirectionFixer.fix(node.characters);
     }
 
+    containerId(): string {
+        return this.id;
+    }
+
     public setCustomText(text: string, directionFix: boolean = true): void {
         let finalText = text;
         if (directionFix) {
@@ -20,4 +26,6 @@ export class TextNodeData {
         }
         this.text = finalText;
     }
+
+
 }

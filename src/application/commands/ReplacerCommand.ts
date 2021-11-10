@@ -1,15 +1,20 @@
-import {AbstractCommand} from "./abstractions/AbstractCommand";
+import {ICommand} from "./abstractions/ICommand";
 import {Response} from "../../shared/Response";
 import {Request} from "../../shared/Request";
 import {Context} from "../Context";
-import {AbstractReplacer} from "../replacers/abstractions/AbstractReplacer";
 import {Figma} from "../helpers/Figma";
+import {ReplacersContainer} from "../containers/ReplacersContainer";
 
-export class ReplacerCommand extends AbstractCommand {
+export class ReplacerCommand implements ICommand {
 
     identifier(): string {
         return "replacer";
     }
+
+    containerId(): string {
+        return this.identifier();
+    }
+
 
     async executeAsync(request: Request): Promise<Response> {
 
@@ -29,7 +34,10 @@ export class ReplacerCommand extends AbstractCommand {
         const replaceFrom = request.getFromData("data")['replace_from'] as string;
         const replaceTo = request.getFromData("data")['replace_to'] as string;
 
-        const replacer = AbstractReplacer.getBySign(replaceFrom);
+        let replacer = ReplacersContainer.getInstance().getById(replaceFrom);
+        if (replacer == null) {
+            replacer = ReplacersContainer.getInstance().getById("$__standard");
+        }
         for (const nodeData of Context.getTextNodesContainer().getAll()) {
             const replacedText = await replacer.replaceAsync(nodeData, replaceFrom, replaceTo);
             await Figma.setNodeText(nodeData.node, replacedText);

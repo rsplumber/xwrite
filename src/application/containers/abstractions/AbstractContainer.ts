@@ -1,13 +1,16 @@
 import {IContainer} from "./IContainer";
+import {IContainerable} from "./IContainerable";
 
-export abstract class AbstractContainer<Type> implements IContainer<Type> {
+export abstract class AbstractContainer<Type extends IContainerable> implements IContainer<Type> {
 
     protected constructor() {
     }
 
     protected items: Array<Type> = new Array<Type>();
 
-    abstract getById(id: string): Type;
+    getById(id: string): Type {
+        return this.getAll().find(value => value.containerId() === id);
+    }
 
     add(item: Type): void {
         this.items.push(item);
@@ -16,7 +19,6 @@ export abstract class AbstractContainer<Type> implements IContainer<Type> {
     addRange(items: Type[]): void {
         items.forEach(value => this.items.push(value));
     }
-
 
 
     getAll(): Array<Type> {

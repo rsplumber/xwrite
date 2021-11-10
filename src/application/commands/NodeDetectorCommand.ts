@@ -1,16 +1,21 @@
-import {AbstractCommand} from "./abstractions/AbstractCommand";
+import {ICommand} from "./abstractions/ICommand";
 import {Response} from "../../shared/Response";
 import {Request} from "../../shared/Request";
 import {TextNodeData} from "../../shared/TextNodeData";
 import {Context} from "../Context";
 
-export class NodeDetectorCommand extends AbstractCommand {
+export class NodeDetectorCommand implements ICommand {
 
     private statistics: Map<string, number>;
 
     identifier(): string {
         return "nodeDetector";
     }
+
+    containerId(): string {
+        return this.identifier();
+    }
+
 
     async executeAsync(request: Request): Promise<Response> {
         this.refreshData();
@@ -27,10 +32,11 @@ export class NodeDetectorCommand extends AbstractCommand {
             .generate();
     }
 
-    private refreshData(){
+    private refreshData() {
         this.initStatistics();
         Context.getTextNodesContainer().refresh();
     }
+
     private initStatistics() {
         this.statistics = new Map<string, number>();
         this.statistics.set("FRAME", 0);
