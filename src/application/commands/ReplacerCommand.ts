@@ -15,9 +15,7 @@ export class ReplacerCommand implements ICommand {
         return this.identifier();
     }
 
-
     async executeAsync(request: Request): Promise<Response> {
-
         if (Context.getTextNodesContainer().getAll().length === 0) {
             await Context.executeRequestAsync(Request.generate("nodeDetector")
                 .attachToData("findInPage", true));
@@ -43,6 +41,4 @@ export class ReplacerCommand implements ICommand {
             await Figma.setNodeText(nodeData.node, replacedText);
         }
     }
-
-
 }

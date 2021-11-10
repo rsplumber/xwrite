@@ -220,10 +220,10 @@
     function detectTextsOnFreeWriterUI(texts_data) {
         const freeWriterTextArea = document.getElementById('freeWriterText');
 
-        if(texts_data.length === 0){
+        if (texts_data.length === 0) {
             freeWriterTextArea.setAttribute("placeholder", "Select texts");
             freeWriterTextArea.value = "";
-        }else if (texts_data.length === 1) {
+        } else if (texts_data.length === 1) {
             freeWriterTextArea.setAttribute("placeholder", "Type to replace text");
             const textNodeData = texts_data[0];
             freeWriterTextArea.value = textNodeData.text;
@@ -241,7 +241,7 @@
 
     function detectTextsOnBatchUI(texts_data) {
         clearFreeWriterUI();
-        document.getElementById('bottomBar').setAttribute('style', texts_data.length > 0 ? "display: flex;" :"display: hidden;" );
+        document.getElementById('bottomBar').setAttribute('style', texts_data.length > 0 ? "display: flex;" : "display: hidden;");
         const container = document.getElementById('container');
         const ul = document.createElement('ul');
         ul.setAttribute('id', 'theList');

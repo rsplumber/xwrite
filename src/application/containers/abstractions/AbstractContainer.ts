@@ -35,5 +35,4 @@ export abstract class AbstractContainer<Type extends IContainerable> implements 
 
     }
 
-
 }
