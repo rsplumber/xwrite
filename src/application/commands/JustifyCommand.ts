@@ -25,7 +25,7 @@ export class JustifyCommand extends AbstractCommand {
     }
 
     private static async applyChangesAsync(request: Request) {
-        const justifierId = "ltr_word_justify";
+        const justifierId = "space_justify";
         const justifier = JustifyCommand.getJustifier(justifierId);
         if (justifier == null) return;
         for (const nodeData of Context.getTextNodesContainer().getAll()) {

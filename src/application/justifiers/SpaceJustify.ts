@@ -2,6 +2,7 @@ import {AbstractJustifier} from "./abstarctions/AbstractJustifier";
 
 export class SpaceJustify extends AbstractJustifier {
 
+
     async justifyAsync(words: string[], maxWidth: number): Promise<string> {
         let i = 0;
         const n = words.length;
