@@ -1,7 +1,7 @@
 import {AbstractFilter} from "./abstractions/AbstractFilter";
-import {Request} from "../../shared/Request";
+import {Request} from "../Request";
 import {Context} from "../Context";
-import {Response} from "../../shared/Response";
+import {Response} from "../Response";
 
 export class RequestInitializerFilter extends AbstractFilter {
     public async handleAsync(request: Request, response: Response): Promise<void> {

@@ -1,7 +1,7 @@
 import {AbstractFilter} from "./abstractions/AbstractFilter";
-import {Request} from "../../shared/Request";
+import {Request} from "../Request";
 import {DelayProvider} from "../helpers/DelayProvider";
-import {Response} from "../../shared/Response";
+import {Response} from "../Response";
 import {Context} from "../Context";
 
 export class RefreshDataFilter extends AbstractFilter {

@@ -15,7 +15,7 @@ import {ResizeCommand} from "./application/commands/ResizeCommand";
 import {ReplacerCommand} from "./application/commands/ReplacerCommand";
 import {CopyToClipboardCommand} from "./application/commands/CopyToClipboardCommand";
 import {JustifyCommand} from "./application/commands/JustifyCommand";
-import {Request} from "./shared/Request";
+import {Request} from "./application/Request";
 
 figma.showUI(__html__);
 figma.ui.resize(660, 560)

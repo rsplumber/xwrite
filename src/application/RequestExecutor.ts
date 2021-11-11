@@ -1,4 +1,4 @@
-import {Request} from "../shared/Request";
+import {Request} from "./Request";
 import {Context} from "./Context";
 
 export class RequestExecutor {

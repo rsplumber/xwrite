@@ -1,6 +1,6 @@
-import {Response} from "../../../shared/Response";
+import {Response} from "../../Response";
 import {Context} from "../../Context";
-import {Request} from "../../../shared/Request";
+import {Request} from "../../Request";
 
 export class CommandExecutor {
 

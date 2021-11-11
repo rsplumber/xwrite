@@ -1,4 +1,4 @@
-import {Context} from "../application/Context";
+import {Context} from "./Context";
 
 export class Response {
 

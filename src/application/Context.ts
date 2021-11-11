@@ -2,7 +2,7 @@ import {IFilter} from "./filters/abstractions/IFilter";
 import {ReplacersContainer} from "./containers/ReplacersContainer";
 import {CommandsContainer} from "./containers/CommandsContainer";
 import {TextNodesContainer} from "./containers/TextNodesContainer";
-import {Request} from "../shared/Request";
+import {Request} from "./Request";
 import {AbstractFilter} from "./filters/abstractions/AbstractFilter";
 import {ICommand} from "./commands/abstractions/ICommand";
 import {ReflectionHelper} from "./helpers/ReflectionHelper";

@@ -1,6 +1,6 @@
 import {ICommand} from "./abstractions/ICommand";
-import {Response} from "../../shared/Response";
-import {Request} from "../../shared/Request";
+import {Response} from "../Response";
+import {Request} from "../Request";
 
 export class ResizeCommand implements ICommand {
 

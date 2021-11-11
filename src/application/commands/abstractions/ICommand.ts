@@ -1,5 +1,5 @@
-import {Request} from "../../../shared/Request";
-import {Response} from "../../../shared/Response";
+import {Request} from "../../Request";
+import {Response} from "../../Response";
 import {IContainerable} from "../../containers/abstractions/IContainerable";
 
 export interface ICommand extends IContainerable {
