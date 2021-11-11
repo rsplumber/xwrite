@@ -1,11 +1,8 @@
 import {RandomHelper} from "./RandomHelper";
+import {Constants} from "../../shared/Constants";
 
 export class DirectionDetector {
 
-    private static readonly RTL_CHARACTERS: string[] = [
-        "ی", "ه", "و", "ن", "م", "ل", "گ", "ک", "ق", "ف", "غ", "ع", "ظ", "ط", "ض", "ص", "ش", "س", "ژ", "ز", "ر", "ذ", "د", "خ", "ح", "چ", "ج", "ث", "ت", "پ", "ب", "ا", "آ", "ء",
-        "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹", "۰",
-    ];
 
     private static readonly CHECK_PERCENT = 90;
     private static readonly PASS_PERCENT = 70;
@@ -36,7 +33,7 @@ export class DirectionDetector {
         let currentPassPercent = 0;
         let countedPass = 0;
         for (let i = 0; i < charsToCheck.length; i++) {
-            if (this.RTL_CHARACTERS.indexOf(charsToCheck[i]) !== -1) {
+            if (Constants.PERSIAN_CHARACTERS.indexOf(charsToCheck[i]) !== -1) {
                 countedPass++;
                 currentPassPercent = (countedPass * 100) / charsToCheck.length;
             }

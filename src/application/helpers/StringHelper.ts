@@ -1,3 +1,5 @@
+import {Constants} from "../../shared/Constants";
+
 export class StringHelper {
 
 
@@ -27,34 +29,21 @@ export class StringHelper {
         return ltrCorrected;
     }
 
-    private static readonly NUMBERS: string[] = [
-        "1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
-        "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹", "۰",
-    ];
 
     private static correctNumbers(value: string): string {
-        return StringHelper.sanitizer(value , StringHelper.NUMBERS);
+        return StringHelper.sanitizer(value, Constants.NUMBERS);
     }
 
 
-    private static readonly ENGLISH_ALPHABET: string[] = [
-        "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P",
-        "A", "S", "D", "F", "G", "H", "J", "K", "L",
-        "Z", "X", "C", "V", "B", "N", "M",
-        "q","w","e","r","t","y","u","i","o","p",
-        "a","s","d","f","g","h","j","k","l",
-        "z","x","c","v","b","n","m"
-    ];
-
     private static correctLtrText(value: string): string {
-        return StringHelper.sanitizer(value , StringHelper.ENGLISH_ALPHABET);
+        return StringHelper.sanitizer(value, Constants.ENGLISH_ALPHABET);
     }
 
     private static correctSigns(value: string): string {
         return value;
     }
 
-    private static sanitizer(value:string , mustToFind:string[]){
+    private static sanitizer(value: string, mustToFind: string[]) {
         const letters = value.split('');
         let finalValue = value;
         for (let i = 0; i < letters.length; i++) {
