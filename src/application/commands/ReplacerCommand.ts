@@ -15,7 +15,7 @@ export class ReplacerCommand implements ICommand {
     }
 
     async executeAsync(request: Request): Promise<Response> {
-        if (Context.getTextNodesContainer().getAll().length === 0) {
+        if (Context.getTextNodesContainer().count() === 0) {
             await Context.executeRequestAsync(Request.generate("nodeDetector")
                 .attachToData("findInPage", true));
         }

@@ -17,12 +17,12 @@ export class JustifyCommand implements ICommand {
 
 
     async executeAsync(request: Request): Promise<Response> {
-        if (Context.getTextNodesContainer().getAll().length === 0) {
+        if (Context.getTextNodesContainer().count() === 0) {
             await CommandExecutor.executeAsync(Request.generate("nodeDetector")
                 .attachToData("findInPage", true));
         }
         await JustifyCommand.applyChangesAsync(request);
-        return Response.generator(true)
+        return Response.generator()
             .setNotificationMessage("Justified")
             .refreshData()
             .generate();

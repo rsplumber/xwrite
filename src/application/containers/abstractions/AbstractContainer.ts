@@ -6,33 +6,35 @@ export abstract class AbstractContainer<Type extends IContainerable> implements 
     protected constructor() {
     }
 
-    protected items: Array<Type> = new Array<Type>();
+    protected items: Map<string, Type> = new Map<string, Type>();
 
     getById(id: string): Type {
-        return this.getAll().find(value => value.containerId() === id);
+        return this.items.get(id);
     }
 
     add(item: Type): void {
-        this.items.push(item);
+        this.items.set(item.containerId(), item);
     }
 
     addRange(items: Type[]): void {
-        items.forEach(value => this.items.push(value));
+        items.forEach(value => this.add(value));
     }
 
 
     getAll(): Array<Type> {
-        return this.items;
+        return Array.from(this.items.values());
     }
 
     refresh(): void {
-        while (this.items.length > 0) {
-            this.items.pop();
-        }
+        this.items.clear();
     }
 
     remove(item: Type): void {
 
+    }
+
+    count(): number {
+        return this.items.size;
     }
 
 }

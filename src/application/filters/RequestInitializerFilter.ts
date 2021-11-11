@@ -11,7 +11,7 @@ export class RequestInitializerFilter extends AbstractFilter {
         }
 
         if ((request.commandIdentifier == "batchWriter" || request.commandIdentifier == "freeWriter")
-            && Context.getTextNodesContainer().getAll().length === 0) {
+            && Context.getTextNodesContainer().count() === 0) {
             return;
         }
         await super.handleAsync(request, response);
