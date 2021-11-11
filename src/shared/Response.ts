@@ -68,8 +68,9 @@ export class ResponseGenerator {
         return this;
     }
 
-    public refreshData(delay: number = 0): ResponseGenerator {
+    public refreshData(delay: number = 0, hardRefresh: boolean = false): ResponseGenerator {
         this.response.attachData("refreshData", true);
+        this.response.attachData("hardRefresh", hardRefresh);
         if (delay > 0) {
             this.response.attachData("refreshDataDelay", delay);
         }

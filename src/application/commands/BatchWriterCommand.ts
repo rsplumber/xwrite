@@ -19,8 +19,8 @@ export class BatchWriterCommand implements ICommand {
     async executeAsync(request: Request): Promise<Response> {
         await BatchWriterCommand.applyChangesAsync(request);
         return Response.generator()
-            .refreshData()
             .setNotificationMessage("Changes applied")
+            .refreshData()
             .generate();
     }
 

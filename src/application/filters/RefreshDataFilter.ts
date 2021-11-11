@@ -13,7 +13,7 @@ export class RefreshDataFilter extends AbstractFilter {
             if (delay && delay > 0) {
                 await DelayProvider.getInstance().delay(delay);
             }
-            await RefreshDataFilter.detectNodes(request);
+            await RefreshDataFilter.refresh(request);
 
         }
         await super.handleAsync(request, response);
@@ -23,7 +23,22 @@ export class RefreshDataFilter extends AbstractFilter {
         return 0;
     }
 
+    private static async refresh(request: Request) {
+        const hardRefresh = request.getFromData("hardRefresh");
+        if (hardRefresh) {
+            await this.detectNodes(request);
+            return;
+        }
+        await this.updateNodeData(request);
+    }
+
     private static async detectNodes(request: Request) {
+        await Context.executeRequestAsync(
+            Request.generate("nodeDetector")
+                .attachToData("findInPage", request.getFromData("findInPage")));
+    }
+
+    private static async updateNodeData(request: Request) {
         await Context.executeRequestAsync(
             Request.generate("nodeDetector")
                 .attachToData("findInPage", request.getFromData("findInPage")));
