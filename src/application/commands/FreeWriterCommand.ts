@@ -19,7 +19,7 @@ export class FreeWriterCommand implements ICommand {
     async executeAsync(request: Request): Promise<Response> {
         await FreeWriterCommand.applyChangesAsync(request);
         return Response.generator()
-            .refreshData(500)
+            .refreshData()
             .generate();
     }
 

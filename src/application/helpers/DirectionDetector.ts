@@ -7,8 +7,8 @@ export class DirectionDetector {
         "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹", "۰",
     ];
 
-    private static readonly CHECK_PERCENT = 80;
-    private static readonly PASS_PERCENT = 40;
+    private static readonly CHECK_PERCENT = 90;
+    private static readonly PASS_PERCENT = 70;
 
     public static detectDirection(text: string): Direction {
         if (text.length <= 1) {
