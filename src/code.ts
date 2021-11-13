@@ -38,11 +38,11 @@ figma.on("run", async () => {
 
 figma.ui.onmessage = async msg => {
     const request = Request.generate(msg['type']).attachToData("data", msg['data']);
-    await Context.executeRequestAsync(request);
+    await Context.executeRequestInPipelineAsync(request);
 };
 
 async function executeNodeDetector() {
-    await Context.executeRequestAsync(Request.generate("nodeDetector"));
+    await Context.executeRequestInPipelineAsync(Request.generate("nodeDetector"));
 }
 
 function initContext() {

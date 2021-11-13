@@ -15,22 +15,22 @@ export class ReplacerCommand implements ICommand {
     }
 
     async executeAsync(request: Request): Promise<Response> {
-        if (Context.getTextNodesContainer().count() === 0) {
-            await Context.executeRequestAsync(Request.generate("nodeDetector")
-                .attachToData("findInPage", true));
-        }
-        await ReplacerCommand.applyChangesAsync(request);
-        return Response.generator()
-            .setNotificationMessage("Replaced")
-            .refreshData()
-            .generate();
-    }
-
-    private static async applyChangesAsync(request: Request) {
 
         const replaceFrom = request.getFromData("data")['replace_from'] as string;
         const replaceTo = request.getFromData("data")['replace_to'] as string;
 
+        if (Context.getTextNodesContainer().count() === 0) {
+            await Context.executeRequestInPipelineAsync(Request.generate("nodeDetector")
+                .findInPage(replaceFrom));
+        }
+        await ReplacerCommand.applyChangesAsync(replaceFrom, replaceTo);
+        return Response.generator()
+            .setNotificationMessage("Replaced")
+            .refreshData(500)
+            .generate();
+    }
+
+    private static async applyChangesAsync(replaceFrom: string, replaceTo: string) {
         let replacer = Context.getReplacersContainer().getById(replaceFrom);
         if (replacer == null) {
             replacer = Context.getReplacersContainer().getById("$__standard");

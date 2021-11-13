@@ -11,6 +11,7 @@ import {ReplaceAllReplacer} from "./replacers/ReplaceAllReplacer";
 import {StandardReplaceReplacer} from "./replacers/StandardReplaceReplacer";
 import {JustifiersContainer} from "./containers/JustifiersContainer";
 import {SpaceJustify} from "./justifiers/SpaceJustify";
+import {Response} from "./Response";
 
 export class Context {
 
@@ -62,8 +63,12 @@ export class Context {
         this._debug = value;
     }
 
-    public static async executeRequestAsync(request: Request): Promise<void> {
-        await RequestExecutor.executeAsync(request);
+    public static async executeRequestInPipelineAsync(request: Request): Promise<void> {
+        await RequestExecutor.executeInPipelineAsync(request);
+    }
+
+    public static async executeRequestAsync(request: Request): Promise<Response> {
+        return await RequestExecutor.executeAsync(request);
     }
 
 }

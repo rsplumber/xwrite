@@ -16,15 +16,15 @@ export class NodeDetectorCommand implements ICommand {
         return this.identifier();
     }
 
-
     async executeAsync(request: Request): Promise<Response> {
         this.refreshData();
 
         if (request.getFromData("findInPage")) {
-            this.detect(figma.currentPage);
-        } else {
-            figma.currentPage.selection.forEach(value => this.detect(value));
+            const searchFor = request.getFromData("searchFor");
+            figma.currentPage.selection = this.searchForNodes(figma.currentPage, searchFor);
         }
+
+        figma.currentPage.selection.forEach(value => this.detect(value));
 
         return Response.generator(true)
             .addEventOnUi("detect_texts", Context.getTextNodesContainer().getAll())
@@ -85,6 +85,22 @@ export class NodeDetectorCommand implements ICommand {
             }
         }
         return;
+    }
+
+    private searchForNodes(nodes, searchFor: string): TextNode[] {
+        let walker = this.walkTree(nodes);
+        let res;
+        const foundedText: TextNode[] = [];
+        while (!(res = walker.next()).done) {
+            let node = res.value
+            if (node.type === 'TEXT') {
+                if (node.characters.includes(searchFor)) {
+                    this.countStatistics(node.type);
+                    foundedText.push(node);
+                }
+            }
+        }
+        return foundedText;
     }
 
     private* walkTree(node) {

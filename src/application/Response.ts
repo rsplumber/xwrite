@@ -35,7 +35,7 @@ export class Response {
         this._data = value;
     }
 
-    public attachData(key, value): Response {
+    public attachData(key: string, value: any): Response {
         this.data.set(key, value);
         return this;
     }
@@ -51,7 +51,7 @@ export class Response {
 
 export class ResponseGenerator {
 
-    private response: Response;
+    private readonly response: Response;
 
     constructor(success: boolean) {
         this.response = new Response(success);
@@ -68,11 +68,15 @@ export class ResponseGenerator {
         return this;
     }
 
-    public refreshData(delay: number = 0, hardRefresh: boolean = false): ResponseGenerator {
+    public refreshData(delay: number = 0, hardRefresh: boolean = false, searchFor: string = null): ResponseGenerator {
         this.response.attachData("refreshData", true);
         this.response.attachData("hardRefresh", hardRefresh);
         if (delay > 0) {
             this.response.attachData("refreshDataDelay", delay);
+        }
+
+        if (searchFor) {
+            this.response.attachData("searchFor", searchFor);
         }
         return this;
     }

@@ -33,13 +33,13 @@ export class RefreshDataFilter extends AbstractFilter {
     }
 
     private static async detectNodes(request: Request) {
-        await Context.executeRequestAsync(
+        await Context.executeRequestInPipelineAsync(
             Request.generate("nodeDetector")
                 .attachToData("findInPage", request.getFromData("findInPage")));
     }
 
     private static async updateNodeData(request: Request) {
-        await Context.executeRequestAsync(
+        await Context.executeRequestInPipelineAsync(
             Request.generate("nodeDetector")
                 .attachToData("findInPage", request.getFromData("findInPage")));
     }

@@ -40,8 +40,16 @@ export class Request {
         this._canceled = value;
     }
 
-    public attachToData(key, value): Request {
+    public attachToData(key: string, value: any): Request {
         this.data.set(key, value);
+        return this;
+    }
+
+    public findInPage(searchFor: string = null): Request {
+        this.attachToData("findInPage", true);
+        if (searchFor) {
+            this.attachToData("searchFor", searchFor);
+        }
         return this;
     }
 
