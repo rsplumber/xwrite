@@ -3,7 +3,6 @@ import {Response} from "../Response";
 import {Request} from "../Request";
 import {Context} from "../Context";
 import {Figma} from "../helpers/Figma";
-import {TextDirectionFixer} from "../helpers/TextDirectionFixer";
 
 export class ReplacerCommand implements ICommand {
 
@@ -27,7 +26,7 @@ export class ReplacerCommand implements ICommand {
         await ReplacerCommand.applyChangesAsync(replaceFrom, replaceTo);
         return Response.generator()
             .setNotificationMessage("Replaced")
-            .softRefreshData(500)
+            .softRefreshData(300)
             .generate();
     }
 
@@ -40,7 +39,7 @@ export class ReplacerCommand implements ICommand {
         for (const nodeData of Context.getTextNodesContainer().getAll()) {
             const replacedText = replacer.replace(nodeData, replaceFrom, replaceTo);
             await Figma.setNodeTextAsync(nodeData.node, replacedText);
-            nodeData.final_text = TextDirectionFixer.fix(replacedText);
+            nodeData.final_text = replacedText;
         }
     }
 
