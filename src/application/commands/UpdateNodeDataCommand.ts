@@ -22,10 +22,10 @@ export class UpdateNodeDataCommand implements ICommand {
                 .generate();
         }
 
-        Context.getTextNodesContainer().getAll().map(value => {
-            value.text = value.final_text;
-            value.final_text = "";
-        });
+        for (const dataNode of Context.getTextNodesContainer().getAll()) {
+            dataNode.text = dataNode.final_text;
+            dataNode.final_text = "";
+        }
 
         return Response.generator()
             .addEventOnUi("detect_texts", Context.getTextNodesContainer().getAll())
