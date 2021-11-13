@@ -20,7 +20,6 @@ export class NodeDetectorCommand implements ICommand {
         this.refreshData();
 
         if (request.getFromData("findInPage")) {
-            console.log("find");
             const searchFor = request.getFromData("searchFor");
             figma.currentPage.selection = this.searchForNodes(figma.currentPage, searchFor);
         }

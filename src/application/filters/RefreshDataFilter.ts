@@ -9,12 +9,10 @@ export class RefreshDataFilter extends AbstractFilter {
     public async handleAsync(request: Request, response: Response): Promise<void> {
         const needRefresh = response.getFromData("refreshData") as boolean;
         if (needRefresh) {
-            console.log("delay started");
             const delay = response.getFromData("refreshDataDelay") as number;
             if (delay && delay > 0) {
                 await DelayProvider.getInstance().delay(delay);
             }
-            console.log("delay done");
             await RefreshDataFilter.refresh(request, response);
         }
         await super.handleAsync(request, response);

@@ -4,7 +4,6 @@ import {Response} from "../Response";
 
 export class EventOnUIFilter extends AbstractFilter {
     public async handleAsync(request: Request, response: Response): Promise<void> {
-        console.log("here");
         const uiEvents = response.getFromData("ui_events") as Map<string, any>
         if (uiEvents) {
             uiEvents.forEach((value, key) => {
