@@ -20,7 +20,8 @@ export class DeleteTextCommand implements ICommand {
         figma.currentPage.selection = Context.getTextNodesContainer().getAll().map(value => value.node) as TextNode[];
         return Response.generator()
             .setNotificationMessage("Text removed")
-            .softRefreshData(0 , null,true)
+            .softRefreshData(0, null, true)
+            .refreshDataOnView(Context.getTextNodesContainer().getAll())
             .generate();
     }
 }

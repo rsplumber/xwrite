@@ -18,7 +18,7 @@ export class UpdateNodeDataCommand implements ICommand {
         const keepCurrentState = request.getFromData("keepCurrentState") as boolean;
         if (keepCurrentState) {
             return Response.generator()
-                .addEventOnUi("detect_texts", Context.getTextNodesContainer().getAll())
+                .refreshDataOnView(Context.getTextNodesContainer().getAll())
                 .generate();
         }
 
@@ -28,7 +28,7 @@ export class UpdateNodeDataCommand implements ICommand {
         }
 
         return Response.generator()
-            .addEventOnUi("detect_texts", Context.getTextNodesContainer().getAll())
+            .refreshDataOnView(Context.getTextNodesContainer().getAll())
             .generate();
     }
 

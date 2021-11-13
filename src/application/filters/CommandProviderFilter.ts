@@ -12,4 +12,8 @@ export class CommandProviderFilter extends AbstractFilter {
     order(): number {
         return 0;
     }
+
+    identifier(): string {
+        return "commandProvider";
+    }
 }

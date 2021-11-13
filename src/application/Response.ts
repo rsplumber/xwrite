@@ -102,6 +102,10 @@ export class ResponseGenerator {
         return this;
     }
 
+    public refreshDataOnView(data): ResponseGenerator {
+        return this.addEventOnUi("detect_texts", data);
+    }
+
     public generate(): Response {
         this.response.attachData("debug_mode", Context.getInstance().isDebugMode());
         return this.response;

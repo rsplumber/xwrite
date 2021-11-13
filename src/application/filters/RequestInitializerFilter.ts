@@ -20,4 +20,8 @@ export class RequestInitializerFilter extends AbstractFilter {
     order(): number {
         return 0;
     }
+
+    identifier(): string {
+        return "initializer";
+    }
 }

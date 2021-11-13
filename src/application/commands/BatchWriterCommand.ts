@@ -21,6 +21,7 @@ export class BatchWriterCommand implements ICommand {
         return Response.generator()
             .setNotificationMessage("Changes applied")
             .softRefreshData()
+            .refreshDataOnView(Context.getTextNodesContainer().getAll())
             .generate();
     }
 

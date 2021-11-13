@@ -20,6 +20,7 @@ export class AutoDirectionCommand implements ICommand {
         return Response.generator()
             .setNotificationMessage("Direction fixed")
             .softRefreshData(200)
+            .refreshDataOnView(Context.getTextNodesContainer().getAll())
             .generate();
     }
 

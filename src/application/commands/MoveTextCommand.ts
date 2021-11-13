@@ -25,8 +25,8 @@ export class MoveTextCommand implements ICommand {
             });
 
         return Response.generator()
-            .addEventOnUi("detect_texts", Context.getTextNodesContainer().getAll())
             .setNotificationMessage("Text moved")
+            .refreshDataOnView(Context.getTextNodesContainer().getAll())
             .generate();
     }
 

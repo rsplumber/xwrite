@@ -20,6 +20,7 @@ export class NodeDetectorCommand implements ICommand {
         this.refreshData();
 
         if (request.getFromData("findInPage")) {
+            console.log("find");
             const searchFor = request.getFromData("searchFor");
             figma.currentPage.selection = this.searchForNodes(figma.currentPage, searchFor);
         }
@@ -27,7 +28,7 @@ export class NodeDetectorCommand implements ICommand {
         figma.currentPage.selection.forEach(value => this.detect(value));
 
         return Response.generator(true)
-            .addEventOnUi("detect_texts", Context.getTextNodesContainer().getAll())
+            .refreshDataOnView(Context.getTextNodesContainer().getAll())
             .setMessageCenterText(this.generateStatisticsText())
             .generate();
     }
@@ -84,6 +85,7 @@ export class NodeDetectorCommand implements ICommand {
                 return;
             }
         }
+
         return;
     }
 

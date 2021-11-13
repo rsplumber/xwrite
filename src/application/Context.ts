@@ -63,6 +63,10 @@ export class Context {
         this._debug = value;
     }
 
+    public static isDebugMode(): boolean {
+        return this.getInstance().isDebugMode();
+    }
+
     public static async executeRequestInPipelineAsync(request: Request): Promise<void> {
         await RequestExecutor.executeInPipelineAsync(request);
     }

@@ -19,4 +19,8 @@ export class MessageCenterFilter extends AbstractFilter {
     order(): number {
         return 0;
     }
+
+    identifier(): string {
+        return "messageCenter";
+    }
 }

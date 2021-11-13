@@ -69,7 +69,7 @@ function initContext() {
             new JustifyCommand(),
             new CopyToClipboardCommand()
         ])
-        .build(true);
+        .build();
 }
 
 

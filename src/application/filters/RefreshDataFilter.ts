@@ -9,10 +9,12 @@ export class RefreshDataFilter extends AbstractFilter {
     public async handleAsync(request: Request, response: Response): Promise<void> {
         const needRefresh = response.getFromData("refreshData") as boolean;
         if (needRefresh) {
+            console.log("delay started");
             const delay = response.getFromData("refreshDataDelay") as number;
             if (delay && delay > 0) {
                 await DelayProvider.getInstance().delay(delay);
             }
+            console.log("delay done");
             await RefreshDataFilter.refresh(request, response);
         }
         await super.handleAsync(request, response);
@@ -32,13 +34,16 @@ export class RefreshDataFilter extends AbstractFilter {
     }
 
     private static async detectNodes() {
-        await Context.executeRequestInPipelineAsync(Request.generate("nodeDetector"));
+        await Context.executeRequestAsync(Request.generate("nodeDetector"));
     }
 
     private static async updateNodeData(response: Response) {
         const newRequest = Request.generate("updateNodeData")
             .attachToData("keepCurrentState", response.getFromData("keepCurrentState"));
-        await Context.executeRequestInPipelineAsync(newRequest);
+        await Context.executeRequestAsync(newRequest);
     }
 
+    identifier(): string {
+        return "refreshData";
+    }
 }

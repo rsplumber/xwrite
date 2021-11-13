@@ -20,6 +20,7 @@ export class FreeWriterCommand implements ICommand {
         await FreeWriterCommand.applyChangesAsync(request);
         return Response.generator()
             .softRefreshData()
+            .refreshDataOnView(Context.getTextNodesContainer().getAll())
             .generate();
     }
 
