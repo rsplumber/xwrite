@@ -26,6 +26,7 @@ export class UpdateNodeDataCommand implements ICommand {
             value.text = value.final_text;
             value.final_text = "";
         });
+
         return Response.generator()
             .addEventOnUi("detect_texts", Context.getTextNodesContainer().getAll())
             .generate();

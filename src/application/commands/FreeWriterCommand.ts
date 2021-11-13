@@ -19,7 +19,7 @@ export class FreeWriterCommand implements ICommand {
     async executeAsync(request: Request): Promise<Response> {
         await FreeWriterCommand.applyChangesAsync(request);
         return Response.generator()
-            .softRefreshData()
+            .softRefreshData(100)
             .generate();
     }
 
@@ -30,6 +30,7 @@ export class FreeWriterCommand implements ICommand {
 
         for (const nodeData of Context.getTextNodesContainer().getAll()) {
             await Figma.setNodeText(nodeData.node, directionFixedText);
+            nodeData.final_text = directionFixedText;
         }
     }
 

@@ -38,6 +38,7 @@ export class ReplacerCommand implements ICommand {
         for (const nodeData of Context.getTextNodesContainer().getAll()) {
             const replacedText = await replacer.replaceAsync(nodeData, replaceFrom, replaceTo);
             await Figma.setNodeText(nodeData.node, replacedText);
+            nodeData.final_text = replacedText;
         }
     }
 }

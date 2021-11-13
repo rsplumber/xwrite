@@ -33,6 +33,7 @@ export class BatchWriterCommand implements ICommand {
             if (selectedTextData.final_text.length !== 0) {
                 const finalText = TextDirectionFixer.fix(selectedTextData.final_text);
                 await Figma.setNodeText(textNode, finalText);
+                nodeData.final_text = finalText;
             }
         }
     }
