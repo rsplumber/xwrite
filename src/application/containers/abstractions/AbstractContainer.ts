@@ -30,7 +30,11 @@ export abstract class AbstractContainer<Type extends IContainerable> implements 
     }
 
     remove(item: Type): void {
+        this.removeById(item.containerId());
+    }
 
+    removeById(id: string): void {
+        this.items.delete(id);
     }
 
     count(): number {

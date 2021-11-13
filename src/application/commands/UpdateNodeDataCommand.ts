@@ -15,12 +15,17 @@ export class UpdateNodeDataCommand implements ICommand {
 
 
     async executeAsync(request: Request): Promise<Response> {
+        const keepCurrentState = request.getFromData("keepCurrentState") as boolean;
+        if (keepCurrentState) {
+            return Response.generator()
+                .addEventOnUi("detect_texts", Context.getTextNodesContainer().getAll())
+                .generate();
+        }
 
         Context.getTextNodesContainer().getAll().map(value => {
             value.text = value.final_text;
             value.final_text = "";
         });
-
         return Response.generator()
             .addEventOnUi("detect_texts", Context.getTextNodesContainer().getAll())
             .generate();

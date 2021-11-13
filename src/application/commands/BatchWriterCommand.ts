@@ -20,7 +20,7 @@ export class BatchWriterCommand implements ICommand {
         await BatchWriterCommand.applyChangesAsync(request);
         return Response.generator()
             .setNotificationMessage("Changes applied")
-            .refreshData()
+            .softRefreshData()
             .generate();
     }
 

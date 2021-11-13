@@ -68,18 +68,31 @@ export class ResponseGenerator {
         return this;
     }
 
-    public refreshData(delay: number = 0, hardRefresh: boolean = false, searchFor: string = null): ResponseGenerator {
+    public softRefreshData(delay: number = 0, searchFor: string = null, keepCurrentState: boolean = false): ResponseGenerator {
+        this.refreshData(delay, searchFor);
+        if (keepCurrentState) {
+            this.response.attachData("keepCurrentState", true);
+        }
+        return this;
+    }
+
+    public hardRefreshData(delay: number = 0, searchFor: string = null): ResponseGenerator {
+        this.refreshData(delay, searchFor);
+        this.response.attachData("hardRefresh", true);
+        return this;
+    }
+
+    private refreshData(delay: number = 0, searchFor: string = null): ResponseGenerator {
         this.response.attachData("refreshData", true);
-        this.response.attachData("hardRefresh", hardRefresh);
         if (delay > 0) {
             this.response.attachData("refreshDataDelay", delay);
         }
-
         if (searchFor) {
             this.response.attachData("searchFor", searchFor);
         }
         return this;
     }
+
 
     public addEventOnUi(type: string, data): ResponseGenerator {
         if (!this.response.getFromData("ui_events")) {

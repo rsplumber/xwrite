@@ -10,6 +10,8 @@ export interface IContainer<Type extends IContainerable> {
 
     remove(item: Type): void;
 
+    removeById(id: string): void;
+
     getAll(): Array<Type>;
 
     getById(id: string): Type;

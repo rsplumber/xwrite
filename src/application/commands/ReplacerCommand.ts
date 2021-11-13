@@ -26,7 +26,7 @@ export class ReplacerCommand implements ICommand {
         await ReplacerCommand.applyChangesAsync(replaceFrom, replaceTo);
         return Response.generator()
             .setNotificationMessage("Replaced")
-            .refreshData(500)
+            .softRefreshData(500)
             .generate();
     }
 

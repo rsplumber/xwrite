@@ -19,7 +19,7 @@ export class AutoDirectionCommand implements ICommand {
         await AutoDirectionCommand.applyChangesAsync();
         return Response.generator()
             .setNotificationMessage("Direction fixed")
-            .refreshData(200)
+            .softRefreshData(200)
             .generate();
     }
 

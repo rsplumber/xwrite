@@ -24,7 +24,7 @@ export class JustifyCommand implements ICommand {
         await JustifyCommand.applyChangesAsync(request);
         return Response.generator()
             .setNotificationMessage("Justified")
-            .refreshData()
+            .softRefreshData()
             .generate();
     }
 

@@ -2,7 +2,6 @@ import {ICommand} from "./abstractions/ICommand";
 import {Response} from "../Response";
 import {Request} from "../Request";
 import {Context} from "../Context";
-import {TextNodeData} from "../../shared/TextNodeData";
 
 export class DeleteTextCommand implements ICommand {
 
@@ -17,13 +16,11 @@ export class DeleteTextCommand implements ICommand {
 
     async executeAsync(request: Request): Promise<Response> {
         const textNodeId = request.getFromData("data") as string;
-        const textNode = Context.getTextNodesContainer().getById(textNodeId) as TextNodeData;
-        textNode.node.remove();
+        Context.getTextNodesContainer().removeById(textNodeId);
+        figma.currentPage.selection = Context.getTextNodesContainer().getAll().map(value => value.node) as TextNode[];
         return Response.generator()
             .setNotificationMessage("Text removed")
-            .refreshData()
+            .softRefreshData(0 , null,true)
             .generate();
     }
-
-
 }

@@ -16,6 +16,7 @@ import {ReplacerCommand} from "./application/commands/ReplacerCommand";
 import {CopyToClipboardCommand} from "./application/commands/CopyToClipboardCommand";
 import {JustifyCommand} from "./application/commands/JustifyCommand";
 import {Request} from "./application/Request";
+import {UpdateNodeDataCommand} from "./application/commands/UpdateNodeDataCommand";
 
 figma.showUI(__html__);
 figma.ui.resize(660, 560)
@@ -57,6 +58,7 @@ function initContext() {
         ])
         .addCommands([
             new NodeDetectorCommand(),
+            new UpdateNodeDataCommand(),
             new MoveTextCommand(),
             new DeleteTextCommand(),
             new FreeWriterCommand(),
