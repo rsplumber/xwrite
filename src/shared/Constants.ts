@@ -1,7 +1,7 @@
 export class Constants {
 
     public static readonly FREE_SIGNS: string[] = [" ", ".", ",", "@", "!", "#", "$", "%", "^", "&",
-        "*", "(", ")", "_", "+", "=", "~", "`", "/", "<", ">"
+        "*", "(", ")", "_", "+", "=", "~", "`", "/", "<", ">" ,"?"
     ];
 
     public static readonly ENGLISH_NUMBERS: string[] = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
@@ -11,7 +11,7 @@ export class Constants {
     public static readonly NUMBERS: string[] = [...Constants.PERSIAN_NUMBERS, ...Constants.ENGLISH_NUMBERS];
 
     public static readonly PERSIAN_SIGNS: string[] = ["‌", "÷", "٬", "﷼", "٪", "×", "،", "*", "ْ", "ٌ", "ً", "ُ",
-        "ِ", "َ", "ّ", "ؤ", "ئ", "ي", "إ", "أ", "آ", "ة",
+        "ِ", "َ", "ّ", "ؤ", "ئ", "ي", "إ", "أ", "آ", "ة", "؟"
     ];
 
     public static readonly PERSIAN_ALPHABET: string[] = [

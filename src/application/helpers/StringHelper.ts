@@ -25,8 +25,8 @@ export class StringHelper {
 
     private static sanitize(value: string): string {
         const numbersCorrected = StringHelper.correctNumbers(value);
-        // const ltrCorrected = StringHelper.correctLtrText(numbersCorrected);
-        return numbersCorrected;
+        const ltrCorrected = StringHelper.correctLtrText(numbersCorrected);
+        return ltrCorrected;
     }
 
 
