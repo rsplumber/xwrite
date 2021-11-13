@@ -19,7 +19,7 @@ export class StringHelper {
     public static toRtl(value: string): string {
         const reversed = StringHelper.reverseString(value);
         const upsideDown = StringHelper.upsideDown(reversed);
-        return StringHelper.sanitize(upsideDown);
+        return upsideDown;
     }
 
 

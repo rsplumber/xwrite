@@ -25,15 +25,11 @@ export class AutoDirectionCommand implements ICommand {
 
 
     private static async applyChangesAsync() {
-        await Promise.all(
-            Context.getTextNodesContainer()
-                .getAll()
-                .map(nodeData => {
-                    const finalText = TextDirectionFixer.fix(nodeData.text);
-                    Figma.setNodeTextAsync(nodeData.node, finalText);
-                    nodeData.final_text = finalText;
-                })
-        );
+        for (const nodeData of Context.getTextNodesContainer().getAll()) {
+            const finalText = TextDirectionFixer.fix(nodeData.text);
+            await Figma.setNodeTextAsync(nodeData.node, finalText);
+            nodeData.final_text = TextDirectionFixer.fix(finalText);
+        }
     }
 
 }

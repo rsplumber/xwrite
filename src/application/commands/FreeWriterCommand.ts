@@ -28,14 +28,10 @@ export class FreeWriterCommand implements ICommand {
         const finalText = request.getFromData("data") as string;
         const directionFixedText = TextDirectionFixer.fix(finalText);
 
-        await Promise.all(
-            Context.getTextNodesContainer()
-                .getAll()
-                .map(nodeData => {
-                    Figma.setNodeTextAsync(nodeData.node, directionFixedText);
-                    nodeData.final_text = directionFixedText;
-                }));
-
+        for (const nodeData of Context.getTextNodesContainer().getAll()) {
+            await Figma.setNodeTextAsync(nodeData.node, directionFixedText);
+            nodeData.final_text = finalText;
+        }
     }
 
 
