@@ -42,7 +42,7 @@ export class JustifyCommand implements ICommand {
             })
             const words = nodeData.text.split("\n").join(" ").split(" ");
             const justifiedText = await justifier.justifyAsync(words, maxWidth);
-            await Figma.setNodeText(nodeData.node, justifiedText);
+            await Figma.setNodeTextAsync(nodeData.node, justifiedText);
         }
     }
 

@@ -3,7 +3,7 @@ import {IContainerable} from "../../containers/abstractions/IContainerable";
 
 export interface IReplacer extends IContainerable {
 
-    replaceAsync(textNodeData: TextNodeData, replaceFrom: string, replaceTo: string): Promise<string>;
+    replace(textNodeData: TextNodeData, replaceFrom: string, replaceTo: string): string;
 
     sign(): string;
 

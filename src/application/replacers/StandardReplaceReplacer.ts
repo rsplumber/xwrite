@@ -13,7 +13,7 @@ export class StandardReplaceReplacer implements IReplacer {
         return this.sign();
     }
 
-    async replaceAsync(textNodeData: TextNodeData, replaceFrom: string, replaceTo: string): Promise<string> {
+    replace(textNodeData: TextNodeData, replaceFrom: string, replaceTo: string): string {
         if (!textNodeData.text.includes(replaceFrom)) return;
         const needToReplace = textNodeData.text;
         const replacedText = StringHelper.replace(needToReplace, replaceFrom, replaceTo);

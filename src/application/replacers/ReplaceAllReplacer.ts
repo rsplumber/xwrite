@@ -12,7 +12,7 @@ export class ReplaceAllReplacer implements IReplacer {
         return this.sign();
     }
 
-    async replaceAsync(textNodeData: TextNodeData, replaceFrom: string, replaceTo: string): Promise<string> {
+    replace(textNodeData: TextNodeData, replaceFrom: string, replaceTo: string): string {
         return TextDirectionFixer.fix(replaceTo);
     }
 

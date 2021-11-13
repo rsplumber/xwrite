@@ -35,10 +35,15 @@ export class ReplacerCommand implements ICommand {
         if (replacer == null) {
             replacer = Context.getReplacersContainer().getById("$__standard");
         }
-        for (const nodeData of Context.getTextNodesContainer().getAll()) {
-            const replacedText = await replacer.replaceAsync(nodeData, replaceFrom, replaceTo);
-            await Figma.setNodeText(nodeData.node, replacedText);
-            nodeData.final_text = replacedText;
-        }
+        await Promise.all(
+            Context.getTextNodesContainer()
+                .getAll()
+                .map(nodeData => {
+                    const replacedText = replacer.replace(nodeData, replaceFrom, replaceTo);
+                    Figma.setNodeTextAsync(nodeData.node, replacedText);
+                    nodeData.final_text = replacedText;
+                })
+        );
     }
+
 }
