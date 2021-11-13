@@ -5,7 +5,7 @@ export class DirectionDetector {
 
 
     private static readonly CHECK_PERCENT = 90;
-    private static readonly PASS_PERCENT = 70;
+    private static readonly PASS_PERCENT = 40;
 
     public static detectDirection(text: string): Direction {
         if (text.length <= 1) {
