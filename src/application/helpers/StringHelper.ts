@@ -19,14 +19,14 @@ export class StringHelper {
     public static toRtl(value: string): string {
         const reversed = StringHelper.reverseString(value);
         const upsideDown = StringHelper.upsideDown(reversed);
-        return upsideDown;
+        return StringHelper.sanitize(upsideDown);
     }
 
 
     private static sanitize(value: string): string {
         const numbersCorrected = StringHelper.correctNumbers(value);
-        const ltrCorrected = StringHelper.correctLtrText(numbersCorrected);
-        return ltrCorrected;
+        // const ltrCorrected = StringHelper.correctLtrText(numbersCorrected);
+        return numbersCorrected;
     }
 
 
