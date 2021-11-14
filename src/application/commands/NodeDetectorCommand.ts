@@ -76,6 +76,7 @@ export class NodeDetectorCommand implements ICommand {
         const textsContainer = Context.getTextNodesContainer();
         while (!(res = walker.next()).done) {
             let node = res.value
+
             this.countStatistics(node.type);
             if (node.type === 'TEXT') {
                 textsContainer.add(new TextNodeData(node));

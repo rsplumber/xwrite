@@ -1,4 +1,7 @@
 import {IJustifier} from "./abstarctions/IJustifier";
+import {TextNodeData} from "../../shared/TextNodeData";
+import {Figma} from "../helpers/Figma";
+import {StringHelper} from "../helpers/StringHelper";
 
 export class SpaceJustify implements IJustifier {
 
@@ -10,54 +13,46 @@ export class SpaceJustify implements IJustifier {
         return this.type();
     }
 
-    async justifyAsync(words: string[], maxWidth: number): Promise<string> {
-        let i = 0;
-        const n = words.length;
-        const result = [];
-        while (i < n) {
-            let j = i + 1;
-            let lineLength = words[i].length;
-            while (j < n && (lineLength + words[j].length + (j - i - 1)) < maxWidth) {
-                lineLength += words[j].length;
-                j++;
-            }
-            let diff = maxWidth - lineLength;
-            let numberOfWords = j - 1;
-            if (numberOfWords == 1 || j >= n) {
-                result.push(SpaceJustify.leftJustify(words, diff, i, j));
-            } else {
-                result.push(SpaceJustify.middleJustify(words, diff, i, j));
-            }
+    async justifyAsync(textNodeData: TextNodeData, maxWidth: number): Promise<string> {
+        const lines = textNodeData.text.split("\n");
+        const fontSize = textNodeData.node.fontSize as number;
+        const fontName = textNodeData.node.fontName as FontName;
+        const spaceWidth = await SpaceJustify.calculateSpaceSize(fontSize, fontName, textNodeData.text[0]);
 
-            i = j;
+        for (let i = 0; i < lines.length - 1; i++) {
+            const line = lines[i];
+            const words = line.split(" ").filter(value => value.length >= 1);
+            const lineWithoutSpace = words.join("");
+            const spaceNeeded = await SpaceJustify.calculateSpaceNeeded(lineWithoutSpace, fontSize, fontName, maxWidth, spaceWidth);
+
+            if (words.length > 1) {
+                const middleWordsCount = words.slice(0, -1).length;
+                const spacePerWord = Math.floor(spaceNeeded / middleWordsCount);
+                const final = words.join(" ".repeat(spacePerWord));
+                lines[i] = StringHelper.replace(line, line, final);
+            }
         }
 
-        return result.join().split(",").join("\n");
+        return lines.join("\n");
     }
 
-    private static leftJustify(words: string[], diff: number, i: number, j: number): string {
-
-        let spacesOnRight = diff - (j - i - 1);
-        let result = words[i];
-        for (let k = i + 1; k < j; k++) {
-            result += " " + words[k];
-        }
-
-        result += " ".repeat(spacesOnRight);
-
-        return result;
+    private static async calculateSpaceNeeded(line: string, fontSize, fontName, maxWidth: number, spaceWidth: number): Promise<number> {
+        const tempText = await Figma.createTextNodeAsync(line, fontSize, fontName);
+        const tempTextWidth = tempText.width;
+        tempText.remove();
+        const spaceNeeded = (maxWidth - tempTextWidth) / spaceWidth;
+        return Math.floor(spaceNeeded);
     }
 
-    private static middleJustify(words: string[], diff: number, i: number, j: number): string {
-        let spaceNeeded = j - i - 1;
-        let spaces = diff / spaceNeeded;
-        let extraSpaces = diff % spaceNeeded;
-        let result = words[i];
-        for (let k = i + 1; k < j; k++) {
-            let spacesToApply = spaces + (extraSpaces-- > 0 ? 1 : 0);
-            result += " ".repeat(spacesToApply) + words[k];
-        }
-        return result;
+    private static async calculateSpaceSize(fontSize, fontName, textFirstChar: string): Promise<number> {
+        const spaceWithChars = [textFirstChar, " ", textFirstChar].join("");
+        console.log("spaceWithChars: " + spaceWithChars);
+        const spaceWithCharText = await Figma.createTextNodeAsync(spaceWithChars, fontSize, fontName);
+        const charText = await Figma.createTextNodeAsync(textFirstChar, fontSize, fontName);
+        const spaceSize = spaceWithCharText.width - (charText.width * 2)
+        spaceWithCharText.remove();
+        charText.remove();
+        return spaceSize;
     }
 
 
