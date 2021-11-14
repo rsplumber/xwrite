@@ -26,8 +26,12 @@ export class SpaceJustify implements IJustifier {
             const spaceNeeded = await SpaceJustify.calculateSpaceNeeded(lineWithoutSpace, fontSize, fontName, maxWidth, spaceWidth);
 
             if (words.length > 1) {
+                console.log("line: " + line);
                 const middleWordsCount = words.slice(0, -1).length;
+                console.log("midd: " + middleWordsCount);
                 const spacePerWord = Math.floor(spaceNeeded / middleWordsCount);
+                console.log("space needed: " + spaceNeeded);
+                console.log("space per word: " + spacePerWord);
                 const final = words.join(" ".repeat(spacePerWord));
                 lines[i] = StringHelper.replace(line, line, final);
             }
