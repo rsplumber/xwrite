@@ -12,6 +12,8 @@ import {StandardReplaceReplacer} from "./replacers/StandardReplaceReplacer";
 import {JustifiersContainer} from "./containers/JustifiersContainer";
 import {SpaceJustify} from "./justifiers/SpaceJustify";
 import {Response} from "./Response";
+import {IJustifyCalculatorFactory} from "./justifiers/abstarctions/IJustifyCalculatorFactory";
+import {JustifyCalculatorFactory} from "./justifiers/JustifyCalculatorFactory";
 
 export class Context {
 
@@ -73,6 +75,10 @@ export class Context {
 
     public static async executeRequestAsync(request: Request): Promise<Response> {
         return await RequestExecutor.executeAsync(request);
+    }
+
+    public static justifyCalculatorFactory(): IJustifyCalculatorFactory {
+        return JustifyCalculatorFactory.getInstance();
     }
 
 }
