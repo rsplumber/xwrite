@@ -3,10 +3,10 @@
 
 <div id="base">
     <div class="tab">
-        <button class="tablinks" onclick="tabSelected(event, 'batchWriter')" id="batchWriterButton">Batch Writer
+        <button class="tabLinks" onclick="tabSelected(event, 'batchWriter')" id="batchWriterButton">Batch Writer
         </button>
-        <button class="tablinks" onclick="tabSelected(event, 'freeWriter')" id="freeWriterButton">Free Writer</button>
-        <button class="tablinks" onclick="tabSelected(event, 'replacer')" id="replacerButton">Find & Replace</button>
+        <button class="tabLinks" onclick="tabSelected(event, 'freeWriter')" id="freeWriterButton">Free Writer</button>
+        <button class="tabLinks" onclick="tabSelected(event, 'replacer')" id="replacerButton">Find & Replace</button>
         <div onclick="openDropDown()" class="dropdown">
             <img class="dropbtn" src="https://img.icons8.com/windows/32/979797/menu-2.png"/>
             <div id="myDropdown" class="dropdown-content">
@@ -18,7 +18,7 @@
                 </div>
             </div>
         </div>
-        <div class="tablinks" id="sizeBar">
+        <div class="tabLinks" id="sizeBar">
             <div class="tooltip" onclick="resize('minimize')">
                 <span class="tooltiptext">Minimize</span>
                 <img style="width: 24px; height: 24px;"
@@ -69,7 +69,7 @@
                     <div class="label">
                         Text
                     </div>
-                    <input id="replace_from" ,type="input" placeholder="Find Text">
+                    <input id="replace_from" type="input" placeholder="Find Text">
                 </div>
                 <div class="label" style="margin-top: 20px;">
                     To
@@ -141,10 +141,10 @@
 
 <script>
 
-    var texts_data = [];
+    let texts_data = [];
 
     onmessage = (event) => {
-        var pluginMessage = event.data.pluginMessage;
+        const pluginMessage = event.data.pluginMessage;
         const type = pluginMessage['type'];
         switch (type) {
             case 'detect_texts' :
@@ -157,17 +157,14 @@
                 break;
             case 'is_text_selected':
                 const is_selected = pluginMessage['data'];
-
                 document.getElementById('bottomBar').setAttribute('style', is_selected ? "display: flex;" : "display: none;");
-
-
                 break;
         }
     }
 
 
     function showMessage(message) {
-        var message_center_element = document.getElementById('message_center');
+        const message_center_element = document.getElementById('message_center');
         message_center_element.innerHTML = message;
     }
 
@@ -208,7 +205,7 @@
 
 
     function clearFreeWriterUI() {
-        var freeWriterTextArea = document.getElementById('freeWriterText');
+        const freeWriterTextArea = document.getElementById('freeWriterText');
         freeWriterTextArea.innerHTML = "";
     }
 
@@ -241,7 +238,6 @@
 
     function freeWriterTextChanged(event) {
         const value = document.getElementById('freeWriterText').value;
-
         parent.postMessage({pluginMessage: {type: 'freeWriter', data: value}}, '*')
     }
 
@@ -352,27 +348,20 @@
     }
 
     function tabSelected(evt, tabName) {
-        // Declare all variables
-        var i, tabcontent, tablinks;
+        let i, tabContent, tabLinks;
 
-
-        // Get all elements with class="tabcontent" and hide them
-        tabcontent = document.getElementsByClassName("tabcontent");
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
+        tabContent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabContent.length; i++) {
+            tabContent[i].style.display = "none";
         }
 
-        // Get all elements with class="tablinks" and remove the class "active"
-        tablinks = document.getElementsByClassName("tablinks");
-        for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        tabLinks = document.getElementsByClassName("tabLinks");
+        for (i = 0; i < tabLinks.length; i++) {
+            tabLinks[i].className = tabLinks[i].className.replace(" active", "");
         }
 
-        // Show the current tab, and add an "active" class to the button that opened the tab
         document.getElementById(tabName).style.display = "block";
         evt.currentTarget.className += " active";
-
-
     }
 
     document.getElementById("batchWriterButton").click();
@@ -380,7 +369,6 @@
     function openDropDown() {
         document.getElementById("myDropdown").classList.toggle("show");
     }
-
 
 </script>
 
