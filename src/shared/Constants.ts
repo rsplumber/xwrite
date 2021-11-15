@@ -21,7 +21,6 @@ export class Constants {
     public static readonly PERSIAN_CHARACTERS: string[] = [
         ...Constants.PERSIAN_ALPHABET,
         ...Constants.NUMBERS,
-        ...Constants.FREE_SIGNS,
         ...Constants.PERSIAN_SIGNS,
     ];
 

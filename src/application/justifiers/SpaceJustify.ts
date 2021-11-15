@@ -17,22 +17,29 @@ export class SpaceJustify implements IJustifier {
         const lines = textNodeData.text.split("\n");
         const fontSize = textNodeData.node.fontSize as number;
         const fontName = textNodeData.node.fontName as FontName;
-        const spaceWidth = await SpaceJustify.calculateSpaceSize(fontSize, fontName, textNodeData.text[0]);
+        const spaceWidth = await SpaceJustify.calculateSpaceSize(fontSize, fontName);
 
         for (let i = 0; i < lines.length - 1; i++) {
-            const line = lines[i];
-            const words = line.split(" ").filter(value => value.length >= 1);
-            const lineWithoutSpace = words.join("");
-            const spaceNeeded = await SpaceJustify.calculateSpaceNeeded(lineWithoutSpace, fontSize, fontName, maxWidth, spaceWidth);
 
+            const line = lines[i];
+            const spaceNeeded = await SpaceJustify.calculateSpaceNeeded(line, fontSize, fontName, maxWidth, spaceWidth);
+
+            if (spaceNeeded === 0) continue;
+
+            const words = line.split(" ").filter(value => value.length >= 1);
             if (words.length > 1) {
-                console.log("line: " + line);
                 const middleWordsCount = words.slice(0, -1).length;
-                console.log("midd: " + middleWordsCount);
-                const spacePerWord = Math.floor(spaceNeeded / middleWordsCount);
-                console.log("space needed: " + spaceNeeded);
-                console.log("space per word: " + spacePerWord);
+                const spacePerWord = Math.ceil(spaceNeeded / middleWordsCount) + 1;
                 const final = words.join(" ".repeat(spacePerWord));
+
+                console.log(
+                    " line: " + line +
+                    " words: " + words +
+                    " middleWordsCount: " + middleWordsCount +
+                    " space needed: " + spaceNeeded +
+                    " space per word: " + spacePerWord);
+
+                console.log("final: " + final);
                 lines[i] = StringHelper.replace(line, line, final);
             }
         }
@@ -48,15 +55,14 @@ export class SpaceJustify implements IJustifier {
         return Math.floor(spaceNeeded);
     }
 
-    private static async calculateSpaceSize(fontSize, fontName, textFirstChar: string): Promise<number> {
-        const spaceWithChars = [textFirstChar, " ", textFirstChar].join("");
-        console.log("spaceWithChars: " + spaceWithChars);
+    private static async calculateSpaceSize(fontSize, fontName): Promise<number> {
+        const spaceWithChars = "_ _";
         const spaceWithCharText = await Figma.createTextNodeAsync(spaceWithChars, fontSize, fontName);
-        const charText = await Figma.createTextNodeAsync(textFirstChar, fontSize, fontName);
-        const spaceSize = spaceWithCharText.width - (charText.width * 2)
+        const charText = await Figma.createTextNodeAsync("_", fontSize, fontName);
+        const spaceSize = spaceWithCharText.width - (charText.width * 2);
         spaceWithCharText.remove();
         charText.remove();
-        return spaceSize;
+        return Math.ceil(spaceSize);
     }
 
 
