@@ -229,6 +229,12 @@
             freeWriterTextArea.value = textNodeData.text;
         } else {
             freeWriterTextArea.setAttribute("placeholder", "Type to replace all texts");
+            const firstTextNodeData = texts_data[0];
+            const secondTextNodeData = texts_data[1];
+            if (secondTextNodeData.text === secondTextNodeData.text) {
+                freeWriterTextArea.value = firstTextNodeData.text;
+            }
+
         }
 
     }
