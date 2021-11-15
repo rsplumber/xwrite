@@ -81,7 +81,7 @@ export class NodeDetectorCommand implements ICommand {
             if (node.type === 'TEXT') {
                 textsContainer.add(new TextNodeData(node));
             }
-            if (++count === 500) {
+            if (++count === 1000) {
                 return;
             }
         }
@@ -89,14 +89,14 @@ export class NodeDetectorCommand implements ICommand {
         return;
     }
 
-    private searchForNodes(nodes, searchFor: string): TextNode[] {
+    private searchForNodes(nodes, searchFor: string = null): TextNode[] {
         let walker = this.walkTree(nodes);
         let res;
         const foundedText: TextNode[] = [];
         while (!(res = walker.next()).done) {
             let node = res.value
             if (node.type === 'TEXT') {
-                if (node.characters.includes(searchFor)) {
+                if (!searchFor || node.characters.includes(searchFor)) {
                     this.countStatistics(node.type);
                     foundedText.push(node);
                 }

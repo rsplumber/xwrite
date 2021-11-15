@@ -183,12 +183,12 @@
     }
 
     function autoDirection() {
-        // parent.postMessage({pluginMessage: {type: 'autoDirection'}}, '*')
-        parent.postMessage({pluginMessage: {type: 'justify'}}, '*')
+        parent.postMessage({pluginMessage: {type: 'autoDirection'}}, '*')
+        // parent.postMessage({pluginMessage: {type: 'justify'}}, '*')
     }
 
     function resize(sizeParams) {
-        if (sizeParams == "minimize") {
+        if (sizeParams === "minimize") {
             showMinimizedUI();
         } else {
             showStandardUI();
