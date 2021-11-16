@@ -11,7 +11,7 @@ export class Constants {
     public static readonly NUMBERS: string[] = [...Constants.PERSIAN_NUMBERS, ...Constants.ENGLISH_NUMBERS];
 
     public static readonly PERSIAN_SIGNS: string[] = ["‌", "÷", "٬", "﷼", "٪", "×", "،", "*", "ْ", "ٌ", "ً", "ُ",
-        "ِ", "َ", "ّ", "ؤ", "ئ", "ي", "إ", "أ", "آ", "ة", "؟"
+        "ِ", "َ", "ّ", "ؤ", "ئ", "ي", "إ", "أ", "آ", "ة", "؟" , "ـ"
     ];
 
     public static readonly PERSIAN_ALPHABET: string[] = [

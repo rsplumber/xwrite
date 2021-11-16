@@ -1,6 +1,6 @@
 import {IJustifyCalculatorFactory} from "./abstarctions/IJustifyCalculatorFactory";
 import {IJustifyCalculator} from "./abstarctions/IJustifyCalculator";
-import {SpaceJustifyCalculator} from "./SpaceJustifyCalculator";
+import {JustifyCalculator} from "./JustifyCalculator";
 
 export class JustifyCalculatorFactory implements IJustifyCalculatorFactory {
 
@@ -17,9 +17,9 @@ export class JustifyCalculatorFactory implements IJustifyCalculatorFactory {
     getJustifyCalculator(name: string): IJustifyCalculator {
         switch (name) {
             case "spaceJustifyCalculator":
-                return SpaceJustifyCalculator.getInstance();
+                return JustifyCalculator.getInstance();
         }
-        return SpaceJustifyCalculator.getInstance();
+        return JustifyCalculator.getInstance();
     }
 
 

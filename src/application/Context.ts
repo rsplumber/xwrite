@@ -14,6 +14,7 @@ import {SpaceJustify} from "./justifiers/SpaceJustify";
 import {Response} from "./Response";
 import {IJustifyCalculatorFactory} from "./justifiers/abstarctions/IJustifyCalculatorFactory";
 import {JustifyCalculatorFactory} from "./justifiers/JustifyCalculatorFactory";
+import {PersianJustify} from "./justifiers/PersianJustify";
 
 export class Context {
 
@@ -118,7 +119,8 @@ export class ContextBuilder {
 
     private static initJustifiers() {
         JustifiersContainer.getInstance().addRange([
-            new SpaceJustify()
+            new SpaceJustify(),
+            new PersianJustify()
         ]);
     }
 

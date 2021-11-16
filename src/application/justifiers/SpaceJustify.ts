@@ -15,7 +15,7 @@ export class SpaceJustify implements IJustifier {
 
     async justifyAsync(textNodeData: TextNodeData, maxWidth: number): Promise<string> {
 
-        const justifyCalculator = Context.justifyCalculatorFactory().getJustifyCalculator("spaceJustifyCalculator");
+        const justifyCalculator = Context.justifyCalculatorFactory().getJustifyCalculator("justifyCalculator");
 
         const lines = textNodeData.text.split("\n");
         const fontSize = textNodeData.node.fontSize as number;

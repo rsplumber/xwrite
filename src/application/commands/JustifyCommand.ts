@@ -34,7 +34,7 @@ export class JustifyCommand extends AbstractCommand {
     }
 
     private static async applyChangesAsync() {
-        const justifierId = "space_justify";
+        const justifierId = "persian_justify";
         const justifier = Context.getJustifierContainer().getById(justifierId);
         if (justifier == null) return;
 

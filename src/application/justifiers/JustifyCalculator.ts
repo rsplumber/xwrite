@@ -1,21 +1,21 @@
 import {IJustifyCalculator} from "./abstarctions/IJustifyCalculator";
 import {Figma} from "../helpers/Figma";
 
-export class SpaceJustifyCalculator implements IJustifyCalculator {
+export class JustifyCalculator implements IJustifyCalculator {
 
-    private static instance: SpaceJustifyCalculator;
+    private static instance: JustifyCalculator;
 
 
-    public static getInstance(): SpaceJustifyCalculator {
-        if (!SpaceJustifyCalculator.instance) {
-            SpaceJustifyCalculator.instance = new SpaceJustifyCalculator();
+    public static getInstance(): JustifyCalculator {
+        if (!JustifyCalculator.instance) {
+            JustifyCalculator.instance = new JustifyCalculator();
         }
-        return SpaceJustifyCalculator.instance;
+        return JustifyCalculator.instance;
     }
 
 
     name(): string {
-        return "spaceJustifyCalculator";
+        return "justifyCalculator";
     }
 
     baseCharacter(): string {
