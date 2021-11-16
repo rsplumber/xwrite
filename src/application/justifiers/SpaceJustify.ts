@@ -31,11 +31,9 @@ export class SpaceJustify implements IJustifier {
             const words = line.split(" ").filter(value => value.length >= 1);
             if (words.length > 1) {
                 const middleWordsCount = words.slice(0, -1).length;
-                console.log("sn: " + spaceNeeded);
-                console.log("sn: " + middleWordsCount);
                 const spacePerWord = Math.floor(spaceNeeded / middleWordsCount);
                 let extraSpaces = spaceNeeded % middleWordsCount;
-                console.log("extra:  " + extraSpaces);
+
                 const finalText = [];
                 for (let j = 0; j < words.slice(0, -1).length; j++) {
                     let word = words[j] + " ".repeat(spacePerWord);
@@ -48,14 +46,6 @@ export class SpaceJustify implements IJustifier {
                 finalText.push(words[words.length - 1]);
                 const final = finalText.join(" ");
 
-                console.log(
-                    " line: " + line +
-                    " words: " + words +
-                    " middleWordsCount: " + middleWordsCount +
-                    " space needed: " + spaceNeeded +
-                    " space per word: " + spacePerWord);
-
-                console.log("final: " + final);
                 lines[i] = StringHelper.replace(line, line, final);
             }
         }

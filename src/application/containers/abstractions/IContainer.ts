@@ -14,6 +14,8 @@ export interface IContainer<Type extends IContainerable> {
 
     getAll(): Array<Type>;
 
+    first(): Type;
+
     getById(id: string): Type;
 
     count(): number;

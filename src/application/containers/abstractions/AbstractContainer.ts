@@ -30,6 +30,14 @@ export abstract class AbstractContainer<Type extends IContainerable> implements 
         return Array.from(this.items.values());
     }
 
+    first(): Type {
+        if (this.items.size >= 1) {
+            return this.items.values().next().value;
+        }
+        return null;
+    }
+
+
     refresh(): void {
         this.logContainer("refresh", null);
         this.items.clear();

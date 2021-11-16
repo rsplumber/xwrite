@@ -17,24 +17,28 @@ export class JustifyCommand implements ICommand {
 
 
     async executeAsync(request: Request): Promise<Response> {
-        await JustifyCommand.applyChangesAsync(request);
+        if (Context.getTextNodesContainer().count() > 1) {
+            return Response.generator(false)
+                .setNotificationMessage("can't justify more than 1 text")
+                .generate();
+        }
+        await JustifyCommand.applyChangesAsync();
         return Response.generator()
             .setNotificationMessage("Justified")
-            .softRefreshData()
+            .softRefreshData(0, null, true)
             .generate();
     }
 
-    //space = 6px
-    private static async applyChangesAsync(request: Request) {
+    private static async applyChangesAsync() {
         const justifierId = "space_justify";
         const justifier = Context.getJustifierContainer().getById(justifierId);
         if (justifier == null) return;
-        for (const nodeData of Context.getTextNodesContainer().getAll()) {
-            const maxWidth = nodeData.node.width;
-            const justifiedText = await justifier.justifyAsync(nodeData, maxWidth);
-            const directionFixedText = TextDirectionFixer.fix(justifiedText);
-            await Figma.setNodeTextAsync(nodeData.node, directionFixedText);
-        }
+
+        const nodeData = Context.getTextNodesContainer().first();
+        const maxWidth = nodeData.node.width;
+        const justifiedText = await justifier.justifyAsync(nodeData, maxWidth);
+        const directionFixedText = TextDirectionFixer.fix(justifiedText);
+        await Figma.setNodeTextAsync(nodeData.node, directionFixedText);
     }
 
 
