@@ -1,7 +1,7 @@
 import {Response} from "../Response";
 import {Context} from "../Context";
 import {Request} from "../Request";
-import {Resolver} from "../resolvers/Resolver";
+import {Resolver} from "../commands/resolvers/Resolver";
 
 export class CommandExecutor {
 

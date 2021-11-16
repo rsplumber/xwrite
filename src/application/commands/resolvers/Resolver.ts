@@ -1,16 +1,16 @@
-import {ICommand} from "../abstractions/commands/ICommand";
-import {AutoDirectionCommand} from "../commands/AutoDirectionCommand";
-import {BatchWriterCommand} from "../commands/BatchWriterCommand";
-import {CopyToClipboardCommand} from "../commands/CopyToClipboardCommand";
-import {DeleteTextCommand} from "../commands/DeleteTextCommand";
-import {FreeWriterCommand} from "../commands/FreeWriterCommand";
-import {JustifyCommand} from "../commands/JustifyCommand";
-import {MoveTextCommand} from "../commands/MoveTextCommand";
-import {NodeDetectorCommand} from "../commands/NodeDetectorCommand";
-import {ReplacerCommand} from "../commands/ReplacerCommand";
-import {ResizeCommand} from "../commands/ResizeCommand";
-import {SelectAllTextsCommand} from "../commands/SelectAllTextsCommand";
-import {UpdateNodeDataCommand} from "../commands/UpdateNodeDataCommand";
+import {ICommand} from "../../abstractions/commands/ICommand";
+import {AutoDirectionCommand} from "../AutoDirectionCommand";
+import {BatchWriterCommand} from "../BatchWriterCommand";
+import {CopyToClipboardCommand} from "../CopyToClipboardCommand";
+import {DeleteTextCommand} from "../DeleteTextCommand";
+import {FreeWriterCommand} from "../FreeWriterCommand";
+import {JustifyCommand} from "../JustifyCommand";
+import {MoveTextCommand} from "../MoveTextCommand";
+import {NodeDetectorCommand} from "../NodeDetectorCommand";
+import {ReplacerCommand} from "../ReplacerCommand";
+import {ResizeCommand} from "../ResizeCommand";
+import {SelectAllTextsCommand} from "../SelectAllTextsCommand";
+import {UpdateNodeDataCommand} from "../UpdateNodeDataCommand";
 
 export class Resolver {
 
@@ -31,7 +31,7 @@ export class Resolver {
     public resolveCommand(commandName: string): ICommand {
         let command = this.resolve(commandName);
         if (!command) {
-            command = this.createCommand(commandName)
+            command = Resolver.createCommand(commandName)
             this.addDependency(commandName, command);
         }
         return command as ICommand;
@@ -45,7 +45,7 @@ export class Resolver {
         this.dependencies.set(key, value);
     }
 
-    private createCommand(commandName: string): ICommand {
+    private static createCommand(commandName: string): ICommand {
         switch (commandName) {
             case "autoDirection":
                 return new AutoDirectionCommand();
