@@ -1,7 +1,7 @@
 import {IJustifier} from "./abstarctions/IJustifier";
 import {TextNodeData} from "../../shared/TextNodeData";
-import {StringHelper} from "../helpers/StringHelper";
 import {Context} from "../Context";
+import {StringHelper} from "../helpers/StringHelper";
 
 export class SpaceJustify implements IJustifier {
 
@@ -26,14 +26,27 @@ export class SpaceJustify implements IJustifier {
 
             const line = lines[i];
             const spaceNeeded = await justifyCalculator.calculateJustifyCharacterNeededAsync(line, fontSize, fontName, maxWidth, spaceWidth);
-
             if (spaceNeeded === 0) continue;
 
             const words = line.split(" ").filter(value => value.length >= 1);
             if (words.length > 1) {
                 const middleWordsCount = words.slice(0, -1).length;
-                const spacePerWord = Math.ceil(spaceNeeded / middleWordsCount) + 1;
-                const final = words.join(" ".repeat(spacePerWord));
+                console.log("sn: " + spaceNeeded);
+                console.log("sn: " + middleWordsCount);
+                const spacePerWord = Math.floor(spaceNeeded / middleWordsCount);
+                let extraSpaces = spaceNeeded % middleWordsCount;
+                console.log("extra:  " + extraSpaces);
+                const finalText = [];
+                for (let j = 0; j < words.slice(0, -1).length; j++) {
+                    let word = words[j] + " ".repeat(spacePerWord);
+                    if (extraSpaces != 0) {
+                        word = word + " ".repeat(extraSpaces);
+                        extraSpaces = 0;
+                    }
+                    finalText.push(word);
+                }
+                finalText.push(words[words.length - 1]);
+                const final = finalText.join(" ");
 
                 console.log(
                     " line: " + line +
