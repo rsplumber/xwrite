@@ -1,18 +1,13 @@
 import {Response} from "../Response";
 import {Request} from "../Request";
 import {Context} from "../Context";
-import {AbstractCommand} from "./abstractions/AbstractCommand";
+import {AbstractCommand} from "../abstractions/commands/AbstractCommand";
 
 export class UpdateNodeDataCommand extends AbstractCommand {
 
     identifier(): string {
         return "updateNodeData";
     }
-
-    containerId(): string {
-        return this.identifier();
-    }
-
 
     async executeAsync(request: Request): Promise<Response> {
         const keepCurrentState = request.getFromData("keepCurrentState") as boolean;

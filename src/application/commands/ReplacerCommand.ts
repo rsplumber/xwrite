@@ -3,16 +3,13 @@ import {Request} from "../Request";
 import {Context} from "../Context";
 import {Figma} from "../helpers/Figma";
 import {TextDirectionFixer} from "../helpers/TextDirectionFixer";
-import {AbstractCommand} from "./abstractions/AbstractCommand";
+import {AbstractCommand} from "../abstractions/commands/AbstractCommand";
+import {Factories} from "../factories/Factories";
 
 export class ReplacerCommand extends AbstractCommand {
 
     identifier(): string {
         return "replacer";
-    }
-
-    containerId(): string {
-        return this.identifier();
     }
 
     async executeAsync(request: Request): Promise<Response> {
@@ -34,10 +31,7 @@ export class ReplacerCommand extends AbstractCommand {
     }
 
     private static async applyChangesAsync(replaceFrom: string, replaceTo: string) {
-        let replacer = Context.getReplacersContainer().getById(replaceFrom);
-        if (replacer == null) {
-            replacer = Context.getReplacersContainer().getById("$__standard");
-        }
+        let replacer = Factories.Replacers(replaceFrom);
 
         for (const nodeData of Context.getTextNodesContainer().getAll()) {
             const replacedText = replacer.replace(nodeData, replaceFrom, replaceTo);

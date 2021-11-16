@@ -3,16 +3,12 @@ import {Request} from "../Request";
 import {Context} from "../Context";
 import {TextDirectionFixer} from "../helpers/TextDirectionFixer";
 import {Figma} from "../helpers/Figma";
-import {AbstractCommand} from "./abstractions/AbstractCommand";
+import {AbstractCommand} from "../abstractions/commands/AbstractCommand";
 
 export class AutoDirectionCommand extends AbstractCommand {
 
     identifier(): string {
         return "autoDirection";
-    }
-
-    containerId(): string {
-        return this.identifier();
     }
 
     async executeAsync(request: Request): Promise<Response> {

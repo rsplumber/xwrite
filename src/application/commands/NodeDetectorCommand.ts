@@ -2,7 +2,7 @@ import {Response} from "../Response";
 import {Request} from "../Request";
 import {TextNodeData} from "../../shared/TextNodeData";
 import {Context} from "../Context";
-import {AbstractCommand} from "./abstractions/AbstractCommand";
+import {AbstractCommand} from "../abstractions/commands/AbstractCommand";
 
 export class NodeDetectorCommand extends AbstractCommand {
 
@@ -10,10 +10,6 @@ export class NodeDetectorCommand extends AbstractCommand {
 
     identifier(): string {
         return "nodeDetector";
-    }
-
-    containerId(): string {
-        return this.identifier();
     }
 
     async executeAsync(request: Request): Promise<Response> {

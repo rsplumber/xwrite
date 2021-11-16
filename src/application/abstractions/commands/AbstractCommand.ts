@@ -7,8 +7,6 @@ export abstract class AbstractCommand implements ICommand {
 
     abstract identifier(): string;
 
-    abstract containerId(): string;
-
     abstract executeAsync(request: Request): Promise<Response>;
 
     public success(props?: {

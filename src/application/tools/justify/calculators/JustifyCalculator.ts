@@ -1,5 +1,5 @@
-import {IJustifyCalculator} from "./abstarctions/IJustifyCalculator";
-import {Figma} from "../helpers/Figma";
+import {IJustifyCalculator} from "./abstractions/IJustifyCalculator";
+import {Figma} from "../../../helpers/Figma";
 
 export class JustifyCalculator implements IJustifyCalculator {
 

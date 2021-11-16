@@ -1,4 +1,4 @@
-import {AbstractFilter} from "./abstractions/AbstractFilter";
+import {AbstractFilter} from "../abstractions/filters/AbstractFilter";
 import {Request} from "../Request";
 import {Context} from "../Context";
 import {Response} from "../Response";

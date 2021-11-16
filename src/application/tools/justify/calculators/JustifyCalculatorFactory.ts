@@ -1,8 +1,8 @@
-import {IJustifyCalculatorFactory} from "./abstarctions/IJustifyCalculatorFactory";
-import {IJustifyCalculator} from "./abstarctions/IJustifyCalculator";
+import {IJustifyCalculator} from "./abstractions/IJustifyCalculator";
 import {JustifyCalculator} from "./JustifyCalculator";
+import {IFactory} from "../../../abstractions/factories/IFactory";
 
-export class JustifyCalculatorFactory implements IJustifyCalculatorFactory {
+export class JustifyCalculatorFactory implements IFactory<IJustifyCalculator> {
 
     private static instance: JustifyCalculatorFactory;
 
@@ -14,7 +14,8 @@ export class JustifyCalculatorFactory implements IJustifyCalculatorFactory {
         return JustifyCalculatorFactory.instance;
     }
 
-    getJustifyCalculator(name: string): IJustifyCalculator {
+
+    getOrCreate(name: string): IJustifyCalculator {
         switch (name) {
             case "spaceJustifyCalculator":
                 return JustifyCalculator.getInstance();

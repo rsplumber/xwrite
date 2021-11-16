@@ -1,16 +1,23 @@
 import {IReplacer} from "./abstractions/IReplacer";
-import {TextNodeData} from "../../shared/TextNodeData";
-import {TextDirectionFixer} from "../helpers/TextDirectionFixer";
-import {StringHelper} from "../helpers/StringHelper";
+import {TextNodeData} from "../../../shared/TextNodeData";
+import {TextDirectionFixer} from "../../helpers/TextDirectionFixer";
+import {StringHelper} from "../../helpers/StringHelper";
 
 export class StandardReplaceReplacer implements IReplacer {
 
-    sign(): string {
-        return "$__standard";
+    private static instance: StandardReplaceReplacer;
+
+    public static getInstance(): StandardReplaceReplacer {
+        if (!StandardReplaceReplacer.instance) {
+            StandardReplaceReplacer.instance = new StandardReplaceReplacer();
+        }
+
+        return StandardReplaceReplacer.instance;
     }
 
-    containerId(): string {
-        return this.sign();
+
+    sign(): string {
+        return "$__standard";
     }
 
     replace(textNodeData: TextNodeData, replaceFrom: string, replaceTo: string): string {

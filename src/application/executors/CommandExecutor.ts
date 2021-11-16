@@ -1,6 +1,7 @@
-import {Response} from "../../Response";
-import {Context} from "../../Context";
-import {Request} from "../../Request";
+import {Response} from "../Response";
+import {Context} from "../Context";
+import {Request} from "../Request";
+import {Resolver} from "../resolvers/Resolver";
 
 export class CommandExecutor {
 
@@ -18,8 +19,8 @@ export class CommandExecutor {
     }
 
     private static async executeRequestAsync(request: Request): Promise<Response> {
-        return Context.getCommandsContainer()
-            .getById(request.commandIdentifier)
+        return Resolver.getInstance()
+            .resolveCommand(request.commandIdentifier)
             .executeAsync(request);
     }
 

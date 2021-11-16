@@ -4,16 +4,12 @@ import {TextNodeData} from "../../shared/TextNodeData";
 import {Context} from "../Context";
 import {TextDirectionFixer} from "../helpers/TextDirectionFixer";
 import {Figma} from "../helpers/Figma";
-import {AbstractCommand} from "./abstractions/AbstractCommand";
+import {AbstractCommand} from "../abstractions/commands/AbstractCommand";
 
 export class BatchWriterCommand extends AbstractCommand {
 
     identifier(): string {
         return "batchWriter";
-    }
-
-    containerId(): string {
-        return this.identifier();
     }
 
     async executeAsync(request: Request): Promise<Response> {

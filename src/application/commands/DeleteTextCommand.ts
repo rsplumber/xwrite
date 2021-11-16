@@ -1,16 +1,12 @@
 import {Response} from "../Response";
 import {Request} from "../Request";
 import {Context} from "../Context";
-import {AbstractCommand} from "./abstractions/AbstractCommand";
+import {AbstractCommand} from "../abstractions/commands/AbstractCommand";
 
 export class DeleteTextCommand extends AbstractCommand {
 
     identifier(): string {
         return "deleteText";
-    }
-
-    containerId(): string {
-        return this.identifier();
     }
 
 

@@ -1,18 +1,13 @@
 import {Response} from "../Response";
 import {Request} from "../Request";
 import {Context} from "../Context";
-import {AbstractCommand} from "./abstractions/AbstractCommand";
+import {AbstractCommand} from "../abstractions/commands/AbstractCommand";
 
 export class MoveTextCommand extends AbstractCommand {
 
     identifier(): string {
         return "moveText";
     }
-
-    containerId(): string {
-        return this.identifier();
-    }
-
 
     async executeAsync(request: Request): Promise<Response> {
         const textNodeId = request.getFromData("data") as string;

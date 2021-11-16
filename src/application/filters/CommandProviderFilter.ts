@@ -1,6 +1,6 @@
-import {AbstractFilter} from "./abstractions/AbstractFilter";
+import {AbstractFilter} from "../abstractions/filters/AbstractFilter";
 import {Request} from "../Request";
-import {CommandExecutor} from "../commands/abstractions/CommandExecutor";
+import {CommandExecutor} from "../executors/CommandExecutor";
 import {Response} from "../Response";
 
 export class CommandProviderFilter extends AbstractFilter {
