@@ -1,12 +1,12 @@
-import {ICommand} from "./abstractions/ICommand";
-import {Response} from "../../shared/Response";
-import {Request} from "../../shared/Request";
+import {Response} from "../Response";
+import {Request} from "../Request";
 import {TextNodeData} from "../../shared/TextNodeData";
 import {Context} from "../Context";
 import {TextDirectionFixer} from "../helpers/TextDirectionFixer";
 import {Figma} from "../helpers/Figma";
+import {AbstractCommand} from "./abstractions/AbstractCommand";
 
-export class BatchWriterCommand implements ICommand {
+export class BatchWriterCommand extends AbstractCommand {
 
     identifier(): string {
         return "batchWriter";
@@ -18,10 +18,11 @@ export class BatchWriterCommand implements ICommand {
 
     async executeAsync(request: Request): Promise<Response> {
         await BatchWriterCommand.applyChangesAsync(request);
-        return Response.generator()
-            .refreshData()
-            .setNotificationMessage("Changes applied")
-            .generate();
+        return this.success({
+            notificationMessage: "Changes applied",
+            softRefreshData: {},
+            refreshDataOnView: Context.getTextNodesContainer().getAll()
+        });
     }
 
     private static async applyChangesAsync(request: Request) {
@@ -32,7 +33,8 @@ export class BatchWriterCommand implements ICommand {
             const selectedTextData = finalData.find(d => d.id == textNode.id);
             if (selectedTextData.final_text.length !== 0) {
                 const finalText = TextDirectionFixer.fix(selectedTextData.final_text);
-                await Figma.setNodeText(textNode, finalText);
+                await Figma.setNodeTextAsync(textNode, finalText);
+                nodeData.final_text = TextDirectionFixer.fix(finalText);
             }
         }
     }

@@ -1,8 +1,9 @@
 import {IContainerable} from "../../containers/abstractions/IContainerable";
+import {TextNodeData} from "../../../shared/TextNodeData";
 
 export interface IJustifier extends IContainerable {
 
-    justifyAsync(words: string[], width: number): Promise<string>;
+    justifyAsync(text: TextNodeData, width: number): Promise<string>;
 
     type(): string;
 }

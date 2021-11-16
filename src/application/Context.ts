@@ -2,7 +2,7 @@ import {IFilter} from "./filters/abstractions/IFilter";
 import {ReplacersContainer} from "./containers/ReplacersContainer";
 import {CommandsContainer} from "./containers/CommandsContainer";
 import {TextNodesContainer} from "./containers/TextNodesContainer";
-import {Request} from "../shared/Request";
+import {Request} from "./Request";
 import {AbstractFilter} from "./filters/abstractions/AbstractFilter";
 import {ICommand} from "./commands/abstractions/ICommand";
 import {ReflectionHelper} from "./helpers/ReflectionHelper";
@@ -11,6 +11,10 @@ import {ReplaceAllReplacer} from "./replacers/ReplaceAllReplacer";
 import {StandardReplaceReplacer} from "./replacers/StandardReplaceReplacer";
 import {JustifiersContainer} from "./containers/JustifiersContainer";
 import {SpaceJustify} from "./justifiers/SpaceJustify";
+import {Response} from "./Response";
+import {IJustifyCalculatorFactory} from "./justifiers/abstarctions/IJustifyCalculatorFactory";
+import {JustifyCalculatorFactory} from "./justifiers/JustifyCalculatorFactory";
+import {PersianJustify} from "./justifiers/PersianJustify";
 
 export class Context {
 
@@ -62,8 +66,20 @@ export class Context {
         this._debug = value;
     }
 
-    public static async executeRequestAsync(request: Request): Promise<void> {
-        await RequestExecutor.executeAsync(request);
+    public static isDebugMode(): boolean {
+        return this.getInstance().isDebugMode();
+    }
+
+    public static async executeRequestInPipelineAsync(request: Request): Promise<void> {
+        await RequestExecutor.executeInPipelineAsync(request);
+    }
+
+    public static async executeRequestAsync(request: Request): Promise<Response> {
+        return await RequestExecutor.executeAsync(request);
+    }
+
+    public static justifyCalculatorFactory(): IJustifyCalculatorFactory {
+        return JustifyCalculatorFactory.getInstance();
     }
 
 }
@@ -103,7 +119,8 @@ export class ContextBuilder {
 
     private static initJustifiers() {
         JustifiersContainer.getInstance().addRange([
-            new SpaceJustify()
+            new SpaceJustify(),
+            new PersianJustify()
         ]);
     }
 

@@ -1,10 +1,9 @@
-import {ICommand} from "./abstractions/ICommand";
-import {Response} from "../../shared/Response";
-import {Request} from "../../shared/Request";
+import {Response} from "../Response";
+import {Request} from "../Request";
 import {Context} from "../Context";
-import {TextNodeData} from "../../shared/TextNodeData";
+import {AbstractCommand} from "./abstractions/AbstractCommand";
 
-export class DeleteTextCommand implements ICommand {
+export class DeleteTextCommand extends AbstractCommand {
 
     identifier(): string {
         return "deleteText";
@@ -17,13 +16,15 @@ export class DeleteTextCommand implements ICommand {
 
     async executeAsync(request: Request): Promise<Response> {
         const textNodeId = request.getFromData("data") as string;
-        const textNode = Context.getTextNodesContainer().getById(textNodeId) as TextNodeData;
-        textNode.node.remove();
-        return Response.generator()
-            .setNotificationMessage("Text removed")
-            .refreshData()
-            .generate();
+        Context.getTextNodesContainer().removeById(textNodeId);
+        figma.currentPage.selection = Context.getTextNodesContainer().getAll().map(value => value.node) as TextNode[];
+
+        return this.success({
+            notificationMessage: "Text removed",
+            softRefreshData: {
+                keepCurrentState: true
+            },
+            refreshDataOnView: Context.getTextNodesContainer().getAll()
+        });
     }
-
-
 }

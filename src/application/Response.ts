@@ -1,4 +1,4 @@
-import {Context} from "../application/Context";
+import {Context} from "./Context";
 
 export class Response {
 
@@ -35,7 +35,7 @@ export class Response {
         this._data = value;
     }
 
-    public attachData(key, value): Response {
+    public attachData(key: string, value: any): Response {
         this.data.set(key, value);
         return this;
     }
@@ -51,7 +51,7 @@ export class Response {
 
 export class ResponseGenerator {
 
-    private response: Response;
+    private readonly response: Response;
 
     constructor(success: boolean) {
         this.response = new Response(success);
@@ -68,13 +68,31 @@ export class ResponseGenerator {
         return this;
     }
 
-    public refreshData(delay: number = 0): ResponseGenerator {
+    public softRefreshData(props?: { delay?: number, searchFor?: string, keepCurrentState?: boolean }): ResponseGenerator {
+        this.refreshData(props.delay, props.searchFor);
+        if (props.keepCurrentState) {
+            this.response.attachData("keepCurrentState", true);
+        }
+        return this;
+    }
+
+    public hardRefreshData(props?: { delay?: number, searchFor?: string }): ResponseGenerator {
+        this.refreshData(props.delay, props.searchFor);
+        this.response.attachData("hardRefresh", true);
+        return this;
+    }
+
+    private refreshData(delay: number = 0, searchFor: string = null): ResponseGenerator {
         this.response.attachData("refreshData", true);
         if (delay > 0) {
             this.response.attachData("refreshDataDelay", delay);
         }
+        if (searchFor) {
+            this.response.attachData("searchFor", searchFor);
+        }
         return this;
     }
+
 
     public addEventOnUi(type: string, data): ResponseGenerator {
         if (!this.response.getFromData("ui_events")) {
@@ -82,6 +100,10 @@ export class ResponseGenerator {
         }
         this.response.getFromData("ui_events").set(type, data);
         return this;
+    }
+
+    public refreshDataOnView(data): ResponseGenerator {
+        return this.addEventOnUi("detect_texts", data);
     }
 
     public generate(): Response {

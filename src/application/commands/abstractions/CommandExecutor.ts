@@ -1,6 +1,6 @@
-import {Response} from "../../../shared/Response";
+import {Response} from "../../Response";
 import {Context} from "../../Context";
-import {Request} from "../../../shared/Request";
+import {Request} from "../../Request";
 
 export class CommandExecutor {
 
@@ -17,13 +17,25 @@ export class CommandExecutor {
         return CommandExecutor.instance;
     }
 
-    private async executeAsync(request: Request): Promise<Response> {
+    private static async executeRequestAsync(request: Request): Promise<Response> {
         return Context.getCommandsContainer()
             .getById(request.commandIdentifier)
             .executeAsync(request);
     }
 
     public static async executeAsync(request: Request): Promise<Response> {
-        return await CommandExecutor.getInstance().executeAsync(request);
+        CommandExecutor.logRequest(request);
+        return await CommandExecutor.executeRequestAsync(request);
+    }
+
+    private static logRequest(request: Request) {
+        if (!Context.isDebugMode()) return;
+        console.log("***********COMMAND**************************");
+        console.log("-----------REQUEST--------------------------")
+        console.log("request object: " + request);
+        console.log("request command: " + request.commandIdentifier);
+        console.log("request data: " + JSON.stringify(request.data));
+        console.log("request type: " + request.type);
+        console.log("--------------------------------------------")
     }
 }

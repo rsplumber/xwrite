@@ -1,11 +1,11 @@
-import {ICommand} from "./abstractions/ICommand";
-import {Response} from "../../shared/Response";
-import {Request} from "../../shared/Request";
+import {Response} from "../Response";
+import {Request} from "../Request";
 import {Context} from "../Context";
-import {CommandExecutor} from "./abstractions/CommandExecutor";
 import {Figma} from "../helpers/Figma";
+import {TextDirectionFixer} from "../helpers/TextDirectionFixer";
+import {AbstractCommand} from "./abstractions/AbstractCommand";
 
-export class JustifyCommand implements ICommand {
+export class JustifyCommand extends AbstractCommand {
 
     identifier(): string {
         return "justify";
@@ -17,33 +17,33 @@ export class JustifyCommand implements ICommand {
 
 
     async executeAsync(request: Request): Promise<Response> {
-        if (Context.getTextNodesContainer().getAll().length === 0) {
-            await CommandExecutor.executeAsync(Request.generate("nodeDetector")
-                .attachToData("findInPage", true));
+        if (Context.getTextNodesContainer().count() > 1) {
+            return this.error({
+                notificationMessage: "can't justify more than 1 text"
+            });
         }
-        await JustifyCommand.applyChangesAsync(request);
-        return Response.generator(true)
-            .setNotificationMessage("Justified")
-            .refreshData()
-            .generate();
+
+        await JustifyCommand.applyChangesAsync();
+
+        return this.success({
+            notificationMessage: "Justified",
+            softRefreshData: {
+                keepCurrentState: true
+            }
+        });
     }
 
-    private static async applyChangesAsync(request: Request) {
-        const justifierId = "space_justify";
+    private static async applyChangesAsync() {
+        const justifierId = "persian_justify";
         const justifier = Context.getJustifierContainer().getById(justifierId);
         if (justifier == null) return;
-        for (const nodeData of Context.getTextNodesContainer().getAll()) {
-            const lines = nodeData.text.split("\n")
-            let maxWidth = lines[0].length as number;
-            nodeData.text.split("\n").forEach(value => {
-                if (value.length >= maxWidth) {
-                    maxWidth = value.length;
-                }
-            })
-            const words = nodeData.text.split("\n").join(" ").split(" ");
-            const justifiedText = await justifier.justifyAsync(words, maxWidth);
-            await Figma.setNodeText(nodeData.node, justifiedText);
-        }
+
+        const nodeData = Context.getTextNodesContainer().first();
+        const maxWidth = nodeData.node.width;
+        const justifiedText = await justifier.justifyAsync(nodeData, maxWidth);
+        const directionFixedText = TextDirectionFixer.fix(justifiedText);
+        await Figma.setNodeTextAsync(nodeData.node, directionFixedText);
     }
+
 
 }

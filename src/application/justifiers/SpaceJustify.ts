@@ -1,4 +1,7 @@
 import {IJustifier} from "./abstarctions/IJustifier";
+import {TextNodeData} from "../../shared/TextNodeData";
+import {Context} from "../Context";
+import {StringHelper} from "../helpers/StringHelper";
 
 export class SpaceJustify implements IJustifier {
 
@@ -10,55 +13,44 @@ export class SpaceJustify implements IJustifier {
         return this.type();
     }
 
-    async justifyAsync(words: string[], maxWidth: number): Promise<string> {
-        let i = 0;
-        const n = words.length;
-        const result = [];
-        while (i < n) {
-            let j = i + 1;
-            let lineLength = words[i].length;
-            while (j < n && (lineLength + words[j].length + (j - i - 1)) < maxWidth) {
-                lineLength += words[j].length;
-                j++;
+    async justifyAsync(textNodeData: TextNodeData, maxWidth: number): Promise<string> {
+
+        const justifyCalculator = Context.justifyCalculatorFactory().getJustifyCalculator("justifyCalculator");
+
+        const lines = textNodeData.text.split("\n");
+        const fontSize = textNodeData.node.fontSize as number;
+        const fontName = textNodeData.node.fontName as FontName;
+        const spaceWidth = await justifyCalculator.calculateCharacterSizeAsync(fontSize, fontName, " ");
+
+        for (let i = 0; i < lines.length - 1; i++) {
+
+            const line = lines[i];
+            const spaceNeeded = await justifyCalculator.calculateJustifyCharacterNeededAsync(line, fontSize, fontName, maxWidth, spaceWidth);
+            if (spaceNeeded === 0) continue;
+
+            const words = line.split(" ").filter(value => value.length >= 1);
+            if (words.length > 1) {
+                const middleWordsCount = words.slice(0, -1).length;
+                const spacePerWord = Math.floor(spaceNeeded / middleWordsCount);
+                let extraSpaces = spaceNeeded % middleWordsCount;
+
+                const finalText = [];
+                for (let j = 0; j < words.slice(0, -1).length; j++) {
+                    let word = words[j] + " ".repeat(spacePerWord);
+                    if (extraSpaces != 0) {
+                        word = word + " ".repeat(extraSpaces);
+                        extraSpaces = 0;
+                    }
+                    finalText.push(word);
+                }
+                finalText.push(words[words.length - 1]);
+                const final = finalText.join(" ");
+
+                lines[i] = StringHelper.replace(line, line, final);
             }
-            let diff = maxWidth - lineLength;
-            let numberOfWords = j - 1;
-            if (numberOfWords == 1 || j >= n) {
-                result.push(SpaceJustify.leftJustify(words, diff, i, j));
-            } else {
-                result.push(SpaceJustify.middleJustify(words, diff, i, j));
-            }
-
-            i = j;
         }
 
-        return result.join().split(",").join("\n");
+        return lines.join("\n");
     }
-
-    private static leftJustify(words: string[], diff: number, i: number, j: number): string {
-
-        let spacesOnRight = diff - (j - i - 1);
-        let result = words[i];
-        for (let k = i + 1; k < j; k++) {
-            result += " " + words[k];
-        }
-
-        result += " ".repeat(spacesOnRight);
-
-        return result;
-    }
-
-    private static middleJustify(words: string[], diff: number, i: number, j: number): string {
-        let spaceNeeded = j - i - 1;
-        let spaces = diff / spaceNeeded;
-        let extraSpaces = diff % spaceNeeded;
-        let result = words[i];
-        for (let k = i + 1; k < j; k++) {
-            let spacesToApply = spaces + (extraSpaces-- > 0 ? 1 : 0);
-            result += " ".repeat(spacesToApply) + words[k];
-        }
-        return result;
-    }
-
 
 }

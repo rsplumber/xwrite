@@ -1,10 +1,10 @@
-import {ICommand} from "./abstractions/ICommand";
-import {Response} from "../../shared/Response";
-import {Request} from "../../shared/Request";
+import {Response} from "../Response";
+import {Request} from "../Request";
 import {TextNodeData} from "../../shared/TextNodeData";
 import {Context} from "../Context";
+import {AbstractCommand} from "./abstractions/AbstractCommand";
 
-export class NodeDetectorCommand implements ICommand {
+export class NodeDetectorCommand extends AbstractCommand {
 
     private statistics: Map<string, number>;
 
@@ -16,20 +16,20 @@ export class NodeDetectorCommand implements ICommand {
         return this.identifier();
     }
 
-
     async executeAsync(request: Request): Promise<Response> {
         this.refreshData();
 
         if (request.getFromData("findInPage")) {
-            this.detect(figma.currentPage);
-        } else {
-            figma.currentPage.selection.forEach(value => this.detect(value));
+            const searchFor = request.getFromData("searchFor");
+            figma.currentPage.selection = this.searchForNodes(figma.currentPage, searchFor);
         }
 
-        return Response.generator(true)
-            .addEventOnUi("detect_texts", Context.getTextNodesContainer().getAll())
-            .setMessageCenterText(this.generateStatisticsText())
-            .generate();
+        figma.currentPage.selection.forEach(value => this.detect(value));
+
+        return this.success({
+            refreshDataOnView: Context.getTextNodesContainer().getAll(),
+            messageCenter: this.generateStatisticsText()
+        });
     }
 
     private refreshData() {
@@ -76,15 +76,33 @@ export class NodeDetectorCommand implements ICommand {
         const textsContainer = Context.getTextNodesContainer();
         while (!(res = walker.next()).done) {
             let node = res.value
+            if (!node.visible) continue;
             this.countStatistics(node.type);
             if (node.type === 'TEXT') {
                 textsContainer.add(new TextNodeData(node));
             }
-            if (++count === 100) {
+            if (++count === 1000) {
                 return;
             }
         }
+
         return;
+    }
+
+    private searchForNodes(nodes, searchFor: string = null): TextNode[] {
+        let walker = this.walkTree(nodes);
+        let res;
+        const foundedText: TextNode[] = [];
+        while (!(res = walker.next()).done) {
+            let node = res.value
+            if (node.type === 'TEXT') {
+                if (!searchFor || node.characters.includes(searchFor)) {
+                    this.countStatistics(node.type);
+                    foundedText.push(node);
+                }
+            }
+        }
+        return foundedText;
     }
 
     private* walkTree(node) {

@@ -3,10 +3,10 @@ import {Request} from "../Request";
 import {Context} from "../Context";
 import {AbstractCommand} from "./abstractions/AbstractCommand";
 
-export class MoveTextCommand extends AbstractCommand {
+export class UpdateNodeDataCommand extends AbstractCommand {
 
     identifier(): string {
-        return "moveText";
+        return "updateNodeData";
     }
 
     containerId(): string {
@@ -15,21 +15,16 @@ export class MoveTextCommand extends AbstractCommand {
 
 
     async executeAsync(request: Request): Promise<Response> {
-        const textNodeId = request.getFromData("data") as string;
-
-        Context.getTextNodesContainer()
-            .getAll()
-            .filter(value => value.id == textNodeId)
-            .map(value => {
-                value.final_text = value.text;
-            });
-
-
+        const keepCurrentState = request.getFromData("keepCurrentState") as boolean;
+        if (!keepCurrentState) {
+            for (const dataNode of Context.getTextNodesContainer().getAll()) {
+                dataNode.text = dataNode.final_text;
+                dataNode.final_text = "";
+            }
+        }
         return this.success({
-            notificationMessage: "Text moved",
             refreshDataOnView: Context.getTextNodesContainer().getAll()
-        });
+        })
     }
-
 
 }

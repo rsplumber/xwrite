@@ -1,7 +1,7 @@
 import {AbstractFilter} from "./abstractions/AbstractFilter";
-import {Request} from "../../shared/Request";
+import {Request} from "../Request";
 import {DelayProvider} from "../helpers/DelayProvider";
-import {Response} from "../../shared/Response";
+import {Response} from "../Response";
 import {Context} from "../Context";
 
 export class RefreshDataFilter extends AbstractFilter {
@@ -13,8 +13,7 @@ export class RefreshDataFilter extends AbstractFilter {
             if (delay && delay > 0) {
                 await DelayProvider.getInstance().delay(delay);
             }
-            await RefreshDataFilter.detectNodes(request);
-
+            await RefreshDataFilter.refresh(request, response);
         }
         await super.handleAsync(request, response);
     }
@@ -23,10 +22,26 @@ export class RefreshDataFilter extends AbstractFilter {
         return 0;
     }
 
-    private static async detectNodes(request: Request) {
-        await Context.executeRequestAsync(
-            Request.generate("nodeDetector")
-                .attachToData("findInPage", request.getFromData("findInPage")));
+    private static async refresh(request: Request, response: Response) {
+        const hardRefresh = request.getFromData("hardRefresh");
+        if (hardRefresh) {
+            await this.detectNodes();
+            return;
+        }
+        await this.updateNodeData(response);
     }
 
+    private static async detectNodes() {
+        await Context.executeRequestAsync(Request.generate("nodeDetector"));
+    }
+
+    private static async updateNodeData(response: Response) {
+        const newRequest = Request.generate("updateNodeData")
+            .attachToData("keepCurrentState", response.getFromData("keepCurrentState"));
+        await Context.executeRequestAsync(newRequest);
+    }
+
+    identifier(): string {
+        return "refreshData";
+    }
 }

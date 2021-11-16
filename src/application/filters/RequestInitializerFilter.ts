@@ -1,7 +1,7 @@
 import {AbstractFilter} from "./abstractions/AbstractFilter";
-import {Request} from "../../shared/Request";
+import {Request} from "../Request";
 import {Context} from "../Context";
-import {Response} from "../../shared/Response";
+import {Response} from "../Response";
 
 export class RequestInitializerFilter extends AbstractFilter {
     public async handleAsync(request: Request, response: Response): Promise<void> {
@@ -11,7 +11,7 @@ export class RequestInitializerFilter extends AbstractFilter {
         }
 
         if ((request.commandIdentifier == "batchWriter" || request.commandIdentifier == "freeWriter")
-            && Context.getTextNodesContainer().getAll().length === 0) {
+            && Context.getTextNodesContainer().count() === 0) {
             return;
         }
         await super.handleAsync(request, response);
@@ -19,5 +19,9 @@ export class RequestInitializerFilter extends AbstractFilter {
 
     order(): number {
         return 0;
+    }
+
+    identifier(): string {
+        return "initializer";
     }
 }

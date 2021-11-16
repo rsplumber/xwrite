@@ -1,11 +1,11 @@
-import {ICommand} from "./abstractions/ICommand";
-import {Response} from "../../shared/Response";
-import {Request} from "../../shared/Request";
+import {Response} from "../Response";
+import {Request} from "../Request";
 import {Context} from "../Context";
 import {TextDirectionFixer} from "../helpers/TextDirectionFixer";
 import {Figma} from "../helpers/Figma";
+import {AbstractCommand} from "./abstractions/AbstractCommand";
 
-export class FreeWriterCommand implements ICommand {
+export class FreeWriterCommand extends AbstractCommand {
 
     identifier(): string {
         return "freeWriter";
@@ -18,9 +18,10 @@ export class FreeWriterCommand implements ICommand {
 
     async executeAsync(request: Request): Promise<Response> {
         await FreeWriterCommand.applyChangesAsync(request);
-        return Response.generator()
-            .refreshData(1000)
-            .generate();
+        return this.success({
+            softRefreshData: {},
+            refreshDataOnView: Context.getTextNodesContainer().getAll()
+        });
     }
 
 
@@ -29,7 +30,8 @@ export class FreeWriterCommand implements ICommand {
         const directionFixedText = TextDirectionFixer.fix(finalText);
 
         for (const nodeData of Context.getTextNodesContainer().getAll()) {
-            await Figma.setNodeText(nodeData.node, directionFixedText);
+            await Figma.setNodeTextAsync(nodeData.node, directionFixedText);
+            nodeData.final_text = finalText;
         }
     }
 
