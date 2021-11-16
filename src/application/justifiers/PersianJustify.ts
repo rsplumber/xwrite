@@ -7,7 +7,7 @@ import {StringHelper} from "../helpers/StringHelper";
 export class PersianJustify implements IJustifier {
 
     private static readonly UNDER_LINE_ABLE_CHARS = [
-        "س", "ل", "م", "ب", "ع", "ی",
+        "ی", "ه", "ن", "م", "ل", "گ", "ک", "ق", "ف", "غ", "ع", "ظ", "ط", "ض", "ص", "ش", "س", "خ", "ح", "چ", "ج", "ث", "ت", "پ", "ب"
     ]
 
     type(): string {
