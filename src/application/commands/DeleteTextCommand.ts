@@ -1,9 +1,9 @@
-import {ICommand} from "./abstractions/ICommand";
 import {Response} from "../Response";
 import {Request} from "../Request";
 import {Context} from "../Context";
+import {AbstractCommand} from "./abstractions/AbstractCommand";
 
-export class DeleteTextCommand implements ICommand {
+export class DeleteTextCommand extends AbstractCommand {
 
     identifier(): string {
         return "deleteText";
@@ -18,10 +18,13 @@ export class DeleteTextCommand implements ICommand {
         const textNodeId = request.getFromData("data") as string;
         Context.getTextNodesContainer().removeById(textNodeId);
         figma.currentPage.selection = Context.getTextNodesContainer().getAll().map(value => value.node) as TextNode[];
-        return Response.generator()
-            .setNotificationMessage("Text removed")
-            .softRefreshData(0, null, true)
-            .refreshDataOnView(Context.getTextNodesContainer().getAll())
-            .generate();
+
+        return this.success({
+            notificationMessage: "Text removed",
+            softRefreshData: {
+                keepCurrentState: true
+            },
+            refreshDataOnView: Context.getTextNodesContainer().getAll()
+        });
     }
 }

@@ -1,11 +1,11 @@
-import {ICommand} from "./abstractions/ICommand";
 import {Response} from "../Response";
 import {Request} from "../Request";
 import {Context} from "../Context";
 import {Figma} from "../helpers/Figma";
 import {TextDirectionFixer} from "../helpers/TextDirectionFixer";
+import {AbstractCommand} from "./abstractions/AbstractCommand";
 
-export class JustifyCommand implements ICommand {
+export class JustifyCommand extends AbstractCommand {
 
     identifier(): string {
         return "justify";
@@ -18,15 +18,19 @@ export class JustifyCommand implements ICommand {
 
     async executeAsync(request: Request): Promise<Response> {
         if (Context.getTextNodesContainer().count() > 1) {
-            return Response.generator(false)
-                .setNotificationMessage("can't justify more than 1 text")
-                .generate();
+            return this.error({
+                notificationMessage: "can't justify more than 1 text"
+            });
         }
+
         await JustifyCommand.applyChangesAsync();
-        return Response.generator()
-            .setNotificationMessage("Justified")
-            .softRefreshData(0, null, true)
-            .generate();
+
+        return this.success({
+            notificationMessage: "Justified",
+            softRefreshData: {
+                keepCurrentState: true
+            }
+        });
     }
 
     private static async applyChangesAsync() {

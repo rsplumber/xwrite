@@ -1,10 +1,10 @@
-import {ICommand} from "./abstractions/ICommand";
 import {Response} from "../Response";
 import {Request} from "../Request";
 import {TextNodeData} from "../../shared/TextNodeData";
 import {Context} from "../Context";
+import {AbstractCommand} from "./abstractions/AbstractCommand";
 
-export class NodeDetectorCommand implements ICommand {
+export class NodeDetectorCommand extends AbstractCommand {
 
     private statistics: Map<string, number>;
 
@@ -26,10 +26,10 @@ export class NodeDetectorCommand implements ICommand {
 
         figma.currentPage.selection.forEach(value => this.detect(value));
 
-        return Response.generator(true)
-            .refreshDataOnView(Context.getTextNodesContainer().getAll())
-            .setMessageCenterText(this.generateStatisticsText())
-            .generate();
+        return this.success({
+            refreshDataOnView: Context.getTextNodesContainer().getAll(),
+            messageCenter: this.generateStatisticsText()
+        });
     }
 
     private refreshData() {

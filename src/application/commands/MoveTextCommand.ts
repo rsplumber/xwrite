@@ -1,9 +1,9 @@
-import {ICommand} from "./abstractions/ICommand";
 import {Response} from "../Response";
 import {Request} from "../Request";
 import {Context} from "../Context";
+import {AbstractCommand} from "./abstractions/AbstractCommand";
 
-export class MoveTextCommand implements ICommand {
+export class MoveTextCommand extends AbstractCommand {
 
     identifier(): string {
         return "moveText";
@@ -24,10 +24,11 @@ export class MoveTextCommand implements ICommand {
                 value.final_text = value.text;
             });
 
-        return Response.generator()
-            .setNotificationMessage("Text moved")
-            .refreshDataOnView(Context.getTextNodesContainer().getAll())
-            .generate();
+
+        return this.success({
+            notificationMessage: "Text moved",
+            refreshDataOnView: Context.getTextNodesContainer().getAll()
+        });
     }
 
 

@@ -68,16 +68,16 @@ export class ResponseGenerator {
         return this;
     }
 
-    public softRefreshData(delay: number = 0, searchFor: string = null, keepCurrentState: boolean = false): ResponseGenerator {
-        this.refreshData(delay, searchFor);
-        if (keepCurrentState) {
+    public softRefreshData(props?: { delay?: number, searchFor?: string, keepCurrentState?: boolean }): ResponseGenerator {
+        this.refreshData(props.delay, props.searchFor);
+        if (props.keepCurrentState) {
             this.response.attachData("keepCurrentState", true);
         }
         return this;
     }
 
-    public hardRefreshData(delay: number = 0, searchFor: string = null): ResponseGenerator {
-        this.refreshData(delay, searchFor);
+    public hardRefreshData(props?: { delay?: number, searchFor?: string }): ResponseGenerator {
+        this.refreshData(props.delay, props.searchFor);
         this.response.attachData("hardRefresh", true);
         return this;
     }

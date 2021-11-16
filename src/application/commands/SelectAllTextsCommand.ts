@@ -1,9 +1,9 @@
-import {ICommand} from "./abstractions/ICommand";
 import {Response} from "../Response";
 import {Request} from "../Request";
 import {Context} from "../Context";
+import {AbstractCommand} from "./abstractions/AbstractCommand";
 
-export class SelectAllTextsCommand implements ICommand {
+export class SelectAllTextsCommand extends AbstractCommand {
 
     identifier(): string {
         return "selectAllTexts";
@@ -16,9 +16,9 @@ export class SelectAllTextsCommand implements ICommand {
 
     async executeAsync(request: Request): Promise<Response> {
         await Context.executeRequestInPipelineAsync(Request.generate("nodeDetector").findInPage());
-        return Response.generator()
-            .setNotificationMessage("all texts selected")
-            .generate();
+        return this.success({
+            notificationMessage: "All texts selected"
+        });
     }
 
 

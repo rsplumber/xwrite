@@ -1,8 +1,8 @@
-import {ICommand} from "./abstractions/ICommand";
 import {Response} from "../Response";
 import {Request} from "../Request";
+import {AbstractCommand} from "./abstractions/AbstractCommand";
 
-export class CopyToClipboardCommand implements ICommand {
+export class CopyToClipboardCommand extends AbstractCommand {
 
     identifier(): string {
         return "copyToClipboard";
@@ -13,9 +13,9 @@ export class CopyToClipboardCommand implements ICommand {
     }
 
     async executeAsync(request: Request): Promise<Response> {
-        return Response.generator()
-            .setNotificationMessage("copied to clipboard")
-            .generate();
+        return this.success({
+            notificationMessage: "copied to clipboard"
+        })
     }
 
 

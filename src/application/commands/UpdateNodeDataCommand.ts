@@ -1,9 +1,9 @@
-import {ICommand} from "./abstractions/ICommand";
 import {Response} from "../Response";
 import {Request} from "../Request";
 import {Context} from "../Context";
+import {AbstractCommand} from "./abstractions/AbstractCommand";
 
-export class UpdateNodeDataCommand implements ICommand {
+export class UpdateNodeDataCommand extends AbstractCommand {
 
     identifier(): string {
         return "updateNodeData";
@@ -16,20 +16,15 @@ export class UpdateNodeDataCommand implements ICommand {
 
     async executeAsync(request: Request): Promise<Response> {
         const keepCurrentState = request.getFromData("keepCurrentState") as boolean;
-        if (keepCurrentState) {
-            return Response.generator()
-                .refreshDataOnView(Context.getTextNodesContainer().getAll())
-                .generate();
+        if (!keepCurrentState) {
+            for (const dataNode of Context.getTextNodesContainer().getAll()) {
+                dataNode.text = dataNode.final_text;
+                dataNode.final_text = "";
+            }
         }
-
-        for (const dataNode of Context.getTextNodesContainer().getAll()) {
-            dataNode.text = dataNode.final_text;
-            dataNode.final_text = "";
-        }
-
-        return Response.generator()
-            .refreshDataOnView(Context.getTextNodesContainer().getAll())
-            .generate();
+        return this.success({
+            refreshDataOnView: Context.getTextNodesContainer().getAll()
+        })
     }
 
 }

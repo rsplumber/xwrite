@@ -1,8 +1,8 @@
-import {ICommand} from "./abstractions/ICommand";
 import {Response} from "../Response";
 import {Request} from "../Request";
+import {AbstractCommand} from "./abstractions/AbstractCommand";
 
-export class ResizeCommand implements ICommand {
+export class ResizeCommand extends AbstractCommand {
 
     identifier(): string {
         return "resize";
@@ -26,8 +26,7 @@ export class ResizeCommand implements ICommand {
                 figma.ui.resize(1920, 1080)
                 break;
         }
-        return Response.generator()
-            .generate();
+        return this.success();
     }
 
 

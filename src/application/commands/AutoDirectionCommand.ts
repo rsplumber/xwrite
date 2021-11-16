@@ -1,11 +1,11 @@
-import {ICommand} from "./abstractions/ICommand";
 import {Response} from "../Response";
 import {Request} from "../Request";
 import {Context} from "../Context";
 import {TextDirectionFixer} from "../helpers/TextDirectionFixer";
 import {Figma} from "../helpers/Figma";
+import {AbstractCommand} from "./abstractions/AbstractCommand";
 
-export class AutoDirectionCommand implements ICommand {
+export class AutoDirectionCommand extends AbstractCommand {
 
     identifier(): string {
         return "autoDirection";
@@ -17,11 +17,13 @@ export class AutoDirectionCommand implements ICommand {
 
     async executeAsync(request: Request): Promise<Response> {
         await AutoDirectionCommand.applyChangesAsync();
-        return Response.generator()
-            .setNotificationMessage("Direction fixed")
-            .softRefreshData(200)
-            .refreshDataOnView(Context.getTextNodesContainer().getAll())
-            .generate();
+        return this.success({
+            notificationMessage: "Direction fixed",
+            softRefreshData: {
+                delay: 200
+            },
+            refreshDataOnView: Context.getTextNodesContainer().getAll()
+        });
     }
 
 

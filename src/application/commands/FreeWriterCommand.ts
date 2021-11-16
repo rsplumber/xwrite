@@ -1,11 +1,11 @@
-import {ICommand} from "./abstractions/ICommand";
 import {Response} from "../Response";
 import {Request} from "../Request";
 import {Context} from "../Context";
 import {TextDirectionFixer} from "../helpers/TextDirectionFixer";
 import {Figma} from "../helpers/Figma";
+import {AbstractCommand} from "./abstractions/AbstractCommand";
 
-export class FreeWriterCommand implements ICommand {
+export class FreeWriterCommand extends AbstractCommand {
 
     identifier(): string {
         return "freeWriter";
@@ -18,10 +18,10 @@ export class FreeWriterCommand implements ICommand {
 
     async executeAsync(request: Request): Promise<Response> {
         await FreeWriterCommand.applyChangesAsync(request);
-        return Response.generator()
-            .softRefreshData()
-            .refreshDataOnView(Context.getTextNodesContainer().getAll())
-            .generate();
+        return this.success({
+            softRefreshData: {},
+            refreshDataOnView: Context.getTextNodesContainer().getAll()
+        });
     }
 
 

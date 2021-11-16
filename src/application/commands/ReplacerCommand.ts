@@ -1,11 +1,11 @@
-import {ICommand} from "./abstractions/ICommand";
 import {Response} from "../Response";
 import {Request} from "../Request";
 import {Context} from "../Context";
 import {Figma} from "../helpers/Figma";
 import {TextDirectionFixer} from "../helpers/TextDirectionFixer";
+import {AbstractCommand} from "./abstractions/AbstractCommand";
 
-export class ReplacerCommand implements ICommand {
+export class ReplacerCommand extends AbstractCommand {
 
     identifier(): string {
         return "replacer";
@@ -26,11 +26,11 @@ export class ReplacerCommand implements ICommand {
         }
         await ReplacerCommand.applyChangesAsync(replaceFrom, replaceTo);
 
-        return Response.generator()
-            .setNotificationMessage("Replaced")
-            .hardRefreshData()
-            .refreshDataOnView(Context.getTextNodesContainer().getAll())
-            .generate();
+        return this.success({
+            notificationMessage: "Replaced",
+            hardRefreshData: {delay: 500},
+            refreshDataOnView: Context.getTextNodesContainer().getAll()
+        });
     }
 
     private static async applyChangesAsync(replaceFrom: string, replaceTo: string) {
