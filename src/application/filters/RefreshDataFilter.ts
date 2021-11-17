@@ -6,20 +6,25 @@ import {Context} from "../Context";
 
 export class RefreshDataFilter extends AbstractFilter {
 
+    constructor(order: number) {
+        super(order);
+    }
+
+    identifier(): string {
+        return "refreshData";
+    }
+
     public async handleAsync(request: Request, response: Response): Promise<void> {
         const needRefresh = response.getFromData("refreshData") as boolean;
         if (needRefresh) {
             const delay = response.getFromData("refreshDataDelay") as number;
             if (delay && delay > 0) {
-                await DelayProvider.getInstance().delay(delay);
+                const delayProvider = Context.resolve<DelayProvider>("delayProvider");
+                await delayProvider.delay(delay);
             }
             await RefreshDataFilter.refresh(request, response);
         }
         await super.handleAsync(request, response);
-    }
-
-    order(): number {
-        return 0;
     }
 
     private static async refresh(request: Request, response: Response) {
@@ -41,7 +46,4 @@ export class RefreshDataFilter extends AbstractFilter {
         await Context.executeRequestAsync(newRequest);
     }
 
-    identifier(): string {
-        return "refreshData";
-    }
 }

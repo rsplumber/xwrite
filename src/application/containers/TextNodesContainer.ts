@@ -2,6 +2,9 @@ import {TextNodeData} from "../../shared/TextNodeData";
 import {AbstractContainer} from "../abstractions/containers/AbstractContainer";
 
 export class TextNodesContainer extends AbstractContainer<TextNodeData> {
+    containerName(): string {
+        return "textNodesContainer";
+    }
 
     private static instance: TextNodesContainer;
 

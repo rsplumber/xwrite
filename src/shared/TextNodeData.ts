@@ -6,7 +6,7 @@ export class TextNodeData implements IContainerable {
     public id: string;
     public node: TextNode;
     public text: string;
-    public final_text: string = "";
+    public finalText: string = "";
     public layerName: string;
 
     constructor(node: TextNode) {

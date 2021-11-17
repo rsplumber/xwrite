@@ -3,6 +3,15 @@ import {Request} from "../Request";
 import {Response} from "../Response";
 
 export class EventOnUIFilter extends AbstractFilter {
+
+    constructor(order: number) {
+        super(order);
+    }
+
+    identifier(): string {
+        return "eventOnUi";
+    }
+
     public async handleAsync(request: Request, response: Response): Promise<void> {
         const uiEvents = response.getFromData("ui_events") as Map<string, any>
         if (uiEvents) {
@@ -16,11 +25,4 @@ export class EventOnUIFilter extends AbstractFilter {
         await super.handleAsync(request, response);
     }
 
-    order(): number {
-        return 0;
-    }
-
-    identifier(): string {
-        return "eventOnUi";
-    }
 }

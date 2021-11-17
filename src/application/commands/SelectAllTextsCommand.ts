@@ -1,9 +1,9 @@
 import {Response} from "../Response";
 import {Request} from "../Request";
 import {Context} from "../Context";
-import {AbstractCommand} from "../abstractions/commands/AbstractCommand";
+import {Command} from "./Command";
 
-export class SelectAllTextsCommand extends AbstractCommand {
+export class SelectAllTextsCommand extends Command {
 
     identifier(): string {
         return "selectAllTexts";

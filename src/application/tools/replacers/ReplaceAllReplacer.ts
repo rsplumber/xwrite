@@ -4,19 +4,8 @@ import {TextDirectionFixer} from "../../helpers/TextDirectionFixer";
 
 export class ReplaceAllReplacer implements IReplacer {
 
-
-    private static instance: ReplaceAllReplacer;
-
-    public static getInstance(): ReplaceAllReplacer {
-        if (!ReplaceAllReplacer.instance) {
-            ReplaceAllReplacer.instance = new ReplaceAllReplacer();
-        }
-
-        return ReplaceAllReplacer.instance;
-    }
-
     sign(): string {
-        return "*.*";
+        return "replaceAllReplacer";
     }
 
     replace(textNodeData: TextNodeData, replaceFrom: string, replaceTo: string): string {

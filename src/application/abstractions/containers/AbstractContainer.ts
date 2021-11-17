@@ -4,10 +4,9 @@ import {Context} from "../../Context";
 
 export abstract class AbstractContainer<Type extends IContainerable> implements IContainer<Type> {
 
-    protected constructor() {
-    }
-
     protected items: Map<string, Type> = new Map<string, Type>();
+
+    abstract containerName(): string;
 
     getById(id: string): Type {
         this.logContainer("getById", id);
@@ -61,6 +60,7 @@ export abstract class AbstractContainer<Type extends IContainerable> implements 
     private logContainer(methodName: string, data) {
         if (!Context.isDebugMode()) return;
         console.log("**********CONTAINER*************************")
+        console.log("container name: " + this.containerName());
         console.log("container size: " + this.items.size);
         console.log("container items:");
         console.log(JSON.stringify(this.items));

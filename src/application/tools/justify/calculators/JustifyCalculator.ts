@@ -3,17 +3,6 @@ import {Figma} from "../../../helpers/Figma";
 
 export class JustifyCalculator implements IJustifyCalculator {
 
-    private static instance: JustifyCalculator;
-
-
-    public static getInstance(): JustifyCalculator {
-        if (!JustifyCalculator.instance) {
-            JustifyCalculator.instance = new JustifyCalculator();
-        }
-        return JustifyCalculator.instance;
-    }
-
-
     name(): string {
         return "justifyCalculator";
     }

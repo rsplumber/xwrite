@@ -1,9 +1,8 @@
 import {Response} from "../Response";
 import {Request} from "../Request";
-import {Context} from "../Context";
-import {AbstractCommand} from "../abstractions/commands/AbstractCommand";
+import {Command} from "./Command";
 
-export class MoveTextCommand extends AbstractCommand {
+export class MoveTextCommand extends Command {
 
     identifier(): string {
         return "moveText";
@@ -12,17 +11,17 @@ export class MoveTextCommand extends AbstractCommand {
     async executeAsync(request: Request): Promise<Response> {
         const textNodeId = request.getFromData("data") as string;
 
-        Context.getTextNodesContainer()
+        this.getTextNodeContainer()
             .getAll()
             .filter(value => value.id == textNodeId)
             .map(value => {
-                value.final_text = value.text;
+                value.finalText = value.text;
             });
 
 
         return this.success({
             notificationMessage: "Text moved",
-            refreshDataOnView: Context.getTextNodesContainer().getAll()
+            refreshDataOnView: this.getTextNodeContainer().getAll()
         });
     }
 

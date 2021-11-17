@@ -1,32 +1,19 @@
 import {Response} from "../Response";
 import {Context} from "../Context";
 import {Request} from "../Request";
-import {Resolver} from "../commands/resolvers/Resolver";
+import {Resolver} from "../Resolver";
+import {ICommand} from "../abstractions/commands/ICommand";
 
 export class CommandExecutor {
-
-    private static instance: CommandExecutor;
-
-    private constructor() {
-    }
-
-    public static getInstance(): CommandExecutor {
-        if (!CommandExecutor.instance) {
-            CommandExecutor.instance = new CommandExecutor();
-        }
-
-        return CommandExecutor.instance;
-    }
-
-    private static async executeRequestAsync(request: Request): Promise<Response> {
-        return Resolver.getInstance()
-            .resolveCommand(request.commandIdentifier)
-            .executeAsync(request);
-    }
 
     public static async executeAsync(request: Request): Promise<Response> {
         CommandExecutor.logRequest(request);
         return await CommandExecutor.executeRequestAsync(request);
+    }
+
+    private static async executeRequestAsync(request: Request): Promise<Response> {
+        return Resolver.resolve<ICommand>(request.commandIdentifier)
+            .executeAsync(request);
     }
 
     private static logRequest(request: Request) {

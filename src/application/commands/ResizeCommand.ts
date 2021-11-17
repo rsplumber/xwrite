@@ -1,8 +1,8 @@
 import {Response} from "../Response";
 import {Request} from "../Request";
-import {AbstractCommand} from "../abstractions/commands/AbstractCommand";
+import {Command} from "./Command";
 
-export class ResizeCommand extends AbstractCommand {
+export class ResizeCommand extends Command {
 
     identifier(): string {
         return "resize";

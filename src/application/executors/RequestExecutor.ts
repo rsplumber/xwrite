@@ -4,6 +4,7 @@ import {Response} from "../Response";
 import {RequestFilterChain} from "../RequestFilterChain";
 
 export class RequestExecutor {
+
     public static async executeInPipelineAsync(request: Request): Promise<void> {
         await RequestFilterChain.chain().handleAsync(request, null);
     }

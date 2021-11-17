@@ -1,11 +1,10 @@
 import {Response} from "../Response";
 import {Request} from "../Request";
-import {Context} from "../Context";
 import {TextDirectionFixer} from "../helpers/TextDirectionFixer";
 import {Figma} from "../helpers/Figma";
-import {AbstractCommand} from "../abstractions/commands/AbstractCommand";
+import {Command} from "./Command";
 
-export class FreeWriterCommand extends AbstractCommand {
+export class FreeWriterCommand extends Command {
 
     identifier(): string {
         return "freeWriter";
@@ -13,21 +12,21 @@ export class FreeWriterCommand extends AbstractCommand {
 
 
     async executeAsync(request: Request): Promise<Response> {
-        await FreeWriterCommand.applyChangesAsync(request);
+        await this.applyChangesAsync(request);
         return this.success({
             softRefreshData: {},
-            refreshDataOnView: Context.getTextNodesContainer().getAll()
+            refreshDataOnView: this.getTextNodeContainer().getAll()
         });
     }
 
 
-    private static async applyChangesAsync(request: Request) {
+    private async applyChangesAsync(request: Request) {
         const finalText = request.getFromData("data") as string;
         const directionFixedText = TextDirectionFixer.fix(finalText);
 
-        for (const nodeData of Context.getTextNodesContainer().getAll()) {
+        for (const nodeData of this.getTextNodeContainer().getAll()) {
             await Figma.setNodeTextAsync(nodeData.node, directionFixedText);
-            nodeData.final_text = finalText;
+            nodeData.finalText = finalText;
         }
     }
 

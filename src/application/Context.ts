@@ -2,10 +2,12 @@ import {IFilter} from "./abstractions/filters/IFilter";
 import {TextNodesContainer} from "./containers/TextNodesContainer";
 import {Request} from "./Request";
 import {AbstractFilter} from "./abstractions/filters/AbstractFilter";
-import {ICommand} from "./abstractions/commands/ICommand";
 import {RequestExecutor} from "./executors/RequestExecutor";
 import {Response} from "./Response";
 import {RequestFilterChain} from "./RequestFilterChain";
+import {DependencyType, Resolver} from "./Resolver";
+import {AbstractContainer} from "./abstractions/containers/AbstractContainer";
+import {TextNodeData} from "../shared/TextNodeData";
 
 export class Context {
 
@@ -21,12 +23,16 @@ export class Context {
         return Context.instance;
     }
 
-    public getRequestChainFilter(): IFilter {
+    public static getRequestChainFilter(): IFilter {
         return RequestFilterChain.chain();
     }
 
-    public static getTextNodesContainer(): TextNodesContainer {
+    public static getTextNodesContainer(): AbstractContainer<TextNodeData> {
         return TextNodesContainer.getInstance();
+    }
+
+    public static resolve<Type extends object>(key: string): Type {
+        return Resolver.resolve<Type>(key) as Type;
     }
 
     public isDebugMode(): boolean {
@@ -54,14 +60,16 @@ export class Context {
 
 export class ContextBuilder {
 
-    private readonly commands: Array<ICommand>;
 
-    constructor() {
-        this.commands = new Array<ICommand>();
+    public registerDependencies(dependencies: { key: string, register, registerType?: DependencyType }[]): ContextBuilder {
+        dependencies.forEach(value => {
+            this.registerDependency(value.key, value.register, value.registerType);
+        });
+        return this;
     }
 
-    public addCommands(commands: ICommand[]): ContextBuilder {
-        commands.forEach(value => this.commands.push(value));
+    public registerDependency(key: string, register, registerType: DependencyType = DependencyType.Singleton): ContextBuilder {
+        Resolver.getInstance().register(key, register, registerType);
         return this;
     }
 

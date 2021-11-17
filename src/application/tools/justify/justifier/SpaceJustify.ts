@@ -1,27 +1,19 @@
 import {IJustifier} from "./abstarctions/IJustifier";
 import {TextNodeData} from "../../../../shared/TextNodeData";
 import {StringHelper} from "../../../helpers/StringHelper";
-import {Factories} from "../../../factories/Factories";
+import {Context} from "../../../Context";
+import {IJustifyCalculator} from "../calculators/abstractions/IJustifyCalculator";
 
 export class SpaceJustify implements IJustifier {
 
-    private static instance: SpaceJustify;
-
-    public static getInstance(): SpaceJustify {
-        if (!SpaceJustify.instance) {
-            SpaceJustify.instance = new SpaceJustify();
-        }
-
-        return SpaceJustify.instance;
-    }
 
     type(): string {
-        return "space_justify";
+        return "spaceJustify";
     }
 
     async justifyAsync(textNodeData: TextNodeData, maxWidth: number): Promise<string> {
 
-        const justifyCalculator = Factories.JustifyCalculators("justifyCalculator");
+        const justifyCalculator = Context.resolve<IJustifyCalculator>("justifyCalculator");
 
         const lines = textNodeData.text.split("\n");
         const fontSize = textNodeData.node.fontSize as number;

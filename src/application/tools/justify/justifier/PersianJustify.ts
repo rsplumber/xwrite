@@ -1,33 +1,23 @@
 import {IJustifier} from "./abstarctions/IJustifier";
 import {TextNodeData} from "../../../../shared/TextNodeData";
-import {Context} from "../../../Context";
 import {TextDirectionFixer} from "../../../helpers/TextDirectionFixer";
 import {StringHelper} from "../../../helpers/StringHelper";
-import {Factories} from "../../../factories/Factories";
+import {Context} from "../../../Context";
+import {IJustifyCalculator} from "../calculators/abstractions/IJustifyCalculator";
 
 export class PersianJustify implements IJustifier {
-
-    private static instance: PersianJustify;
-
-    public static getInstance(): PersianJustify {
-        if (!PersianJustify.instance) {
-            PersianJustify.instance = new PersianJustify();
-        }
-
-        return PersianJustify.instance;
-    }
 
     private static readonly UNDER_LINE_ABLE_CHARS = [
         "ی", "ه", "ن", "م", "ل", "گ", "ک", "ق", "ف", "غ", "ع", "ظ", "ط", "ض", "ص", "ش", "س", "خ", "ح", "چ", "ج", "ث", "ت", "پ", "ب"
     ]
 
     type(): string {
-        return "persian_justify";
+        return "persianJustify";
     }
 
     async justifyAsync(textNodeData: TextNodeData, maxWidth: number): Promise<string> {
 
-        const justifyCalculator = Factories.JustifyCalculators("justifyCalculator");
+        const justifyCalculator = Context.resolve<IJustifyCalculator>("justifyCalculator");
 
         const lines = textNodeData.text.split("\n");
         const fontSize = textNodeData.node.fontSize as number;

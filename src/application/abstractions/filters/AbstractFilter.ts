@@ -4,7 +4,16 @@ import {Response} from "../../Response";
 import {Context} from "../../Context";
 
 export abstract class AbstractFilter implements IFilter {
+
+    private readonly order: number;
+
+    protected constructor(order: number) {
+        this.order = order;
+    }
+
     private nextHandler: IFilter;
+
+    protected abstract identifier(): string;
 
     public setNext(handler: IFilter): IFilter {
         this.nextHandler = handler;
@@ -17,19 +26,20 @@ export abstract class AbstractFilter implements IFilter {
         await this.nextHandler.handleAsync(request, response);
     }
 
-    abstract order(): number;
-
     disabled(): boolean {
         return false;
     };
 
-    abstract identifier(): string;
+    public getOrder(): number {
+        return this.order;
+    }
+
 
     private logPipeline(request: Request, response: Response) {
         if (!Context.isDebugMode()) return;
         console.log("***********PIPELINE**********************")
         console.log("filter name: " + this.identifier());
-        console.log("filter order: " + this.order());
+        console.log("filter order: " + this.order);
         console.log("filter disabled: " + this.disabled());
         console.log("-----------REQUEST-----------------------")
         console.log("request command: " + request.commandIdentifier);

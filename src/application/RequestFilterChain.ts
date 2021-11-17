@@ -16,10 +16,14 @@ export class RequestFilterChain {
 
 
     public static initChain(filters: AbstractFilter[]) {
-        RequestFilterChain.getInstance().requestChainFilter = filters[0];
-        for (let i = 0; i < filters.length; i++) {
-            if (i < filters.length - 1) {
-                filters[i].setNext(filters[i + 1]);
+        const organizedFilters = filters
+            .sort((a, b) => a.getOrder() - b.getOrder())
+            .filter(value => !value.disabled());
+
+        RequestFilterChain.getInstance().requestChainFilter = organizedFilters[0];
+        for (let i = 0; i < organizedFilters.length; i++) {
+            if (i < organizedFilters.length - 1) {
+                organizedFilters[i].setNext(organizedFilters[i + 1]);
             }
         }
     }

@@ -3,23 +3,23 @@ import {Request} from "../Request";
 import {Context} from "../Context";
 import {Figma} from "../helpers/Figma";
 import {TextDirectionFixer} from "../helpers/TextDirectionFixer";
-import {AbstractCommand} from "../abstractions/commands/AbstractCommand";
-import {Factories} from "../factories/Factories";
+import {IJustifier} from "../tools/justify/justifier/abstarctions/IJustifier";
+import {Command} from "./Command";
 
-export class JustifyCommand extends AbstractCommand {
+export class JustifyCommand extends Command {
 
     identifier(): string {
         return "justify";
     }
 
     async executeAsync(request: Request): Promise<Response> {
-        if (Context.getTextNodesContainer().count() > 1) {
+        if (this.getTextNodeContainer().count() > 1) {
             return this.error({
                 notificationMessage: "can't justify more than 1 text"
             });
         }
 
-        await JustifyCommand.applyChangesAsync();
+        await this.applyChangesAsync();
 
         return this.success({
             notificationMessage: "Justified",
@@ -29,12 +29,12 @@ export class JustifyCommand extends AbstractCommand {
         });
     }
 
-    private static async applyChangesAsync() {
-        const justifierId = "persian_justify";
-        const justifier = Factories.Justifiers(justifierId);
+    private async applyChangesAsync() {
+        const justifierId = "spaceJustify";
+        const justifier = Context.resolve<IJustifier>(justifierId);
         if (justifier == null) return;
 
-        const nodeData = Context.getTextNodesContainer().first();
+        const nodeData = this.getTextNodeContainer().first();
         const maxWidth = nodeData.node.width;
         const justifiedText = await justifier.justifyAsync(nodeData, maxWidth);
         const directionFixedText = TextDirectionFixer.fix(justifiedText);

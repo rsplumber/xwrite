@@ -5,19 +5,8 @@ import {StringHelper} from "../../helpers/StringHelper";
 
 export class StandardReplaceReplacer implements IReplacer {
 
-    private static instance: StandardReplaceReplacer;
-
-    public static getInstance(): StandardReplaceReplacer {
-        if (!StandardReplaceReplacer.instance) {
-            StandardReplaceReplacer.instance = new StandardReplaceReplacer();
-        }
-
-        return StandardReplaceReplacer.instance;
-    }
-
-
     sign(): string {
-        return "$__standard";
+        return "standardReplaceReplacer";
     }
 
     replace(textNodeData: TextNodeData, replaceFrom: string, replaceTo: string): string {

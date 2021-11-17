@@ -4,6 +4,15 @@ import {Context} from "../Context";
 import {Response} from "../Response";
 
 export class RequestInitializerFilter extends AbstractFilter {
+
+    identifier(): string {
+        return "initializer";
+    }
+
+    constructor(order: number) {
+        super(order);
+    }
+
     public async handleAsync(request: Request, response: Response): Promise<void> {
         request.attachToData("debug_mode", Context.getInstance().isDebugMode());
         if (request.commandIdentifier == null) {
@@ -17,11 +26,5 @@ export class RequestInitializerFilter extends AbstractFilter {
         await super.handleAsync(request, response);
     }
 
-    order(): number {
-        return 0;
-    }
 
-    identifier(): string {
-        return "initializer";
-    }
 }

@@ -4,6 +4,14 @@ import {Response} from "../Response";
 
 export class MessageCenterFilter extends AbstractFilter {
 
+    identifier(): string {
+        return "messageCenter";
+    }
+
+    constructor(order: number) {
+        super(order);
+    }
+
     public async handleAsync(request: Request, response: Response): Promise<void> {
         const type = response.getFromData("messageCenterType") as string;
         const message = response.getFromData("messageCenter");
@@ -16,11 +24,4 @@ export class MessageCenterFilter extends AbstractFilter {
         await super.handleAsync(request, response);
     }
 
-    order(): number {
-        return 0;
-    }
-
-    identifier(): string {
-        return "messageCenter";
-    }
 }

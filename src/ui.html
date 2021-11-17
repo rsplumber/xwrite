@@ -173,15 +173,15 @@
 
         for (let i = 0; i < inputs.length; i++) {
             const element = inputs[i];
-            texts_data[i].final_text = element.value;
+            texts_data[i].finalText = element.value;
         }
 
         parent.postMessage({pluginMessage: {type: 'batchWriter', data: texts_data}}, '*')
     }
 
     function autoDirection() {
-        parent.postMessage({pluginMessage: {type: 'autoDirection'}}, '*')
-        // parent.postMessage({pluginMessage: {type: 'justify'}}, '*')
+        // parent.postMessage({pluginMessage: {type: 'autoDirection'}}, '*')
+        parent.postMessage({pluginMessage: {type: 'justify'}}, '*')
     }
 
     function resize(sizeParams) {
@@ -258,7 +258,7 @@
             li.appendChild(createDeleteButton(text_id));
             li.appendChild(createParagraph(text_id, texts_data[i].text));
             li.appendChild(createCopyButton(text_id));
-            li.appendChild(createInput(text_id, texts_data[i].final_text));
+            li.appendChild(createInput(text_id, texts_data[i].finalText));
 
             ul.appendChild(li);     // append li to ul.
         }
