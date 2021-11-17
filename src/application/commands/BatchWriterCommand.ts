@@ -26,7 +26,7 @@ export class BatchWriterCommand extends Command {
                 finalText = TextDirectionFixer.fix(selectedTextData.finalText);
                 await FigmaHelper.setNodeTextAsync(textNode, finalText);
             }
-            nodeData.finalText = TextDirectionFixer.fix(finalText);
+            nodeData.finalText = finalText;
         }
 
         return this.success({
