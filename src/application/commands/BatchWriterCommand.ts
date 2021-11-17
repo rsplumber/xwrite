@@ -12,15 +12,10 @@ export class BatchWriterCommand extends Command {
     }
 
     async executeAsync(request: Request): Promise<Response> {
-        await this.applyChangesAsync(request);
-        return this.success({
-            notificationMessage: "Changes applied",
-            softRefreshData: {},
-            refreshDataOnView: this.getTextNodeContainer().getAll()
-        });
+        return await this.applyChangesAsync(request);
     }
 
-    private async applyChangesAsync(request: Request) {
+    private async applyChangesAsync(request: Request): Promise<Response> {
         const finalData: Array<TextNodeData> = request.getFromData("data") as Array<TextNodeData>;
 
         for (const nodeData of this.getTextNodeContainer().getAll()) {
@@ -32,6 +27,12 @@ export class BatchWriterCommand extends Command {
                 nodeData.finalText = TextDirectionFixer.fix(finalText);
             }
         }
+
+        return this.success({
+            notificationMessage: "Changes applied",
+            softRefreshData: {},
+            refreshDataOnView: this.getTextNodeContainer().getAll()
+        });
     }
 
 }

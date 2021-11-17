@@ -21,16 +21,11 @@ export class ReplacerCommand extends Command {
             await Context.executeRequestInPipelineAsync(Request.generate("nodeDetector")
                 .findInPage(replaceFrom));
         }
-        await this.applyChangesAsync(replaceFrom, replaceTo);
 
-        return this.success({
-            notificationMessage: "Replaced",
-            hardRefreshData: {delay: 500},
-            refreshDataOnView: this.getTextNodeContainer().getAll()
-        });
+        return await this.applyChangesAsync(replaceFrom, replaceTo);
     }
 
-    private async applyChangesAsync(replaceFrom: string, replaceTo: string) {
+    private async applyChangesAsync(replaceFrom: string, replaceTo: string): Promise<Response> {
 
         const replacerType = ReplacerCommand.getReplacerType(replaceFrom);
         const replacer = Context.resolve<IReplacer>(replacerType);
@@ -41,6 +36,11 @@ export class ReplacerCommand extends Command {
             nodeData.finalText = TextDirectionFixer.fix(replacedText);
         }
 
+        return this.success({
+            notificationMessage: "Replaced",
+            hardRefreshData: {delay: 500},
+            refreshDataOnView: this.getTextNodeContainer().getAll()
+        });
     }
 
     private static getReplacerType(replaceFrom): string {

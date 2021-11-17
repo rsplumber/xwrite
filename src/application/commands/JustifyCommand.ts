@@ -19,19 +19,13 @@ export class JustifyCommand extends Command {
             });
         }
 
-        await this.applyChangesAsync();
-
-        return this.success({
-            notificationMessage: "Justified",
-            softRefreshData: {
-                keepCurrentState: true
-            }
-        });
+        return await this.applyChangesAsync(request);
     }
 
-    private async applyChangesAsync() {
-        const justifierId = "spaceJustify";
-        const justifier = Context.resolve<IJustifier>(justifierId);
+    private async applyChangesAsync(request: Request): Promise<Response> {
+
+        const justifyType = request.getFromData("justifyType");
+        const justifier = Context.resolve<IJustifier>(justifyType);
         if (justifier == null) return;
 
         const nodeData = this.getTextNodeContainer().first();
@@ -39,6 +33,13 @@ export class JustifyCommand extends Command {
         const justifiedText = await justifier.justifyAsync(nodeData, maxWidth);
         const directionFixedText = TextDirectionFixer.fix(justifiedText);
         await Figma.setNodeTextAsync(nodeData.node, directionFixedText);
+
+        return this.success({
+            notificationMessage: "Justified",
+            softRefreshData: {
+                keepCurrentState: true
+            }
+        });
     }
 
 

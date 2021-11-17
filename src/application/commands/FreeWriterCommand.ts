@@ -12,15 +12,11 @@ export class FreeWriterCommand extends Command {
 
 
     async executeAsync(request: Request): Promise<Response> {
-        await this.applyChangesAsync(request);
-        return this.success({
-            softRefreshData: {},
-            refreshDataOnView: this.getTextNodeContainer().getAll()
-        });
+        return await this.applyChangesAsync(request);
     }
 
 
-    private async applyChangesAsync(request: Request) {
+    private async applyChangesAsync(request: Request): Promise<Response> {
         const finalText = request.getFromData("data") as string;
         const directionFixedText = TextDirectionFixer.fix(finalText);
 
@@ -28,6 +24,10 @@ export class FreeWriterCommand extends Command {
             await Figma.setNodeTextAsync(nodeData.node, directionFixedText);
             nodeData.finalText = finalText;
         }
+        return this.success({
+            softRefreshData: {},
+            refreshDataOnView: this.getTextNodeContainer().getAll()
+        });
     }
 
 
