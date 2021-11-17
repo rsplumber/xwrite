@@ -20,4 +20,6 @@ export interface IContainer<Type extends IContainerable> {
 
     count(): number;
 
+    updateValues(items: Type[]);
+
 }

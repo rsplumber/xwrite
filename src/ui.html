@@ -181,7 +181,8 @@
 
     function autoDirection() {
         // parent.postMessage({pluginMessage: {type: 'autoDirection'}}, '*')
-        parent.postMessage({pluginMessage: {type: 'justify'}}, '*')
+        // parent.postMessage({pluginMessage: {type: 'justify'}}, '*')
+        parent.postMessage({pluginMessage: {type: 'sortNodes'}}, '*')
     }
 
     function resize(sizeParams) {

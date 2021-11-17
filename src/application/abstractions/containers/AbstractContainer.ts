@@ -57,6 +57,12 @@ export abstract class AbstractContainer<Type extends IContainerable> implements 
         return this.items.size;
     }
 
+    updateValues(items: Type[]) {
+        this.refresh();
+        this.addRange(items)
+    }
+
+
     private logContainer(methodName: string, data) {
         if (!Context.isDebugMode()) return;
         console.log("**********CONTAINER*************************")

@@ -21,11 +21,12 @@ export class BatchWriterCommand extends Command {
         for (const nodeData of this.getTextNodeContainer().getAll()) {
             const textNode = nodeData.node as TextNode;
             const selectedTextData = finalData.find(d => d.id == textNode.id);
+            let finalText = selectedTextData.text;
             if (selectedTextData.finalText.length !== 0) {
-                const finalText = TextDirectionFixer.fix(selectedTextData.finalText);
+                finalText = TextDirectionFixer.fix(selectedTextData.finalText);
                 await Figma.setNodeTextAsync(textNode, finalText);
-                nodeData.finalText = TextDirectionFixer.fix(finalText);
             }
+            nodeData.finalText = TextDirectionFixer.fix(finalText);
         }
 
         return this.success({

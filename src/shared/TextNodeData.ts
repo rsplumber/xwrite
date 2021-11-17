@@ -8,12 +8,14 @@ export class TextNodeData implements IContainerable {
     public text: string;
     public finalText: string = "";
     public layerName: string;
+    public position: number;
 
     constructor(node: TextNode) {
         if (node == null) return;
         this.id = node.id;
         this.node = node;
         this.text = TextDirectionFixer.fix(node.characters);
+        this.position = node.y;
         this.layerName = node.name;
     }
 

@@ -24,6 +24,7 @@ import {SpaceJustify} from "./application/tools/justify/justifier/SpaceJustify";
 import {ReplaceAllReplacer} from "./application/tools/replacers/ReplaceAllReplacer";
 import {StandardReplaceReplacer} from "./application/tools/replacers/StandardReplaceReplacer";
 import {TextNodesContainer} from "./application/containers/TextNodesContainer";
+import {SortNodesCommand} from "./application/commands/SortNodesCommand";
 
 figma.showUI(__html__);
 figma.ui.resize(660, 560)
@@ -66,6 +67,7 @@ function initContext() {
         .registerDependency("textNodesContainer", TextNodesContainer)
         .registerDependencies([
             {key: "autoDirection", register: AutoDirectionCommand},
+            {key: "sortNodes", register: SortNodesCommand},
             {key: "batchWriter", register: BatchWriterCommand},
             {key: "deleteText", register: DeleteTextCommand},
             {key: "freeWriter", register: FreeWriterCommand},
