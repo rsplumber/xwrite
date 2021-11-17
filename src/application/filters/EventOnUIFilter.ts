@@ -1,8 +1,17 @@
-import {AbstractFilter} from "./abstractions/AbstractFilter";
-import {Request} from "../Request";
-import {Response} from "../Response";
+import {AbstractFilter} from "../../core/abstractions/filters/AbstractFilter";
+import {Request} from "../../core/Request";
+import {Response} from "../../core/Response";
 
 export class EventOnUIFilter extends AbstractFilter {
+
+    constructor(order: number) {
+        super(order);
+    }
+
+    name(): string {
+        return "eventOnUiFilter";
+    }
+
     public async handleAsync(request: Request, response: Response): Promise<void> {
         const uiEvents = response.getFromData("ui_events") as Map<string, any>
         if (uiEvents) {
@@ -16,11 +25,4 @@ export class EventOnUIFilter extends AbstractFilter {
         await super.handleAsync(request, response);
     }
 
-    order(): number {
-        return 0;
-    }
-
-    identifier(): string {
-        return "eventOnUi";
-    }
 }

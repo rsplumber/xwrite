@@ -1,8 +1,16 @@
-import {AbstractFilter} from "./abstractions/AbstractFilter";
-import {Request} from "../Request";
-import {Response} from "../Response";
+import {AbstractFilter} from "../../core/abstractions/filters/AbstractFilter";
+import {Request} from "../../core/Request";
+import {Response} from "../../core/Response";
 
 export class MessageCenterFilter extends AbstractFilter {
+
+    constructor(order: number) {
+        super(order);
+    }
+
+    name(): string {
+        return "messageCenterFilter";
+    }
 
     public async handleAsync(request: Request, response: Response): Promise<void> {
         const type = response.getFromData("messageCenterType") as string;
@@ -16,11 +24,4 @@ export class MessageCenterFilter extends AbstractFilter {
         await super.handleAsync(request, response);
     }
 
-    order(): number {
-        return 0;
-    }
-
-    identifier(): string {
-        return "messageCenter";
-    }
 }

@@ -1,18 +1,13 @@
-import {Response} from "../Response";
-import {Request} from "../Request";
+import {Response} from "../../core/Response";
+import {Request} from "../../core/Request";
 import {Context} from "../Context";
-import {AbstractCommand} from "./abstractions/AbstractCommand";
+import {Command} from "./Command";
 
-export class SelectAllTextsCommand extends AbstractCommand {
+export class SelectAllTextsCommand extends Command {
 
     identifier(): string {
         return "selectAllTexts";
     }
-
-    containerId(): string {
-        return this.identifier();
-    }
-
 
     async executeAsync(request: Request): Promise<Response> {
         await Context.executeRequestInPipelineAsync(Request.generate("nodeDetector").findInPage());

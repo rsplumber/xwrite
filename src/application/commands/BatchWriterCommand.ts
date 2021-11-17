@@ -1,42 +1,39 @@
-import {Response} from "../Response";
-import {Request} from "../Request";
+import {Response} from "../../core/Response";
+import {Request} from "../../core/Request";
 import {TextNodeData} from "../../shared/TextNodeData";
-import {Context} from "../Context";
-import {TextDirectionFixer} from "../helpers/TextDirectionFixer";
-import {Figma} from "../helpers/Figma";
-import {AbstractCommand} from "./abstractions/AbstractCommand";
+import {TextDirectionFixer} from "../../helpers/TextDirectionFixer";
+import {FigmaHelper} from "../../helpers/FigmaHelper";
+import {Command} from "./Command";
 
-export class BatchWriterCommand extends AbstractCommand {
+export class BatchWriterCommand extends Command {
 
     identifier(): string {
         return "batchWriter";
     }
 
-    containerId(): string {
-        return this.identifier();
+    async executeAsync(request: Request): Promise<Response> {
+        return await this.applyChangesAsync(request);
     }
 
-    async executeAsync(request: Request): Promise<Response> {
-        await BatchWriterCommand.applyChangesAsync(request);
+    private async applyChangesAsync(request: Request): Promise<Response> {
+        const finalData: Array<TextNodeData> = request.getFromData("data") as Array<TextNodeData>;
+
+        for (const nodeData of this.getTextNodeContainer().getAll()) {
+            const textNode = nodeData.node as TextNode;
+            const selectedTextData = finalData.find(d => d.id == textNode.id);
+            let finalText = selectedTextData.text;
+            if (selectedTextData.finalText.length !== 0) {
+                finalText = TextDirectionFixer.fix(selectedTextData.finalText);
+                await FigmaHelper.setNodeTextAsync(textNode, finalText);
+            }
+            nodeData.finalText = finalText;
+        }
+
         return this.success({
             notificationMessage: "Changes applied",
             softRefreshData: {},
-            refreshDataOnView: Context.getTextNodesContainer().getAll()
+            refreshDataOnView: this.getTextNodeContainer().getAll()
         });
-    }
-
-    private static async applyChangesAsync(request: Request) {
-        const finalData: Array<TextNodeData> = request.getFromData("data") as Array<TextNodeData>;
-
-        for (const nodeData of Context.getTextNodesContainer().getAll()) {
-            const textNode = nodeData.node as TextNode;
-            const selectedTextData = finalData.find(d => d.id == textNode.id);
-            if (selectedTextData.final_text.length !== 0) {
-                const finalText = TextDirectionFixer.fix(selectedTextData.final_text);
-                await Figma.setNodeTextAsync(textNode, finalText);
-                nodeData.final_text = TextDirectionFixer.fix(finalText);
-            }
-        }
     }
 
 }

@@ -1,28 +1,23 @@
-import {IFilter} from "./filters/abstractions/IFilter";
-import {ReplacersContainer} from "./containers/ReplacersContainer";
-import {CommandsContainer} from "./containers/CommandsContainer";
+import {IFilter} from "../core/abstractions/filters/IFilter";
 import {TextNodesContainer} from "./containers/TextNodesContainer";
-import {Request} from "./Request";
-import {AbstractFilter} from "./filters/abstractions/AbstractFilter";
-import {ICommand} from "./commands/abstractions/ICommand";
-import {ReflectionHelper} from "./helpers/ReflectionHelper";
-import {RequestExecutor} from "./RequestExecutor";
-import {ReplaceAllReplacer} from "./replacers/ReplaceAllReplacer";
-import {StandardReplaceReplacer} from "./replacers/StandardReplaceReplacer";
-import {JustifiersContainer} from "./containers/JustifiersContainer";
-import {SpaceJustify} from "./justifiers/SpaceJustify";
-import {Response} from "./Response";
-import {IJustifyCalculatorFactory} from "./justifiers/abstarctions/IJustifyCalculatorFactory";
-import {JustifyCalculatorFactory} from "./justifiers/JustifyCalculatorFactory";
-import {PersianJustify} from "./justifiers/PersianJustify";
+import {Request} from "../core/Request";
+import {AbstractFilter} from "../core/abstractions/filters/AbstractFilter";
+import {RequestExecutor} from "../core/executors/RequestExecutor";
+import {Response} from "../core/Response";
+import {RequestFilterChain} from "../core/RequestFilterChain";
+import {DependencyResolver} from "../core/ioc/DependencyResolver";
+import {AbstractContainer} from "../core/abstractions/containers/AbstractContainer";
+import {TextNodeData} from "../shared/TextNodeData";
+import {Settings} from "../core/Settings";
+import {DependencyType} from "../core/ioc/DependencyType";
 
 export class Context {
 
-    private _debug: boolean;
-
-    private _requestChainFilter: IFilter;
-
     static instance: Context;
+
+    set debug(value: boolean) {
+        Settings.isDebugMode = value;
+    }
 
     public static builder(): ContextBuilder {
         return new ContextBuilder();
@@ -32,38 +27,16 @@ export class Context {
         return Context.instance;
     }
 
-    public getRequestChainFilter(): IFilter {
-        return this._requestChainFilter;
+    public static getRequestChainFilter(): IFilter {
+        return RequestFilterChain.chain();
     }
 
-
-    set requestChainFilter(value: IFilter) {
-        this._requestChainFilter = value;
-    }
-
-    public static getTextNodesContainer(): TextNodesContainer {
+    public static getTextNodesContainer(): AbstractContainer<TextNodeData> {
         return TextNodesContainer.getInstance();
     }
 
-    public static getCommandsContainer(): CommandsContainer {
-        return CommandsContainer.getInstance();
-    }
-
-    public static getReplacersContainer(): ReplacersContainer {
-        return ReplacersContainer.getInstance();
-    }
-
-    public static getJustifierContainer(): JustifiersContainer {
-        return JustifiersContainer.getInstance();
-    }
-
-    public isDebugMode(): boolean {
-        return this._debug;
-    }
-
-
-    set debug(value: boolean) {
-        this._debug = value;
+    public static resolve<Type extends object>(key: string): Type {
+        return DependencyResolver.resolve<Type>(key) as Type;
     }
 
     public static isDebugMode(): boolean {
@@ -78,84 +51,34 @@ export class Context {
         return await RequestExecutor.executeAsync(request);
     }
 
-    public static justifyCalculatorFactory(): IJustifyCalculatorFactory {
-        return JustifyCalculatorFactory.getInstance();
+    public isDebugMode(): boolean {
+        return Settings.isDebugMode;
     }
 
 }
 
 export class ContextBuilder {
 
-    private readonly commands: Array<ICommand>;
-    private readonly filters: Array<AbstractFilter>;
 
-    constructor() {
-        this.commands = new Array<ICommand>();
-        this.filters = new Array<AbstractFilter>();
-    }
-
-    private autoInitFilters() {
-
-        const filters = new Array<AbstractFilter>();
-        ReflectionHelper.createSubClassesFor(AbstractFilter)
-            .forEach(value => filters.push(value));
-        const organizedFilters = filters.filter(value => !value.disabled())
-            .sort(a => a.order());
-
-        Context.getInstance().requestChainFilter = organizedFilters[0];
-        for (let i = 1; i < organizedFilters.length; i++) {
-            if (i < organizedFilters.length - 1) {
-                organizedFilters[i].setNext(organizedFilters[i + 1]);
-            }
-        }
-    }
-
-    private static initReplacers() {
-        ReplacersContainer.getInstance().addRange([
-            new ReplaceAllReplacer(),
-            new StandardReplaceReplacer()
-        ]);
-    }
-
-    private static initJustifiers() {
-        JustifiersContainer.getInstance().addRange([
-            new SpaceJustify(),
-            new PersianJustify()
-        ]);
-    }
-
-    public addCommands(commands: ICommand[]): ContextBuilder {
-        commands.forEach(value => this.commands.push(value));
+    public registerDependencies(dependencies: { key: string, register, registerType?: DependencyType }[]): ContextBuilder {
+        dependencies.forEach(value => {
+            this.registerDependency(value.key, value.register, value.registerType);
+        });
         return this;
     }
 
-    private initCommands() {
-        CommandsContainer.getInstance().addRange(this.commands)
+    public registerDependency(key: string, register, registerType: DependencyType = DependencyType.Singleton): ContextBuilder {
+        DependencyResolver.getInstance().register(key, register, registerType);
+        return this;
     }
 
     public addFilters(filters: AbstractFilter[]): ContextBuilder {
-        filters.forEach(value => this.filters.push(value));
+        RequestFilterChain.initChain(filters);
         return this;
-    }
-
-    private initFilters() {
-        const organizedFilters = this.filters;
-        // .filter(value => !value.disabled())
-        // .sort(a => a.order());
-        Context.getInstance().requestChainFilter = organizedFilters[0];
-        for (let i = 0; i < organizedFilters.length; i++) {
-            if (i < organizedFilters.length - 1) {
-                organizedFilters[i].setNext(organizedFilters[i + 1]);
-            }
-        }
     }
 
     public build(debugMode: boolean = false) {
         Context.instance = new Context();
-        this.initFilters();
-        this.initCommands();
-        ContextBuilder.initReplacers();
-        ContextBuilder.initJustifiers();
         Context.getInstance().debug = debugMode;
     }
 

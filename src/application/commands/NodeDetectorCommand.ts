@@ -1,19 +1,14 @@
-import {Response} from "../Response";
-import {Request} from "../Request";
+import {Response} from "../../core/Response";
+import {Request} from "../../core/Request";
 import {TextNodeData} from "../../shared/TextNodeData";
-import {Context} from "../Context";
-import {AbstractCommand} from "./abstractions/AbstractCommand";
+import {Command} from "./Command";
 
-export class NodeDetectorCommand extends AbstractCommand {
+export class NodeDetectorCommand extends Command {
 
     private statistics: Map<string, number>;
 
     identifier(): string {
         return "nodeDetector";
-    }
-
-    containerId(): string {
-        return this.identifier();
     }
 
     async executeAsync(request: Request): Promise<Response> {
@@ -27,14 +22,14 @@ export class NodeDetectorCommand extends AbstractCommand {
         figma.currentPage.selection.forEach(value => this.detect(value));
 
         return this.success({
-            refreshDataOnView: Context.getTextNodesContainer().getAll(),
+            refreshDataOnView: this.getTextNodeContainer().getAll(),
             messageCenter: this.generateStatisticsText()
         });
     }
 
     private refreshData() {
         this.initStatistics();
-        Context.getTextNodesContainer().refresh();
+        this.getTextNodeContainer().refresh();
     }
 
     private initStatistics() {
@@ -73,7 +68,7 @@ export class NodeDetectorCommand extends AbstractCommand {
         let walker = this.walkTree(nodes);
         let res;
         let count = 0;
-        const textsContainer = Context.getTextNodesContainer();
+        const textsContainer = this.getTextNodeContainer();
         while (!(res = walker.next()).done) {
             let node = res.value
             if (!node.visible) continue;

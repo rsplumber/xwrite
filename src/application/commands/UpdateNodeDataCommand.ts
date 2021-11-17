@@ -1,29 +1,23 @@
-import {Response} from "../Response";
-import {Request} from "../Request";
-import {Context} from "../Context";
-import {AbstractCommand} from "./abstractions/AbstractCommand";
+import {Response} from "../../core/Response";
+import {Request} from "../../core/Request";
+import {Command} from "./Command";
 
-export class UpdateNodeDataCommand extends AbstractCommand {
+export class UpdateNodeDataCommand extends Command {
 
     identifier(): string {
         return "updateNodeData";
     }
 
-    containerId(): string {
-        return this.identifier();
-    }
-
-
     async executeAsync(request: Request): Promise<Response> {
         const keepCurrentState = request.getFromData("keepCurrentState") as boolean;
         if (!keepCurrentState) {
-            for (const dataNode of Context.getTextNodesContainer().getAll()) {
-                dataNode.text = dataNode.final_text;
-                dataNode.final_text = "";
+            for (const dataNode of this.getTextNodeContainer().getAll()) {
+                dataNode.text = dataNode.finalText;
+                dataNode.finalText = "";
             }
         }
         return this.success({
-            refreshDataOnView: Context.getTextNodesContainer().getAll()
+            refreshDataOnView: this.getTextNodeContainer().getAll()
         })
     }
 

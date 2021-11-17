@@ -1,38 +1,33 @@
-import {Response} from "../Response";
-import {Request} from "../Request";
-import {Context} from "../Context";
-import {TextDirectionFixer} from "../helpers/TextDirectionFixer";
-import {Figma} from "../helpers/Figma";
-import {AbstractCommand} from "./abstractions/AbstractCommand";
+import {Response} from "../../core/Response";
+import {Request} from "../../core/Request";
+import {TextDirectionFixer} from "../../helpers/TextDirectionFixer";
+import {FigmaHelper} from "../../helpers/FigmaHelper";
+import {Command} from "./Command";
 
-export class AutoDirectionCommand extends AbstractCommand {
+export class AutoDirectionCommand extends Command {
 
     identifier(): string {
         return "autoDirection";
     }
 
-    containerId(): string {
-        return this.identifier();
+    async executeAsync(request: Request): Promise<Response> {
+        return await this.applyChangesAsync();
     }
 
-    async executeAsync(request: Request): Promise<Response> {
-        await AutoDirectionCommand.applyChangesAsync();
+
+    private async applyChangesAsync(): Promise<Response> {
+        for (const nodeData of this.getTextNodeContainer().getAll()) {
+            const finalText = TextDirectionFixer.fix(nodeData.text);
+            await FigmaHelper.setNodeTextAsync(nodeData.node, finalText);
+            nodeData.finalText = TextDirectionFixer.fix(finalText);
+        }
         return this.success({
             notificationMessage: "Direction fixed",
             softRefreshData: {
                 delay: 200
             },
-            refreshDataOnView: Context.getTextNodesContainer().getAll()
+            refreshDataOnView: this.getTextNodeContainer().getAll()
         });
-    }
-
-
-    private static async applyChangesAsync() {
-        for (const nodeData of Context.getTextNodesContainer().getAll()) {
-            const finalText = TextDirectionFixer.fix(nodeData.text);
-            await Figma.setNodeTextAsync(nodeData.node, finalText);
-            nodeData.final_text = TextDirectionFixer.fix(finalText);
-        }
     }
 
 }

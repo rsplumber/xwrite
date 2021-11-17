@@ -1,17 +1,12 @@
-import {Response} from "../Response";
-import {Request} from "../Request";
-import {AbstractCommand} from "./abstractions/AbstractCommand";
+import {Response} from "../../core/Response";
+import {Request} from "../../core/Request";
+import {Command} from "./Command";
 
-export class ResizeCommand extends AbstractCommand {
+export class ResizeCommand extends Command {
 
     identifier(): string {
         return "resize";
     }
-
-    containerId(): string {
-        return this.identifier();
-    }
-
 
     async executeAsync(request: Request): Promise<Response> {
         const resizeParam = request.getFromData("data") as string;

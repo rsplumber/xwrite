@@ -1,18 +1,24 @@
-import {Response} from "../Response";
-import {Request} from "../Request";
+import {Response} from "../../core/Response";
+import {Request} from "../../core/Request";
 import {Context} from "../Context";
-import {Figma} from "../helpers/Figma";
-import {TextDirectionFixer} from "../helpers/TextDirectionFixer";
-import {AbstractCommand} from "./abstractions/AbstractCommand";
+import {FigmaHelper} from "../../helpers/FigmaHelper";
+import {TextDirectionFixer} from "../../helpers/TextDirectionFixer";
+import {IReplacer} from "../../tools/replacers/abstractions/IReplacer";
+import {Command} from "./Command";
 
-export class ReplacerCommand extends AbstractCommand {
+export class ReplacerCommand extends Command {
+
+    private static getReplacerType(replaceFrom): string {
+        switch (replaceFrom) {
+            case "*.*":
+                return "replaceAllReplacer";
+            default:
+                return "standardReplacer";
+        }
+    }
 
     identifier(): string {
         return "replacer";
-    }
-
-    containerId(): string {
-        return this.identifier();
     }
 
     async executeAsync(request: Request): Promise<Response> {
@@ -20,31 +26,30 @@ export class ReplacerCommand extends AbstractCommand {
         const replaceFrom = request.getFromData("data")['replace_from'] as string;
         const replaceTo = request.getFromData("data")['replace_to'] as string;
 
-        if (Context.getTextNodesContainer().count() === 0) {
+        if (this.getTextNodeContainer().count() === 0) {
             await Context.executeRequestInPipelineAsync(Request.generate("nodeDetector")
                 .findInPage(replaceFrom));
         }
-        await ReplacerCommand.applyChangesAsync(replaceFrom, replaceTo);
+
+        return await this.applyChangesAsync(replaceFrom, replaceTo);
+    }
+
+    private async applyChangesAsync(replaceFrom: string, replaceTo: string): Promise<Response> {
+
+        const replacerType = ReplacerCommand.getReplacerType(replaceFrom);
+        const replacer = Context.resolve<IReplacer>(replacerType);
+
+        for (const nodeData of this.getTextNodeContainer().getAll()) {
+            const replacedText = replacer.replace(nodeData, replaceFrom, replaceTo);
+            await FigmaHelper.setNodeTextAsync(nodeData.node, replacedText);
+            nodeData.finalText = TextDirectionFixer.fix(replacedText);
+        }
 
         return this.success({
             notificationMessage: "Replaced",
             hardRefreshData: {delay: 500},
-            refreshDataOnView: Context.getTextNodesContainer().getAll()
+            refreshDataOnView: this.getTextNodeContainer().getAll()
         });
-    }
-
-    private static async applyChangesAsync(replaceFrom: string, replaceTo: string) {
-        let replacer = Context.getReplacersContainer().getById(replaceFrom);
-        if (replacer == null) {
-            replacer = Context.getReplacersContainer().getById("$__standard");
-        }
-
-        for (const nodeData of Context.getTextNodesContainer().getAll()) {
-            const replacedText = replacer.replace(nodeData, replaceFrom, replaceTo);
-            await Figma.setNodeTextAsync(nodeData.node, replacedText);
-            nodeData.final_text = TextDirectionFixer.fix(replacedText);
-        }
-
     }
 
 }
