@@ -3,10 +3,10 @@ import {TextNodeData} from "../../../shared/TextNodeData";
 import {TextDirectionFixer} from "../../helpers/TextDirectionFixer";
 import {StringHelper} from "../../helpers/StringHelper";
 
-export class StandardReplaceReplacer implements IReplacer {
+export class StandardReplacer implements IReplacer {
 
     sign(): string {
-        return "standardReplaceReplacer";
+        return "standardReplacer";
     }
 
     replace(textNodeData: TextNodeData, replaceFrom: string, replaceTo: string): string {

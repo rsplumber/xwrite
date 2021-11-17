@@ -22,7 +22,7 @@ import {JustifyCalculator} from "./application/tools/justify/calculators/Justify
 import {PersianJustify} from "./application/tools/justify/justifier/PersianJustify";
 import {SpaceJustify} from "./application/tools/justify/justifier/SpaceJustify";
 import {ReplaceAllReplacer} from "./application/tools/replacers/ReplaceAllReplacer";
-import {StandardReplaceReplacer} from "./application/tools/replacers/StandardReplaceReplacer";
+import {StandardReplacer} from "./application/tools/replacers/StandardReplacer";
 import {TextNodesContainer} from "./application/containers/TextNodesContainer";
 import {SortNodesCommand} from "./application/commands/SortNodesCommand";
 
@@ -88,7 +88,7 @@ function initContext() {
         ])
         .registerDependencies([
             {key: "replaceAllReplacer", register: ReplaceAllReplacer},
-            {key: "standardReplaceReplacer", register: StandardReplaceReplacer},
+            {key: "standardReplacer", register: StandardReplacer},
         ])
         .registerDependency("delayProvider", DelayProvider)
         .build();

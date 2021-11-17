@@ -48,7 +48,7 @@ export class ReplacerCommand extends Command {
             case "*.*":
                 return "replaceAllReplacer";
             default:
-                return "standardReplaceReplacer";
+                return "standardReplacer";
         }
     }
 
