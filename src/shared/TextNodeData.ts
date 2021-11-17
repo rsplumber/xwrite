@@ -1,5 +1,5 @@
-import {TextDirectionFixer} from "../application/helpers/TextDirectionFixer";
-import {IContainerable} from "../application/abstractions/containers/IContainerable";
+import {TextDirectionFixer} from "../helpers/TextDirectionFixer";
+import {IContainerable} from "../core/abstractions/containers/IContainerable";
 
 export class TextNodeData implements IContainerable {
 

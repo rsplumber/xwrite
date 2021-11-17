@@ -1,19 +1,19 @@
-<link rel="stylesheet"
-      href="https://fonts.googleapis.com/css?family=Poppins">
+<link href="https://fonts.googleapis.com/css?family=Poppins"
+      rel="stylesheet">
 
 <div id="base">
     <div class="tab">
-        <button class="tabLinks" onclick="tabSelected(event, 'batchWriter')" id="batchWriterButton">Batch Writer
+        <button class="tabLinks" id="batchWriterButton" onclick="tabSelected(event, 'batchWriter')">Batch Writer
         </button>
-        <button class="tabLinks" onclick="tabSelected(event, 'freeWriter')" id="freeWriterButton">Free Writer</button>
-        <button class="tabLinks" onclick="tabSelected(event, 'replacer')" id="replacerButton">Find & Replace</button>
-        <div onclick="openDropDown()" class="dropdown">
+        <button class="tabLinks" id="freeWriterButton" onclick="tabSelected(event, 'freeWriter')">Free Writer</button>
+        <button class="tabLinks" id="replacerButton" onclick="tabSelected(event, 'replacer')">Find & Replace</button>
+        <div class="dropdown" onclick="openDropDown()">
             <img class="dropbtn" src="https://img.icons8.com/windows/32/979797/menu-2.png"/>
-            <div id="myDropdown" class="dropdown-content">
-                <div style="padding-left: 0; margin-left: 0;" onclick="tabSelected(event, 'aboutUs')"
-                     id="aboutUsButton">
-                    <img style="width: 24px; height: 24px; padding-left: 0; margin-left: 0;"
-                         src="https://img.icons8.com/material-outlined/24/25a75d/filled-like.png"/>
+            <div class="dropdown-content" id="myDropdown">
+                <div id="aboutUsButton" onclick="tabSelected(event, 'aboutUs')"
+                     style="padding-left: 0; margin-left: 0;">
+                    <img src="https://img.icons8.com/material-outlined/24/25a75d/filled-like.png"
+                         style="width: 24px; height: 24px; padding-left: 0; margin-left: 0;"/>
                     About Us
                 </div>
             </div>
@@ -21,55 +21,55 @@
         <div class="tabLinks" id="sizeBar">
             <div class="tooltip" onclick="resize('minimize')">
                 <span class="tooltiptext">Minimize</span>
-                <img style="width: 24px; height: 24px;"
-                     src="https://img.icons8.com/fluency-systems-regular/48/25a75d/shrink.png"/>
+                <img src="https://img.icons8.com/fluency-systems-regular/48/25a75d/shrink.png"
+                     style="width: 24px; height: 24px;"/>
             </div>
 
             <div class="tooltip" onclick="resize('standard')">
                 <span class="tooltiptext">Standard</span>
-                <img style="width: 24px; height: 24px;"
-                     src="https://img.icons8.com/fluency-systems-regular/48/25a75d/picture-in-picture-alternative.png"/>
+                <img src="https://img.icons8.com/fluency-systems-regular/48/25a75d/picture-in-picture-alternative.png"
+                     style="width: 24px; height: 24px;"/>
             </div>
 
             <div class="tooltip" onclick="resize('fullScreen')">
                 <span class="tooltiptext">Fullscreen</span>
-                <img style="width: 24px; height: 24px;"
-                     src="https://img.icons8.com/fluency-systems-regular/48/25a75d/page-size--v3.png"/>
+                <img src="https://img.icons8.com/fluency-systems-regular/48/25a75d/page-size--v3.png"
+                     style="width: 24px; height: 24px;"/>
             </div>
         </div>
 
 
     </div>
 
-    <div id="batchWriter" class="tabContent">
-        <div id="message_center" class="topBar">
+    <div class="tabContent" id="batchWriter">
+        <div class="topBar" id="message_center">
             Select some texts
         </div>
         <div id='container'>
         </div>
         <div id="bottomBar">
             <div class="buttons">
-                <button id="applyChanges" class="primary" onclick="applyChanges()">Apply</button>
-                <button id="autoDirection" class="ghost" onclick="autoDirection()">Auto Direction</button>
+                <button class="primary" id="applyChanges" onclick="applyChanges()">Apply</button>
+                <button class="ghost" id="autoDirection" onclick="autoDirection()">Auto Direction</button>
             </div>
         </div>
     </div>
 
-    <div id="freeWriter" class="tabContent">
+    <div class="tabContent" id="freeWriter">
         <textarea class="textarea" id="freeWriterText" oninput="freeWriterTextChanged(event)"></textarea>
         <span>
         Select and Edit Texts
       </span>
     </div>
 
-    <div id="replacer" class="tabContent">
+    <div class="tabContent" id="replacer">
         <div class="replacements-container">
             <div class="replacements">
                 <div>
                     <div class="label">
                         Text
                     </div>
-                    <input id="replace_from" type="input" placeholder="Find Text">
+                    <input id="replace_from" placeholder="Find Text" type="input">
                 </div>
                 <div class="label" style="margin-top: 20px;">
                     To
@@ -78,7 +78,7 @@
                     <div class="label">
                         Replacement
                     </div>
-                    <input id="replace_to" type="input" placeholder="Find Text">
+                    <input id="replace_to" placeholder="Find Text" type="input">
                 </div>
                 <div>
                     <div class="label" style="color: transparent;">
@@ -93,7 +93,7 @@
         </div>
     </div>
 
-    <div id="aboutUs" class="tabContent">
+    <div class="tabContent" id="aboutUs">
         <div>
             <h2><strong>Thanks for using XWrite</strong></h2>
 
@@ -133,8 +133,8 @@
 
 <div id="minimizedButton">
     <div onclick="resize('standard')">
-        <img style="width: 24px; height: 24px;"
-             src="https://img.icons8.com/fluency-systems-regular/48/25a75d/picture-in-picture-alternative.png"/>
+        <img src="https://img.icons8.com/fluency-systems-regular/48/25a75d/picture-in-picture-alternative.png"
+             style="width: 24px; height: 24px;"/>
     </div>
 </div>
 

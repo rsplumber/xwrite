@@ -1,7 +1,7 @@
-import {Response} from "../Response";
-import {Request} from "../Request";
-import {TextDirectionFixer} from "../helpers/TextDirectionFixer";
-import {Figma} from "../helpers/Figma";
+import {Response} from "../../core/Response";
+import {Request} from "../../core/Request";
+import {TextDirectionFixer} from "../../helpers/TextDirectionFixer";
+import {FigmaHelper} from "../../helpers/FigmaHelper";
 import {Command} from "./Command";
 
 export class AutoDirectionCommand extends Command {
@@ -18,7 +18,7 @@ export class AutoDirectionCommand extends Command {
     private async applyChangesAsync(): Promise<Response> {
         for (const nodeData of this.getTextNodeContainer().getAll()) {
             const finalText = TextDirectionFixer.fix(nodeData.text);
-            await Figma.setNodeTextAsync(nodeData.node, finalText);
+            await FigmaHelper.setNodeTextAsync(nodeData.node, finalText);
             nodeData.finalText = TextDirectionFixer.fix(finalText);
         }
         return this.success({

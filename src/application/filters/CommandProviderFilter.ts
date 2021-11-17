@@ -1,7 +1,7 @@
-import {AbstractFilter} from "../abstractions/filters/AbstractFilter";
-import {Request} from "../Request";
-import {CommandExecutor} from "../executors/CommandExecutor";
-import {Response} from "../Response";
+import {AbstractFilter} from "../../core/abstractions/filters/AbstractFilter";
+import {Request} from "../../core/Request";
+import {CommandExecutor} from "../../core/executors/CommandExecutor";
+import {Response} from "../../core/Response";
 
 export class CommandProviderFilter extends AbstractFilter {
 
@@ -9,12 +9,13 @@ export class CommandProviderFilter extends AbstractFilter {
         super(order);
     }
 
+    name(): string {
+        return "commandProviderFilter";
+    }
+
     public async handleAsync(request: Request, response: Response): Promise<void> {
         const commandResponse = await CommandExecutor.executeAsync(request);
         await super.handleAsync(request, commandResponse);
     }
 
-    identifier(): string {
-        return "commandProvider";
-    }
 }

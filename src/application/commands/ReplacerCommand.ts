@@ -1,12 +1,21 @@
-import {Response} from "../Response";
-import {Request} from "../Request";
+import {Response} from "../../core/Response";
+import {Request} from "../../core/Request";
 import {Context} from "../Context";
-import {Figma} from "../helpers/Figma";
-import {TextDirectionFixer} from "../helpers/TextDirectionFixer";
-import {IReplacer} from "../tools/replacers/abstractions/IReplacer";
+import {FigmaHelper} from "../../helpers/FigmaHelper";
+import {TextDirectionFixer} from "../../helpers/TextDirectionFixer";
+import {IReplacer} from "../../tools/replacers/abstractions/IReplacer";
 import {Command} from "./Command";
 
 export class ReplacerCommand extends Command {
+
+    private static getReplacerType(replaceFrom): string {
+        switch (replaceFrom) {
+            case "*.*":
+                return "replaceAllReplacer";
+            default:
+                return "standardReplacer";
+        }
+    }
 
     identifier(): string {
         return "replacer";
@@ -32,7 +41,7 @@ export class ReplacerCommand extends Command {
 
         for (const nodeData of this.getTextNodeContainer().getAll()) {
             const replacedText = replacer.replace(nodeData, replaceFrom, replaceTo);
-            await Figma.setNodeTextAsync(nodeData.node, replacedText);
+            await FigmaHelper.setNodeTextAsync(nodeData.node, replacedText);
             nodeData.finalText = TextDirectionFixer.fix(replacedText);
         }
 
@@ -41,15 +50,6 @@ export class ReplacerCommand extends Command {
             hardRefreshData: {delay: 500},
             refreshDataOnView: this.getTextNodeContainer().getAll()
         });
-    }
-
-    private static getReplacerType(replaceFrom): string {
-        switch (replaceFrom) {
-            case "*.*":
-                return "replaceAllReplacer";
-            default:
-                return "standardReplacer";
-        }
     }
 
 }

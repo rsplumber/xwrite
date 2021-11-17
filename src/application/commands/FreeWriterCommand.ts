@@ -1,7 +1,7 @@
-import {Response} from "../Response";
-import {Request} from "../Request";
-import {TextDirectionFixer} from "../helpers/TextDirectionFixer";
-import {Figma} from "../helpers/Figma";
+import {Response} from "../../core/Response";
+import {Request} from "../../core/Request";
+import {TextDirectionFixer} from "../../helpers/TextDirectionFixer";
+import {FigmaHelper} from "../../helpers/FigmaHelper";
 import {Command} from "./Command";
 
 export class FreeWriterCommand extends Command {
@@ -21,7 +21,7 @@ export class FreeWriterCommand extends Command {
         const directionFixedText = TextDirectionFixer.fix(finalText);
 
         for (const nodeData of this.getTextNodeContainer().getAll()) {
-            await Figma.setNodeTextAsync(nodeData.node, directionFixedText);
+            await FigmaHelper.setNodeTextAsync(nodeData.node, directionFixedText);
             nodeData.finalText = finalText;
         }
         return this.success({

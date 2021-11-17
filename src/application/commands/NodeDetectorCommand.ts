@@ -1,7 +1,6 @@
-import {Response} from "../Response";
-import {Request} from "../Request";
+import {Response} from "../../core/Response";
+import {Request} from "../../core/Request";
 import {TextNodeData} from "../../shared/TextNodeData";
-import {Context} from "../Context";
 import {Command} from "./Command";
 
 export class NodeDetectorCommand extends Command {

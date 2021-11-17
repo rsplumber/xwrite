@@ -1,6 +1,6 @@
-import {AbstractFilter} from "../abstractions/filters/AbstractFilter";
-import {Request} from "../Request";
-import {Response} from "../Response";
+import {AbstractFilter} from "../../core/abstractions/filters/AbstractFilter";
+import {Request} from "../../core/Request";
+import {Response} from "../../core/Response";
 
 export class EventOnUIFilter extends AbstractFilter {
 
@@ -8,8 +8,8 @@ export class EventOnUIFilter extends AbstractFilter {
         super(order);
     }
 
-    identifier(): string {
-        return "eventOnUi";
+    name(): string {
+        return "eventOnUiFilter";
     }
 
     public async handleAsync(request: Request, response: Response): Promise<void> {

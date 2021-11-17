@@ -1,5 +1,5 @@
-import {Response} from "../Response";
-import {Request} from "../Request";
+import {Response} from "../../core/Response";
+import {Request} from "../../core/Request";
 import {Command} from "./Command";
 
 export class UpdateNodeDataCommand extends Command {

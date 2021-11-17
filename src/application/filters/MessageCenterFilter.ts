@@ -1,15 +1,15 @@
-import {AbstractFilter} from "../abstractions/filters/AbstractFilter";
-import {Request} from "../Request";
-import {Response} from "../Response";
+import {AbstractFilter} from "../../core/abstractions/filters/AbstractFilter";
+import {Request} from "../../core/Request";
+import {Response} from "../../core/Response";
 
 export class MessageCenterFilter extends AbstractFilter {
 
-    identifier(): string {
-        return "messageCenter";
-    }
-
     constructor(order: number) {
         super(order);
+    }
+
+    name(): string {
+        return "messageCenterFilter";
     }
 
     public async handleAsync(request: Request, response: Response): Promise<void> {

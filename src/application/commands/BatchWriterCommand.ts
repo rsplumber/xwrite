@@ -1,8 +1,8 @@
-import {Response} from "../Response";
-import {Request} from "../Request";
+import {Response} from "../../core/Response";
+import {Request} from "../../core/Request";
 import {TextNodeData} from "../../shared/TextNodeData";
-import {TextDirectionFixer} from "../helpers/TextDirectionFixer";
-import {Figma} from "../helpers/Figma";
+import {TextDirectionFixer} from "../../helpers/TextDirectionFixer";
+import {FigmaHelper} from "../../helpers/FigmaHelper";
 import {Command} from "./Command";
 
 export class BatchWriterCommand extends Command {
@@ -24,7 +24,7 @@ export class BatchWriterCommand extends Command {
             let finalText = selectedTextData.text;
             if (selectedTextData.finalText.length !== 0) {
                 finalText = TextDirectionFixer.fix(selectedTextData.finalText);
-                await Figma.setNodeTextAsync(textNode, finalText);
+                await FigmaHelper.setNodeTextAsync(textNode, finalText);
             }
             nodeData.finalText = TextDirectionFixer.fix(finalText);
         }

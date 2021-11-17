@@ -1,16 +1,16 @@
-import {AbstractFilter} from "../abstractions/filters/AbstractFilter";
-import {Request} from "../Request";
+import {AbstractFilter} from "../../core/abstractions/filters/AbstractFilter";
+import {Request} from "../../core/Request";
 import {Context} from "../Context";
-import {Response} from "../Response";
+import {Response} from "../../core/Response";
 
 export class RequestInitializerFilter extends AbstractFilter {
 
-    identifier(): string {
-        return "initializer";
-    }
-
     constructor(order: number) {
         super(order);
+    }
+
+    name(): string {
+        return "initializerFilter";
     }
 
     public async handleAsync(request: Request, response: Response): Promise<void> {

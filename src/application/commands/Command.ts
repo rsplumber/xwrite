@@ -1,4 +1,4 @@
-import {AbstractCommand} from "../abstractions/commands/AbstractCommand";
+import {AbstractCommand} from "../../core/abstractions/commands/AbstractCommand";
 import {TextNodesContainer} from "../containers/TextNodesContainer";
 import {Context} from "../Context";
 

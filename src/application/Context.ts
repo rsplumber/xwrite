@@ -1,19 +1,23 @@
-import {IFilter} from "./abstractions/filters/IFilter";
+import {IFilter} from "../core/abstractions/filters/IFilter";
 import {TextNodesContainer} from "./containers/TextNodesContainer";
-import {Request} from "./Request";
-import {AbstractFilter} from "./abstractions/filters/AbstractFilter";
-import {RequestExecutor} from "./executors/RequestExecutor";
-import {Response} from "./Response";
-import {RequestFilterChain} from "./RequestFilterChain";
-import {DependencyType, Resolver} from "./Resolver";
-import {AbstractContainer} from "./abstractions/containers/AbstractContainer";
+import {Request} from "../core/Request";
+import {AbstractFilter} from "../core/abstractions/filters/AbstractFilter";
+import {RequestExecutor} from "../core/executors/RequestExecutor";
+import {Response} from "../core/Response";
+import {RequestFilterChain} from "../core/RequestFilterChain";
+import {DependencyResolver} from "../core/ioc/DependencyResolver";
+import {AbstractContainer} from "../core/abstractions/containers/AbstractContainer";
 import {TextNodeData} from "../shared/TextNodeData";
+import {Settings} from "../core/Settings";
+import {DependencyType} from "../core/ioc/DependencyType";
 
 export class Context {
 
-    private _debug: boolean;
-
     static instance: Context;
+
+    set debug(value: boolean) {
+        Settings.isDebugMode = value;
+    }
 
     public static builder(): ContextBuilder {
         return new ContextBuilder();
@@ -32,16 +36,7 @@ export class Context {
     }
 
     public static resolve<Type extends object>(key: string): Type {
-        return Resolver.resolve<Type>(key) as Type;
-    }
-
-    public isDebugMode(): boolean {
-        return this._debug;
-    }
-
-
-    set debug(value: boolean) {
-        this._debug = value;
+        return DependencyResolver.resolve<Type>(key) as Type;
     }
 
     public static isDebugMode(): boolean {
@@ -54,6 +49,10 @@ export class Context {
 
     public static async executeRequestAsync(request: Request): Promise<Response> {
         return await RequestExecutor.executeAsync(request);
+    }
+
+    public isDebugMode(): boolean {
+        return Settings.isDebugMode;
     }
 
 }
@@ -69,7 +68,7 @@ export class ContextBuilder {
     }
 
     public registerDependency(key: string, register, registerType: DependencyType = DependencyType.Singleton): ContextBuilder {
-        Resolver.getInstance().register(key, register, registerType);
+        DependencyResolver.getInstance().register(key, register, registerType);
         return this;
     }
 

@@ -13,18 +13,19 @@ import {AutoDirectionCommand} from "./application/commands/AutoDirectionCommand"
 import {ResizeCommand} from "./application/commands/ResizeCommand";
 import {ReplacerCommand} from "./application/commands/ReplacerCommand";
 import {JustifyCommand} from "./application/commands/JustifyCommand";
-import {Request} from "./application/Request";
+import {Request} from "./core/Request";
 import {UpdateNodeDataCommand} from "./application/commands/UpdateNodeDataCommand";
 import {SelectAllTextsCommand} from "./application/commands/SelectAllTextsCommand";
 import {MoveTextCommand} from "./application/commands/MoveTextCommand";
-import {DelayProvider} from "./application/helpers/DelayProvider";
-import {JustifyCalculator} from "./application/tools/justify/calculators/JustifyCalculator";
-import {PersianJustify} from "./application/tools/justify/justifier/PersianJustify";
-import {SpaceJustify} from "./application/tools/justify/justifier/SpaceJustify";
-import {ReplaceAllReplacer} from "./application/tools/replacers/ReplaceAllReplacer";
-import {StandardReplacer} from "./application/tools/replacers/StandardReplacer";
+import {DelayProvider} from "./helpers/DelayProvider";
+import {JustifyCalculator} from "./tools/justify/calculators/JustifyCalculator";
+import {PersianJustify} from "./tools/justify/justifier/PersianJustify";
+import {SpaceJustify} from "./tools/justify/justifier/SpaceJustify";
+import {ReplaceAllReplacer} from "./tools/replacers/ReplaceAllReplacer";
+import {StandardReplacer} from "./tools/replacers/StandardReplacer";
 import {TextNodesContainer} from "./application/containers/TextNodesContainer";
 import {SortNodesCommand} from "./application/commands/SortNodesCommand";
+import {CopyToClipboardCommand} from "./application/commands/CopyToClipboardCommand";
 
 figma.showUI(__html__);
 figma.ui.resize(660, 560)
@@ -78,6 +79,7 @@ function initContext() {
             {key: "resize", register: ResizeCommand},
             {key: "selectAllTexts", register: SelectAllTextsCommand},
             {key: "updateNodeData", register: UpdateNodeDataCommand},
+            {key: "copyToClipboard", register: CopyToClipboardCommand},
         ])
         .registerDependencies([
             {key: "justifyCalculator", register: JustifyCalculator},
