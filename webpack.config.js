@@ -27,14 +27,4 @@ module.exports = {
     filename: 'code.js',
     path: path.resolve(__dirname, 'dist')
   },
-
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './src/ui.html',
-      filename: 'ui.html',
-      inlineSource: '.(js)$',
-      chunks: ['ui'],
-    }),
-    new HtmlWebpackInlineSourcePlugin(HtmlWebpackPlugin),
-  ],
 };

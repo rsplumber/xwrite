@@ -28,7 +28,7 @@ import {SortNodesCommand} from "./application/commands/SortNodesCommand";
 import {CopyToClipboardCommand} from "./application/commands/CopyToClipboardCommand";
 
 figma.showUI(__html__);
-figma.ui.resize(660, 560)
+figma.ui.resize(460, 310)
 
 
 figma.on("selectionchange", async () => {
