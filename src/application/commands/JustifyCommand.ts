@@ -25,7 +25,7 @@ export class JustifyCommand extends Command {
 
     private async applyChangesAsync(request: Request): Promise<Response> {
 
-        const justifyType = request.getFromData("data")['justifyType'] as string;
+        const justifyType = request.getFromData('justifyType') as string;
         const justifier = Context.resolve<IJustifier>(justifyType);
         if (justifier == null) return;
 
