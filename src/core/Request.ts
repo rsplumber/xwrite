@@ -58,6 +58,14 @@ export class Request {
     }
 
     public getFromData(key: string): any {
-        return this.data.get(key) ?? false;
+        const data = this.getData();
+        if (data) {
+            return data[key] ?? false;
+        }
+        return false;
+    }
+
+    public getData(): any {
+        return this.data.get("data") ?? false;
     }
 }

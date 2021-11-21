@@ -16,7 +16,7 @@ export class BatchWriterCommand extends Command {
     }
 
     private async applyChangesAsync(request: Request): Promise<Response> {
-        const finalData: Array<TextNodeData> = request.getFromData("data") as Array<TextNodeData>;
+        const finalData: Array<TextNodeData> = request.getData() as Array<TextNodeData>;
 
         for (const nodeData of this.getTextNodeContainer().getAll()) {
             const textNode = nodeData.node as TextNode;

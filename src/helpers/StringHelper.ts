@@ -34,8 +34,27 @@ export class StringHelper {
         return StringHelper.sanitizer(value, Constants.ENGLISH_ALPHABET);
     }
 
+    private static readonly SIGNS: Map<string, string> = new Map<string, string>(
+        [
+            ["(", ")"],
+            [")", "("],
+            ["<", ">"],
+            [">", "<"],
+            ["[", "]"],
+            ["]", "["],
+            ["]", "["],
+        ]
+    );
+
     private static correctSigns(value: string): string {
-        return value;
+        const letters = value.split("");
+        for (let i = 0; i < letters.length; i++) {
+            const sign = StringHelper.SIGNS.get(letters[i]);
+            if (sign) {
+                letters[i] = StringHelper.replace(letters[i], letters[i], sign);
+            }
+        }
+        return letters.join("");
     }
 
     private static sanitizer(value: string, mustToFind: string[]) {

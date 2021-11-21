@@ -23,8 +23,8 @@ export class ReplacerCommand extends Command {
 
     async executeAsync(request: Request): Promise<Response> {
 
-        const replaceFrom = request.getFromData("data")['replace_from'] as string;
-        const replaceTo = request.getFromData("data")['replace_to'] as string;
+        const replaceFrom = request.getFromData('replace_from') as string;
+        const replaceTo = request.getFromData('replace_to') as string;
 
         if (this.getTextNodeContainer().count() === 0) {
             await Context.executeRequestInPipelineAsync(Request.generate("nodeDetector")
