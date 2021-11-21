@@ -56,10 +56,13 @@
     </div>
 
     <div class="tabContent" id="freeWriter">
-        <textarea class="textarea" id="freeWriterText" oninput="freeWriterTextChanged(event)"></textarea>
-        <span>
-        Select and Edit Texts
-      </span>
+
+        <textarea class="textarea" id="freeWriterText" oninput="freeWriterTextChanged(event)">
+        </textarea>
+        <div class="float-button--bar">
+            <button class="float-button" onclick="">Copy</button>
+        </div>
+        
     </div>
 
     <div class="tabContent" id="replacer">
@@ -271,8 +274,8 @@
         label.innerText = 'Current';
         p.setAttribute('onclick', "copyToClipboard(this)")
         p.setAttribute('id', id);
-        p.innerHTML = text;
-        p.setAttribute('class', 'paragraph')
+        p.innerHTML = text + '<button class="float-button" onclick="">Copy</button>';
+        p.setAttribute('class', 'paragraph batch-input')
         return p;
     }
 
@@ -381,7 +384,7 @@
         box-sizing: border-box;
         font-family: 'Poppins', serif;
         transition: all 200ms;
-        background-color: #fff;
+        background-color: #f9f9f9;
     }
 
 
@@ -444,7 +447,7 @@
     }
 
     p {
-        background-color: #f9f9f9;
+        background-color: #f2f2f2;
         color: #979797;
         width: 100%;
         padding: 16px 16px;
@@ -454,9 +457,10 @@
         font-family: Poppins;
         font-style: normal;
         font-weight: 500;
-        font-size: 14px;
+        font-size: 12px;
         line-height: 18px;
         margin: 0 !important;
+        position: relative;
     }
 
     input {
@@ -510,8 +514,9 @@
         font-family: Poppins;
         font-style: normal;
         font-weight: 500;
-        font-size: 14px;
+        font-size: 12px;
         line-height: 18px;
+        transition: all 0.1s;
     }
 
     textarea::placeholder {
@@ -522,19 +527,24 @@
         border: 1px #cbcbcb solid;
     }
 
+    textarea:focus {
+        background-color: #fff;
+        border: 1px solid rgb(0, 156, 244);
+        box-shadow: 0px 0px 0px 3px rgba(0, 156, 244, 0.1);
+    }
+
     .primary {
         display: flex;
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        padding: 8px 12px;
+        padding: 0px 24px;
 
         position: relative;
-        width: 160px;
-        height: 48px;
+        height: 34px;
 
         background: rgb(33, 150, 83);
-        border-radius: 4px;
+        border-radius: 2px;
         color: #fff;
         border: none;
         cursor: pointer;
@@ -544,6 +554,7 @@
         font-weight: 500;
         font-size: 14px;
         line-height: 18px;
+        transition: all 0.2s;
     }
 
     .primary:hover {
@@ -564,6 +575,7 @@
         border-top: 1px solid #e6e6e6;
         display: flex;
         justify-content: space-between;
+        flex-direction: column;
         align-items: center;
         padding: 16px;
         background-color: #f9f9f9;
@@ -597,6 +609,7 @@
         font-weight: 500;
         font-size: 14px;
         line-height: 18px;
+        transition: all 0.2s;
 
     }
 
@@ -618,6 +631,7 @@
         border-radius: 4px;
         align-self: center;
         margin: 0 4px;
+        transition: all 0.2s;
     }
 
     img:hover {
@@ -631,11 +645,10 @@
         justify-content: center;
         left: 0;
         background-color: #f2f2f2;
-        height: 24px;
-        font-size: 12px;
+        font-size: 10px;
         color: #979797;
         width: 100%;
-        padding-top: 2px;
+        padding: 2px 0;
         animation: fadeEffect 0.4s; /* Fading effect takes 1 second */
     }
 
@@ -650,10 +663,10 @@
 
     .ghost {
         font-weight: 500;
-        font-size: 14px;
+        font-size: 12px !important;
         cursor: pointer;
-        height: 48px;
-        width: 160px;
+        height: 34px;
+        padding: 0 16px;
         border-radius: 4px;
         color: rgb(33, 150, 83);
         border: none;
@@ -664,10 +677,33 @@
         font-weight: 600;
         font-size: 14px;
         line-height: 18px;
+        transition: all 0.2s;
     }
 
     .ghost:hover {
         background-color: rgba(33, 150, 83, 0.1)
+    }
+
+    .float-button {
+        position: absolute;
+        bottom: 24px;
+        right: 16px;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+        border: 1px solid #f2f2f2;
+        font-size: 10px;
+        color: #979797;
+        padding: 4px 12px;
+        transition: all 0.2s;
+    }
+
+    .float-button:hover {
+        background-color: hsl(0, 0%, 95%);
+        cursor: pointer;
+    }
+
+    .float-button--bar {
+        display: flex;
     }
 
     .replacements-container {
@@ -695,19 +731,21 @@
         overflow: hidden;
         border-bottom: #e5e5e5 1px solid;
         background-color: white;
-        height: 56px;
+        height: 48px;
     }
 
     #freeWriter {
         background-color: #f9f9f9;
         width: auto;
-        height: 100%;
+        margin-right: 0 !important;
         overflow: hidden;
-        padding: 24px;
+        padding: 8px;
     }
 
     #freewriter > span {
-        padding-top: 24px;
+        font-size: 10px;
+        background-color: transparent;
+        padding-top: 8px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -718,7 +756,11 @@
     }
 
     #freeWriterText {
-        height: 400px;
+        position: relative;
+        height: 240px;
+        border-radius: 0 !important;
+        resize: none !important;
+        font-size: 14px !important;
     }
 
     .dropdown {
@@ -782,12 +824,15 @@
         background-color: inherit;
         font-family: Poppins;
         color: #979797;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.2;
         float: left;
         border: none;
         outline: none;
         cursor: pointer;
         padding: 14px 16px;
-        height: 56px;
+        height: 48px;
         animation: fadeEffectUp 0.4s; /* Fading effect takes 1 second */
     }
 
@@ -805,7 +850,7 @@
     /* Create an active/current tablink class */
     .tab button.active {
         color: #25a75d;
-        border-bottom: #25a75d 2px solid;
+        border-bottom: #25a75d 3px solid;
     }
 
     /* Style the tab content */
@@ -893,6 +938,15 @@
     .tooltip:hover .tooltiptext {
         visibility: visible;
         opacity: 1;
+    }
+
+    .batch-input {
+        padding-bottom: 24px !important;
+    }
+
+    .batch-input > button {
+        bottom: 8;
+        right: 8;
     }
 
 
