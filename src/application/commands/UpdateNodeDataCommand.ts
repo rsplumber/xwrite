@@ -9,7 +9,7 @@ export class UpdateNodeDataCommand extends Command {
     }
 
     async executeAsync(request: Request): Promise<Response> {
-        const keepCurrentState = request.getFromData("keepCurrentState") as boolean;
+        const keepCurrentState = request.getFromViewData("keepCurrentState") as boolean;
         if (!keepCurrentState) {
             for (const dataNode of this.getTextNodeContainer().getAll()) {
                 dataNode.text = dataNode.finalText;

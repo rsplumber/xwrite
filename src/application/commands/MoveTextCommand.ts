@@ -9,7 +9,7 @@ export class MoveTextCommand extends Command {
     }
 
     async executeAsync(request: Request): Promise<Response> {
-        const textNodeId = request.getFromData("data") as string;
+        const textNodeId = request.getFromViewData("textId") as string;
 
         this.getTextNodeContainer()
             .getAll()

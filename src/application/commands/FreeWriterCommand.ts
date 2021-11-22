@@ -17,7 +17,7 @@ export class FreeWriterCommand extends Command {
 
 
     private async applyChangesAsync(request: Request): Promise<Response> {
-        const finalText = request.getData() as string;
+        const finalText = request.getFromViewData("text") as string;
         const directionFixedText = TextDirectionFixer.fix(finalText);
 
         for (const nodeData of this.getTextNodeContainer().getAll()) {

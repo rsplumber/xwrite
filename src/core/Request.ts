@@ -1,12 +1,13 @@
 export class Request {
 
     private readonly _commandIdentifier: string;
+    private _data: Map<string, any> = new Map<string, any>();
+    private _canceled: boolean = false;
+    private _type;
 
     private constructor(command: string) {
         this._commandIdentifier = command;
     }
-
-    private _canceled: boolean = false;
 
     get canceled(): boolean {
         return this._canceled;
@@ -16,8 +17,6 @@ export class Request {
         this._canceled = value;
     }
 
-    private _type;
-
     get type() {
         return this._type;
     }
@@ -25,8 +24,6 @@ export class Request {
     set type(value) {
         this._type = value;
     }
-
-    private _data: Map<string, any> = new Map<string, any>();
 
     get data(): any {
         return this._data;
@@ -58,14 +55,18 @@ export class Request {
     }
 
     public getFromData(key: string): any {
-        const data = this.getData();
+        return this.data.get(key) ?? false;
+    }
+
+    public getFromViewData(key: string): any {
+        const data = this.getViewsData();
         if (data) {
             return data[key] ?? false;
         }
         return false;
     }
 
-    public getData(): any {
-        return this.data.get("data") ?? false;
+    public getViewsData(): any {
+        return this.getFromData("viewsData") ?? false;
     }
 }

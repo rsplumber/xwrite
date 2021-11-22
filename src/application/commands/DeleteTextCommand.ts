@@ -10,7 +10,7 @@ export class DeleteTextCommand extends Command {
 
 
     async executeAsync(request: Request): Promise<Response> {
-        const textNodeId = request.getFromData("data") as string;
+        const textNodeId = request.getFromViewData("textId") as string;
         this.getTextNodeContainer().removeById(textNodeId);
         figma.currentPage.selection = this.getTextNodeContainer().getAll().map(value => value.node) as TextNode[];
 
