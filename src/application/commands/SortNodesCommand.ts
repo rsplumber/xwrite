@@ -10,8 +10,8 @@ export class SortNodesCommand extends Command {
     }
 
     async executeAsync(request: Request): Promise<Response> {
-        const sortBy = request.getFromData("sortBy");
-        const sortType = request.getFromData("sortType");
+        const sortBy = request.getFromViewData("sortBy");
+        const sortType = request.getFromViewData("sortType");
         this.getTextNodeContainer().updateValues(this.sortList(sortBy, sortType));
         return this.success({
             notificationMessage: "List sorted!",

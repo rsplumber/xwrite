@@ -181,12 +181,13 @@
             texts_data[i].finalText = element.value;
         }
 
-        parent.postMessage({pluginMessage: {type: 'batchWriter', data: texts_data}}, '*')
+        parent.postMessage({pluginMessage: {type: 'batchWriter', data: {textsData: texts_data}}}, '*');
     }
 
     function autoDirection() {
         // parent.postMessage({pluginMessage: {type: 'autoDirection'}}, '*')
-        parent.postMessage({pluginMessage: {type: 'justify', data: {justifyType: 'spaceJustify'}}}, '*');
+        // parent.postMessage({pluginMessage: {type: 'justify', data: {justifyType: 'spaceJustify'}}}, '*');
+        parent.postMessage({pluginMessage: {type: 'selectAllTexts'}}, '*');
         // parent.postMessage({pluginMessage: {type: 'sortNodes'}}, '*')
     }
 
@@ -196,7 +197,7 @@
         } else {
             showStandardUI();
         }
-        parent.postMessage({pluginMessage: {type: 'resize', data: sizeParams}}, '*')
+        parent.postMessage({pluginMessage: {type: 'resize', data: {sizeParams: sizeParams}}}, '*')
     }
 
     function showMinimizedUI() {
@@ -242,7 +243,7 @@
 
     function freeWriterTextChanged(event) {
         const value = document.getElementById('freeWriterText').value;
-        parent.postMessage({pluginMessage: {type: 'freeWriter', data: value}}, '*')
+        parent.postMessage({pluginMessage: {type: 'freeWriter', data: {text: value}}}, '*')
     }
 
     function detectTextsOnBatchUI(texts_data) {
@@ -283,7 +284,12 @@
 
     function copyToClipboard(clipboardButton) {
         copyToClipboards(clipboardButton.innerHTML);
-        parent.postMessage({pluginMessage: {type: 'copyToClipboard', data: clipboardButton.innerHTML}}, '*')
+        parent.postMessage({
+            pluginMessage: {
+                type: 'copyToClipboard',
+                data: {clipboard: clipboardButton.innerHTML}
+            }
+        }, '*')
     }
 
     function copyToClipboards(textToCopy) {
@@ -325,7 +331,7 @@
     }
 
     function copyButtonOnClick(clickedButton) {
-        parent.postMessage({pluginMessage: {type: 'moveText', data: clickedButton.id}}, '*')
+        parent.postMessage({pluginMessage: {type: 'moveText', data: {textId: clickedButton.id}}}, '*')
     }
 
     function createDeleteButton(id) {
@@ -337,7 +343,7 @@
     }
 
     function deleteButtonOnClick(clickedButton) {
-        parent.postMessage({pluginMessage: {type: 'deleteText', data: clickedButton.id}}, '*')
+        parent.postMessage({pluginMessage: {type: 'deleteText', data: {textId: clickedButton.id}}}, '*')
     }
 
     function createInput(id, text) {

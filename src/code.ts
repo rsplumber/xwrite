@@ -47,7 +47,7 @@ figma.on("run", async () => {
 
 
 figma.ui.onmessage = async msg => {
-    const request = Request.generate(msg['type']).attachToData("data", msg['data']);
+    const request = Request.generate(msg['type']).attachToData("viewsData", msg['data']);
     await Context.executeRequestInPipelineAsync(request);
 };
 

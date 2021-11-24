@@ -84,20 +84,12 @@ export class NodeDetectorCommand extends Command {
         return;
     }
 
-    private searchForNodes(nodes, searchFor: string = null): TextNode[] {
-        let walker = this.walkTree(nodes);
-        let res;
-        const foundedText: TextNode[] = [];
-        while (!(res = walker.next()).done) {
-            let node = res.value
-            if (node.type === 'TEXT') {
-                if (!searchFor || node.characters.includes(searchFor)) {
-                    this.countStatistics(node.type);
-                    foundedText.push(node);
-                }
-            }
+    private searchForNodes(currentPage: PageNode, searchFor: string = null): TextNode[] {
+        let textNodes = currentPage.findAll(node => node.type == "TEXT") as TextNode[];
+        if (searchFor) {
+            textNodes = textNodes.filter(value => value.characters.includes(searchFor));
         }
-        return foundedText;
+        return textNodes;
     }
 
     private* walkTree(node) {

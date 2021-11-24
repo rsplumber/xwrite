@@ -11,7 +11,7 @@ export class RefreshDataFilter extends AbstractFilter {
     }
 
     private static async refresh(request: Request, response: Response) {
-        const hardRefresh = request.getFromData("hardRefresh");
+        const hardRefresh = request.getFromViewData("hardRefresh");
         if (hardRefresh) {
             await this.detectNodes();
             return;
