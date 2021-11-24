@@ -8,21 +8,19 @@
         <button class="tabLinks" id="freeWriterButton" onclick="tabSelected(event, 'freeWriter')">Free Writer</button>
         <button class="tabLinks" id="replacerButton" onclick="tabSelected(event, 'replacer')">Find & Replace</button>
         <div class="dropdown">
-            <div class="dropbtn" id="sizeBar">
-                <img src="https://img.icons8.com/windows/32/979797/menu-2.png"/>
-                <div class="dropdown-content">
-                        <!-- <div class="tooltip" onclick="resize('minimize')">
+            <div class="dropbtn" onclick="openSizeDropDown()" id="sizeBar">
+                <img src="https://img.icons8.com/fluency-systems-regular/48/979797/page-size--v3.png"/>
+                <div id="sizeDropdown" class="dropdown-content">
+                        <div class="tooltip" onclick="resize('minimize')">
                             <span class="tooltiptext">Minimize</span>
                             <img src="https://img.icons8.com/fluency-systems-regular/48/25a75d/shrink.png"
                                 style="width: 24px; height: 24px;"/>
                         </div>
-            
                         <div class="tooltip" onclick="resize('standard')">
                             <span class="tooltiptext">Standard</span>
                             <img src="https://img.icons8.com/fluency-systems-regular/48/25a75d/picture-in-picture-alternative.png"
                                 style="width: 24px; height: 24px;"/>
-                        </div> -->
-            
+                        </div>
                         <div class="tooltip" onclick="resize('fullScreen')">
                             <span class="tooltiptext">Fullscreen</span>
                             <img src="https://img.icons8.com/fluency-systems-regular/48/25a75d/page-size--v3.png"
@@ -30,9 +28,10 @@
                         </div>
                 </div>
             </div>
+
             <div class="dropbtn" onclick="openDropDown()">
-                <img src="https://img.icons8.com/windows/32/979797/menu-2.png"/>
-                <div class="dropdown-content" id="myDropdown">
+                <img src="<%= require('./logo.svg') %>">
+                    <div class="dropdown-content" id="myDropdown">
                     <div id="aboutUsButton" onclick="tabSelected(event, 'aboutUs')"
                          style="padding-left: 0; margin-left: 0;">
                         <img src="https://img.icons8.com/material-outlined/24/979797/filled-like.png"
@@ -332,7 +331,7 @@
         const copyText = document.createElement('img')
         copyText.setAttribute('id', id)
         copyText.setAttribute('onclick', "copyButtonOnClick(this)")
-        copyText.setAttribute('src', 'https://img.icons8.com/metro/26/979797/send-file.png')
+        copyText.setAttribute('src', '../Assets/Icons/delete-1.svg')
         return copyText;
     }
 
@@ -384,6 +383,10 @@
 
     function openDropDown() {
         document.getElementById("myDropdown").classList.toggle("show");
+    }
+
+    function openSizeDropDown() {
+        document.getElementById("sizeDropdown").classList.toggle("show");
     }
 
     window.onclick = function(event) {
@@ -810,7 +813,7 @@
     }
 
     .dropdown .dropbtn img{
-        padding: 12px;
+        padding: 12px 4;
     }
 
     .dropdown .dropbtn.show{
@@ -828,6 +831,7 @@
         border-radius: 4px;
         padding: 4px 16px;
         animation: fadeEffectUp 0.4s;
+        min-width: 100px;
     }
 
     .dropdown-content div {
