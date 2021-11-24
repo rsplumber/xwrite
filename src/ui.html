@@ -7,8 +7,27 @@
         </button>
         <button class="tabLinks" id="freeWriterButton" onclick="tabSelected(event, 'freeWriter')">Free Writer</button>
         <button class="tabLinks" id="replacerButton" onclick="tabSelected(event, 'replacer')">Find & Replace</button>
-        <div class="dropdown" onclick="openDropDown()">
-            <img class="dropbtn" src="https://img.icons8.com/windows/32/979797/menu-2.png"/>
+        <div class="dropdown">
+            <div class="tabLinks" id="sizeBar">
+                <!-- <div class="tooltip" onclick="resize('minimize')">
+                    <span class="tooltiptext">Minimize</span>
+                    <img src="https://img.icons8.com/fluency-systems-regular/48/25a75d/shrink.png"
+                         style="width: 24px; height: 24px;"/>
+                </div>
+    
+                <div class="tooltip" onclick="resize('standard')">
+                    <span class="tooltiptext">Standard</span>
+                    <img src="https://img.icons8.com/fluency-systems-regular/48/25a75d/picture-in-picture-alternative.png"
+                         style="width: 24px; height: 24px;"/>
+                </div> -->
+    
+                <div class="tooltip" onclick="resize('fullScreen')">
+                    <span class="tooltiptext">Fullscreen</span>
+                    <img src="https://img.icons8.com/fluency-systems-regular/48/25a75d/page-size--v3.png"
+                         style="width: 24px; height: 24px;"/>
+                </div>
+            </div>
+            <img class="dropbtn" onclick="openDropDown()" src="https://img.icons8.com/windows/32/979797/menu-2.png"/>
             <div class="dropdown-content" id="myDropdown">
                 <div id="aboutUsButton" onclick="tabSelected(event, 'aboutUs')"
                      style="padding-left: 0; margin-left: 0;">
@@ -17,26 +36,9 @@
                     About Us
                 </div>
             </div>
+            
         </div>
-        <div class="tabLinks" id="sizeBar">
-            <div class="tooltip" onclick="resize('minimize')">
-                <span class="tooltiptext">Minimize</span>
-                <img src="https://img.icons8.com/fluency-systems-regular/48/25a75d/shrink.png"
-                     style="width: 24px; height: 24px;"/>
-            </div>
-
-            <div class="tooltip" onclick="resize('standard')">
-                <span class="tooltiptext">Standard</span>
-                <img src="https://img.icons8.com/fluency-systems-regular/48/25a75d/picture-in-picture-alternative.png"
-                     style="width: 24px; height: 24px;"/>
-            </div>
-
-            <div class="tooltip" onclick="resize('fullScreen')">
-                <span class="tooltiptext">Fullscreen</span>
-                <img src="https://img.icons8.com/fluency-systems-regular/48/25a75d/page-size--v3.png"
-                     style="width: 24px; height: 24px;"/>
-            </div>
-        </div>
+        
 
 
     </div>
@@ -372,6 +374,19 @@
         document.getElementById("myDropdown").classList.toggle("show");
     }
 
+    window.onclick = function(event) {
+  if (!event.target.matches('.dropbtn')) {
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    var i;
+    for (i = 0; i < dropdowns.length; i++) {
+      var openDropdown = dropdowns[i];
+      if (openDropdown.classList.contains('show')) {
+        openDropdown.classList.remove('show');
+      }
+    }
+  }
+} 
+
 </script>
 
 <style>
@@ -411,7 +426,6 @@
         margin-left: 24px;
     }
 
-
     h3 {
         font-weight: 500;
         color: #cbcbcb;
@@ -450,7 +464,7 @@
         background-color: #f2f2f2;
         color: #979797;
         width: 100%;
-        padding: 16px 16px;
+        padding: 8px;
         margin-right: 16px;
         margin-left: 8px;
         border-radius: 4px;
@@ -502,7 +516,7 @@
         margin-right: 16px;
         resize: none;
         min-height: 48px;
-        padding: 16px;
+        padding: 8px;
         border: #e5e5e5 1px solid;
         background-color: #fff;
         border-radius: 4px;
@@ -764,9 +778,11 @@
     }
 
     .dropdown {
-        float: left;
+        right: 0;
+        display: flex;
         overflow: hidden;
-        animation: fadeEffectUp 0.4s; /* Fading effect takes 1 second */
+        animation: fadeEffectUp 0.4s;
+        justify-content: flex-end;
     }
 
     .dropdown .dropbtn {
@@ -783,13 +799,15 @@
 
     .dropdown-content {
         display: none;
+        right: 4px;
+        top: 52px;
         position: absolute;
         background-color: #fff;
         min-width: 160px;
         box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.08);
         z-index: 1;
         border-radius: 4px;
-        animation: fadeEffectUp 0.4s; /* Fading effect takes 1 second */
+        animation: fadeEffectUp 0.4s;
     }
 
     .dropdown-content div {
@@ -797,8 +815,8 @@
         color: #979797;
         font-size: smaller;
         font-weight: 600;
-        padding: 12px 8px;
         text-decoration: none;
+        font-size: 12px;
         display: flex;
         align-items: center;
         text-align: left;
@@ -814,9 +832,16 @@
         background-color: white;
     }
 
-    .dropdown:hover .dropdown-content {
-        display: block;
+    .dropdown-content div img {
+        height: 16px;
+        width: 16px;
     }
+
+    .show {display:block;}
+
+    /* .dropdown:hover .dropdown-content {
+        display: block;
+    } */
 
 
     /* Style the buttons that are used to open the tab content */
