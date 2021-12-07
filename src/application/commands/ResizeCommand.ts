@@ -15,7 +15,7 @@ export class ResizeCommand extends Command {
                 figma.ui.resize(100, 100)
                 break;
             case 'standard':
-                figma.ui.resize(660, 560)
+                figma.ui.resize(460, 310)
                 break;
             case 'fullScreen':
                 figma.ui.resize(1920, 1080)

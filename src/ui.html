@@ -12,25 +12,25 @@
                 <img src="https://img.icons8.com/fluency-systems-regular/48/979797/page-size--v3.png"/>
                 <div id="sizeDropdown" class="dropdown-content">
                         <div class="tooltip" onclick="resize('minimize')">
-                            <span class="tooltiptext">Minimize</span>
                             <img src="https://img.icons8.com/fluency-systems-regular/48/25a75d/shrink.png"
                                 style="width: 24px; height: 24px;"/>
+                                Minimize
                         </div>
                         <div class="tooltip" onclick="resize('standard')">
-                            <span class="tooltiptext">Standard</span>
                             <img src="https://img.icons8.com/fluency-systems-regular/48/25a75d/picture-in-picture-alternative.png"
                                 style="width: 24px; height: 24px;"/>
+                                Standard
                         </div>
                         <div class="tooltip" onclick="resize('fullScreen')">
-                            <span class="tooltiptext">Fullscreen</span>
                             <img src="https://img.icons8.com/fluency-systems-regular/48/25a75d/page-size--v3.png"
                                 style="width: 24px; height: 24px;"/>
+                                Fullscreen
                         </div>
                 </div>
             </div>
 
             <div class="dropbtn" onclick="openDropDown()">
-                <img src="<%= require('./logo.svg') %>">
+                <img src="https://img.icons8.com/small/48/979797/connection-status-off.png">
                     <div class="dropdown-content" id="myDropdown">
                     <div id="aboutUsButton" onclick="tabSelected(event, 'aboutUs')"
                          style="padding-left: 0; margin-left: 0;">
@@ -91,14 +91,25 @@
                     <input id="replace_to" placeholder="Find Text" type="input">
                 </div>
                 <div>
-                    <div class="label" style="color: transparent;">
-                        F*** U Found Me!
-                    </div>
-                    <button class="secondary" onclick="replaceText()">Replace</button>
+                    
                 </div>
             </div>
-            <div class="label" style="margin-left: 16px; margin-bottom: 16px; font-size: 14px; color: #ababab;">
-                Type *.* to select all texts
+            <div id="description">
+                <div class="label">
+                    Multi-Select
+                </div>
+                <button style="font-weight: 500;" class="ghost">
+                    Select All <strong>Text Layers</strong> 
+                </button>
+                <button style="font-weight: 500;" class="ghost">
+                    Select All <strong>Buttons</strong> 
+                </button>
+            </div>
+            
+            <div id="bottomBar" style="display: block;">
+                <div class="buttons">
+                    <button class="primary" onclick="replaceText()">Replace</button>
+                </div>
             </div>
         </div>
     </div>
@@ -331,7 +342,7 @@
         const copyText = document.createElement('img')
         copyText.setAttribute('id', id)
         copyText.setAttribute('onclick', "copyButtonOnClick(this)")
-        copyText.setAttribute('src', '../Assets/Icons/delete-1.svg')
+        copyText.setAttribute('src', 'https://img.icons8.com/fluency-systems-regular/48/979797/box-move-right.png')
         return copyText;
     }
 
@@ -392,7 +403,7 @@
     window.onclick = function(event) {
   if (!event.target.matches('.dropbtn')) {
     var dropdowns = document.getElementsByClassName("dropdown-content");
-    var i;
+    var i;  
     for (i = 0; i < dropdowns.length; i++) {
       var openDropdown = dropdowns[i];
       if (openDropdown.classList.contains('show')) {
@@ -510,6 +521,7 @@
         font-size: 14px;
         line-height: 18px;
         width: 200px;
+        transition: all 0.1s;
     }
 
     input:hover {
@@ -581,7 +593,7 @@
         font-family: Poppins;
         font-style: normal;
         font-weight: 500;
-        font-size: 14px;
+        font-size: 12px;
         line-height: 18px;
         transition: all 0.2s;
     }
@@ -604,19 +616,28 @@
         border-top: 1px solid #e6e6e6;
         display: flex;
         justify-content: space-between;
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
         padding: 16px;
         background-color: #f9f9f9;
     }
 
+    .replacements > .bottomBar {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        background-color: red;
+    }
+
 
     #bottomBar {
         width: 100%;
-        position: sticky;
+        position: fixed;
         flex-direction: column-reverse;
         display: none;
         bottom: 0;
+        left: 0;
+        transition: all 0.2s;
     }
 
     button {
@@ -636,7 +657,7 @@
         font-family: Poppins;
         font-style: normal;
         font-weight: 500;
-        font-size: 14px;
+        font-size: 12px;
         line-height: 18px;
         transition: all 0.2s;
 
@@ -686,14 +707,14 @@
         color: #979797;
         font-family: Poppins;
         font-style: normal;
-        font-weight: 600;
-        font-size: 14px;
+        font-weight: 500;
+        font-size: 12px;
         line-height: 21px;
     }
 
     .ghost {
         font-weight: 500;
-        font-size: 12px !important;
+        font-size: 12px;
         cursor: pointer;
         height: 34px;
         padding: 0 16px;
@@ -705,7 +726,6 @@
         font-family: Poppins;
         font-style: normal;
         font-weight: 600;
-        font-size: 14px;
         line-height: 18px;
         transition: all 0.2s;
     }
@@ -760,7 +780,7 @@
         font-family: Poppins;
         border-bottom: #e5e5e5 1px solid;
         background-color: white;
-        height: 48px;
+        height: 40px;
     }
 
     #freeWriter {
@@ -873,7 +893,7 @@
         background-color: inherit;
         font-family: Poppins;
         color: #979797;
-        font-size: 12px;
+        font-size: 10px;
         font-weight: 600;
         letter-spacing: 0.2;
         float: left;
@@ -881,8 +901,9 @@
         outline: none;
         cursor: pointer;
         padding: 14px 16px;
-        height: 48px;
+        height: 40px;
         animation: fadeEffectUp 0.4s; /* Fading effect takes 1 second */
+        transition: all 0.2;
     }
 
     #aboutUsButton {
@@ -900,6 +921,7 @@
     .tab button.active {
         color: #25a75d;
         border-bottom: #25a75d 3px solid;
+        font-weight: 600;
     }
 
     /* Style the tab content */
@@ -935,7 +957,6 @@
     }
 
     #replacer {
-        height: 100%;
         background-color: #f9f9f9;
         overflow-y: hidden;
     }
@@ -982,11 +1003,19 @@
 
     .batch-input {
         padding-bottom: 24px !important;
+        max-width: 172px;
+        overflow: hidden;
     }
 
     .batch-input > button {
         bottom: 8;
         right: 8;
+    }
+
+    #description {
+        margin: 24px 16px;
+        font-size: 14px;
+        color: #ababab;
     }
 
 
